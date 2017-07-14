@@ -44,7 +44,7 @@ def weather(bot, update, args):
     time  = pytz.timezone('Europe/Moscow').fromutc(time)
     time  = "{:%H:%M}".format(time)
     
-    message = ''.join("[{}] {} {}\n{}".format(time,temp,value,city))
+    message = ''.join("[{0}] {1} {2}\n{3}".format(time,temp,value,city))
     bot.send_message(chat_id=update.message.chat_id, text = message )
 
     log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
