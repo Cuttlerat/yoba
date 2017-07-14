@@ -3,6 +3,7 @@ import json
 import requests
 import pytz 
 
+from bs4 import BeautifulSoup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from datetime import datetime
 
@@ -53,6 +54,22 @@ def weather(bot, update, args):
 
     print("{timestamp}: \"{message}\" by @{username}".format(**log_dict))
 
+def ibash(bot, update, args):
+
+    #TODO NaN check
+    count = int(''.join(args)) if args else 1
+    if count > 5: count = 5
+
+    for i in range(count):
+        i_response = requests.get('http://ibash.org.ru/random.php').text
+        soup = BeautifulSoup(i_response, "html.parser")
+        
+        quote_id = soup.find_all("div", class_="quote")[0].a.get_text()
+        for br in soup.find_all("br"): 
+            br.replace_with("\n")
+        quote_text = soup.find("div", class_="quotbody").text
+        bot.send_message(chat_id = update.message.chat_id, text = quote_id+"\n"+quote_text+"\n", disable_web_page_preview = 1)
+
 #============================================================================
 
 
@@ -61,6 +78,7 @@ dispatcher = updater.dispatcher
 
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('weather', weather, pass_args=True))
+dispatcher.add_handler(CommandHandler('ibash', ibash, pass_args=True))
 dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
 updater.start_polling()
