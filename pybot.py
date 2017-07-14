@@ -6,12 +6,14 @@ import pytz
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from datetime import datetime
 
+#===========VARIABLES========================================================
+
 with open('.tokens') as tokens:
     data = json.load(tokens)
 
 globals().update(data)
-updater = Updater(token=bot_token)
-dispatcher = updater.dispatcher
+
+#===========FUNCTIONS========================================================
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Hello")
@@ -35,19 +37,28 @@ def weather(bot, update, args):
     temp  = w_response["data"]["current_condition"][0]["temp_C"]
     value = w_response["data"]["current_condition"][0]["lang_ru"][0]["value"]
     city  = w_response["data"]["request"][0]["query"]
+
     time  = datetime.strptime(w_response["data"]["current_condition"][0]["observation_time"] + " 2017", '%I:%M %p %Y')
     time  = pytz.timezone('Europe/Moscow').fromutc(time)
     time  = "{:%H:%M}".format(time)
     
-    bot.send_message(chat_id=update.message.chat_id, text = '['+time+']'+' +'+temp+" "+value+"\n"+city)
+    message = ''.join("[{}] +{} {}\n{}".format(time,temp,value,city))
+    bot.send_message(chat_id=update.message.chat_id, text = message )
 
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
+    log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
+                  'message': message.replace('\n', ' '), 
+                 'username': update.message.from_user.username }
 
-weather_handler = CommandHandler('weather', weather, pass_args=True)
-dispatcher.add_handler(weather_handler)
+    print("{timestamp}: \"{message}\" by @{username}".format(**log_dict))
 
-unknown_handler = MessageHandler(Filters.command, unknown)
-dispatcher.add_handler(unknown_handler)
+#============================================================================
+
+
+updater    = Updater(token=bot_token)
+dispatcher = updater.dispatcher
+
+dispatcher.add_handler(CommandHandler('start', start))
+dispatcher.add_handler(CommandHandler('weather', weather, pass_args=True))
+dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
 updater.start_polling()
