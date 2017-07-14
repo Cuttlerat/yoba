@@ -21,7 +21,7 @@ def unknown(bot, update):
 
 def weather(bot, update, args):
 
-    city = ' '.join(args) if args else city = 'Ленинград'
+    city = ' '.join(args) if args else 'Ленинград'
 
     w_params = {        'q': city, 
                       'key': weather_token, 
