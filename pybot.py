@@ -1,23 +1,17 @@
 #!/bin/python3.6
 import json
-import logging
-import urllib
 import requests
-
-from datetime import datetime
 import pytz 
-from urllib.parse import urlparse
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from datetime import datetime
 
 with open('.tokens') as tokens:
     data = json.load(tokens)
 
 globals().update(data)
-
-
 updater = Updater(token=bot_token)
 dispatcher = updater.dispatcher
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Hello")
@@ -27,10 +21,8 @@ def unknown(bot, update):
 
 def weather(bot, update, args):
 
-    if args: 
-        city = ' '.join(args)
-    else:
-        city = 'Ленинград'
+    city = ' '.join(args) if args else city = 'Ленинград'
+
     w_params = {        'q': city, 
                       'key': weather_token, 
                    'format': 'json', 
