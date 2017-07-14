@@ -35,6 +35,8 @@ def weather(bot, update, args):
     w_response = requests.get('https://api.worldweatheronline.com/premium/v1/weather.ashx', w_params).json()
 
     temp  = w_response["data"]["current_condition"][0]["temp_C"]
+    if temp[0] != '-': temp='+'+temp
+
     value = w_response["data"]["current_condition"][0]["lang_ru"][0]["value"]
     city  = w_response["data"]["request"][0]["query"]
 
@@ -42,7 +44,7 @@ def weather(bot, update, args):
     time  = pytz.timezone('Europe/Moscow').fromutc(time)
     time  = "{:%H:%M}".format(time)
     
-    message = ''.join("[{}] +{} {}\n{}".format(time,temp,value,city))
+    message = ''.join("[{}] {} {}\n{}".format(time,temp,value,city))
     bot.send_message(chat_id=update.message.chat_id, text = message )
 
     log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
