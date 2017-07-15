@@ -70,6 +70,12 @@ def ibash(bot, update, args):
         quote_text = soup.find("div", class_="quotbody").text
         bot.send_message(chat_id = update.message.chat_id, text = quote_id+"\n"+quote_text+"\n", disable_web_page_preview = 1)
 
+    #TODO Make a log function
+    log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
+                    'count': count, 
+                 'username': update.message.from_user.username }
+    print("{timestamp}: ibash {count} by @{username}".format(**log_dict))
+
 #============================================================================
 
 
