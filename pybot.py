@@ -84,6 +84,7 @@ dispatcher = updater.dispatcher
 
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('weather', weather, pass_args=True))
+dispatcher.add_handler(CommandHandler('w', weather, pass_args=True))
 dispatcher.add_handler(CommandHandler('ibash', ibash, pass_args=True))
 dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
