@@ -17,7 +17,8 @@ globals().update(data)
 #===========FUNCTIONS========================================================
 
 def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Hello")
+    start_text=Filters.command
+    bot.send_message(chat_id=update.message.chat_id, text = start_text)
 
 def unknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="No command")
@@ -79,6 +80,7 @@ def ibash(bot, update, args):
 def loglist(bot, update, args):
 
     #TODO Merge into one function with ibash
+    #     I need help with getting a what command was in message inside function to do that
     count = int(''.join(args)) if args else 1
     if count > 5: count = 5
 
@@ -93,6 +95,8 @@ def loglist(bot, update, args):
                     'count': count, 
                  'username': update.message.from_user.username }
     print("{timestamp}: loglist {count} by @{username}".format(**log_dict))
+
+
 
 #============================================================================
 
