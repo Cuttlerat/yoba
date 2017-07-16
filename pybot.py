@@ -48,10 +48,10 @@ def weather(bot, update, args):
     message = ''.join("[{0}]: {1} {2}\n{3}".format(time,temp,value,city))
     bot.send_message(chat_id=update.message.chat_id, text = message )
 
+    # LOG
     log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
                   'message': message.replace('\n', ' '), 
                  'username': update.message.from_user.username }
-
     print("{timestamp}: \"{message}\" by @{username}".format(**log_dict))
 
 def ibash(bot, update, args):
@@ -70,11 +70,29 @@ def ibash(bot, update, args):
         quote_text = soup.find("div", class_="quotbody").text
         bot.send_message(chat_id = update.message.chat_id, text = quote_id+"\n"+quote_text+"\n", disable_web_page_preview = 1)
 
-    #TODO Make a log function
+    # LOG
     log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
                     'count': count, 
                  'username': update.message.from_user.username }
     print("{timestamp}: ibash {count} by @{username}".format(**log_dict))
+
+def loglist(bot, update, args):
+
+    #TODO Merge into one function with ibash
+    count = int(''.join(args)) if args else 1
+    if count > 5: count = 5
+
+    for i in range(count):
+        l_raw_json = json.loads(requests.get('https://loglist.net/api/quote/random').text)
+        quote_id   = l_raw_json['id']
+        quote_text = l_raw_json['content']
+        bot.send_message(chat_id = update.message.chat_id, text = "#"+quote_id+"\n"+quote_text+"\n", disable_web_page_preview = 1)
+
+    # LOG
+    log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
+                    'count': count, 
+                 'username': update.message.from_user.username }
+    print("{timestamp}: loglist {count} by @{username}".format(**log_dict))
 
 #============================================================================
 
@@ -86,6 +104,7 @@ dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('weather', weather, pass_args=True))
 dispatcher.add_handler(CommandHandler('w', weather, pass_args=True))
 dispatcher.add_handler(CommandHandler('ibash', ibash, pass_args=True))
+dispatcher.add_handler(CommandHandler('loglist', loglist, pass_args=True))
 dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
 updater.start_polling()
