@@ -20,10 +20,6 @@ def start(bot, update):
     start_text = "\n".join([ i.strip() for i in start_text.split('\n') ])
     bot.send_message(chat_id=update.message.chat_id, text = start_text)
 
-def unknown(bot, update):
-
-    bot.send_message(chat_id=update.message.chat_id, text="No such command")
-
 def get_emoji(emoji_code):
 
     emoji_code = str(emoji_code)
@@ -182,6 +178,5 @@ dispatcher.add_handler(CommandHandler('weather', weather, pass_args=True))
 dispatcher.add_handler(CommandHandler('w', weather, pass_args=True))
 dispatcher.add_handler(CommandHandler('ibash', ibash, pass_args=True))
 dispatcher.add_handler(CommandHandler('loglist', loglist, pass_args=True))
-dispatcher.add_handler(MessageHandler(Filters.command, unknown))
 
 updater.start_polling()
