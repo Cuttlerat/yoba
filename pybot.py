@@ -1,4 +1,4 @@
-#!/bin/python3.6
+#!/usr/bin/env python3
 import json
 import requests
 import pytz 
@@ -6,29 +6,29 @@ import pytz
 from bs4 import BeautifulSoup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from datetime import datetime
-
-#===========VARIABLES========================================================
-
-with open('.tokens') as tokens:
-    data = json.load(tokens)
-
-globals().update(data)
+from tokens import *
 
 #===========FUNCTIONS========================================================
 
 def start(bot, update):
-    start_text=Filters.command
+
+    start_text = '''
+    This is my first bot on Python.
+    You can see the code here https://github.com/Cuttlerat/bashbot
+    by @Cuttlerat
+    '''
+    start_text = "\n".join([ i.strip() for i in start_text.split('\n') ])
     bot.send_message(chat_id=update.message.chat_id, text = start_text)
 
 def unknown(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="No command")
+    bot.send_message(chat_id=update.message.chat_id, text="No such command")
 
 def weather(bot, update, args):
 
     city = ' '.join(args) if args else 'Ленинград'
 
     w_params = {        'q': city, 
-                      'key': weather_token, 
+                      'key': WEATHER_TOKEN, 
                    'format': 'json', 
                      'date': 'today', 
                      'fx24': 'yes', 
@@ -101,7 +101,7 @@ def loglist(bot, update, args):
 #============================================================================
 
 
-updater    = Updater(token=bot_token)
+updater    = Updater(token=BOT_TOKEN)
 dispatcher = updater.dispatcher
 
 dispatcher.add_handler(CommandHandler('start', start))
