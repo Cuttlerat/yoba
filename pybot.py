@@ -25,37 +25,47 @@ def get_emoji(emoji_code):
     emoji_code = str(emoji_code)
     print(emoji_code)
 
+    # Sunny
     if "113" in emoji_code:
         emoji_code = emoji_code.replace("113","☀️")
 
+    # Partly cloudy
     if "116" in emoji_code:
         emoji_code = emoji_code.replace("116","🌥")
 
+    # Cloudy
     if "119" in emoji_code:
         emoji_code = emoji_code.replace("119","🌥")
 
+    # Overcast
     if "122" in emoji_code:
         emoji_code = emoji_code.replace("122","☁️")
 
+    # Thunder
     if "200" in emoji_code:
         emoji_code = emoji_code.replace("200","🌩")
 
+    # Fog
     for i in ["143","248","260"]:
         if i in emoji_code:
             emoji_code = emoji_code.replace(i,"🌫")
 
+    # Light Rain
     for i in ["176","263","266","281","293","296","299","302","311","317","362"]:
         if i in emoji_code:
             emoji_code = emoji_code.replace(i,"🌧")
 
+    # Show
     for i in ["179","182","185","227","230","323","326","329","332","335","338","350","353","368","371","374","377"]:
         if i in emoji_code:
             emoji_code = emoji_code.replace(i,"🌨")
 
+    # Heavy rain
     for i in ["284","305","308","314","320","356","359","365"]:
         if i in emoji_code:
             emoji_code = emoji_code.replace(i,"🌧")
 
+    # Rain with thunder
     for i in ["386","389","392","395"]:
         if i in emoji_code:
             emoji_code = emoji_code.replace(i,"⛈")
