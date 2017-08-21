@@ -76,7 +76,7 @@ def weather(bot, update, args):
     w_response = requests.get('https://api.worldweatheronline.com/premium/v1/weather.ashx', w_params).json()
 
     now_temp  = w_response["data"]["current_condition"][0]["temp_C"]
-    if now_temp[0] != '-': now_temp='+'+now_temp
+    if now_temp[0] != '-': now_temp = '+' + now_temp
 
     now_comment = w_response["data"]["current_condition"][0]["lang_ru"][0]["value"]
     now_city  = w_response["data"]["request"][0]["query"]
@@ -90,7 +90,7 @@ def weather(bot, update, args):
     for j in range(2):
         for i in range(3):
             weather[j,"temp",i]    = w_response["data"]["weather"][j]["hourly"][2+(i*3)]["tempC"]
-            if weather[j,"temp",i][0] != '-': weather[j,"temp",i]='+'+weather[j,"temp",i]
+            if weather[j,"temp",i][0] != '-': weather[j,"temp",i] = '+' + weather[j,"temp",i]
             weather[j,"emoji",i]   = get_emoji(w_response["data"]["weather"][j]["hourly"][2+(i*3)]["weatherCode"])
             weather[j,"comment",i] = w_response["data"]["weather"][j]["hourly"][2+(i*3)]["lang_ru"][0]["value"]
     
