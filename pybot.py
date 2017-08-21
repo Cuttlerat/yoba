@@ -66,7 +66,6 @@ def get_emoji(emoji_code):
 
     return(emoji_code)
 
-print(get_emoji(113))
 def weather(bot, update, args):
 
     city = ' '.join(args) if args else 'Ленинград'
