@@ -21,11 +21,12 @@ def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text = start_text)
 
 def unknown(bot, update):
+
     bot.send_message(chat_id=update.message.chat_id, text="No such command")
 
 def weather(bot, update, args):
 
-    city = ' '.join(args) if args else 'Ленинград'
+    city = ' '.join(args) if isargs else 'Ленинград'
 
     w_params = {        'q': city, 
                       'key': WEATHER_TOKEN, 
@@ -57,8 +58,7 @@ def weather(bot, update, args):
 
 def ibash(bot, update, args):
 
-    #TODO NaN check
-    count = int(''.join(args)) if args else 1
+    count = int(''.join(args)) if ''.join(args).isdigit() else 1
     if count > 5: count = 5
 
     for i in range(count):
@@ -81,7 +81,7 @@ def loglist(bot, update, args):
 
     #TODO Merge into one function with ibash
     #     I need help with getting a what command was in message inside function to do that
-    count = int(''.join(args)) if args else 1
+    count = int(''.join(args)) if ''.join(args).isdigit() else 1
     if count > 5: count = 5
 
     for i in range(count):
