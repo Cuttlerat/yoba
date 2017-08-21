@@ -6,6 +6,7 @@ import pytz
 from bs4 import BeautifulSoup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from datetime import datetime
+from dateutil.tz import tzlocal
 from tokens import *
 
 #===========FUNCTIONS========================================================
@@ -25,7 +26,6 @@ def start(bot, update):
 def get_emoji(emoji_code):
 
     emoji_code = str(emoji_code)
-    print(emoji_code)
 
     # Sunny
     if "113" in emoji_code:
@@ -134,7 +134,7 @@ def weather(bot, update, args):
     bot.send_message(chat_id=update.message.chat_id, parse_mode = "markdown", text = message )
 
     # LOG
-    log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
+    log_dict = {'timestamp': log_timestamp(), 
                   'message': "Weather {0}".format(now_city), 
                  'username': update.message.from_user.username }
     print("{timestamp}: \"{message}\" by @{username}".format(**log_dict))
@@ -157,7 +157,7 @@ def ibash(bot, update, args):
         bot.send_message(chat_id = update.message.chat_id, text = quote_id+"\n"+quote_text+"\n", disable_web_page_preview = 1)
 
     # LOG
-    log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
+    log_dict = {'timestamp': log_timestamp(), 
                     'count': count, 
                  'username': update.message.from_user.username }
     print("{timestamp}: ibash {count} by @{username}".format(**log_dict))
@@ -178,12 +178,15 @@ def loglist(bot, update, args):
         bot.send_message(chat_id = update.message.chat_id, text = "#"+quote_id+"\n"+quote_text+"\n", disable_web_page_preview = 1)
 
     # LOG
-    log_dict = {'timestamp': datetime.now().strftime("[%H:%M]"), 
+    log_dict = {'timestamp': log_timestamp(), 
                     'count': count, 
                  'username': update.message.from_user.username }
     print("{timestamp}: loglist {count} by @{username}".format(**log_dict))
 
 #==== End of loglist function ===============================================
+
+def log_timestamp():
+    return(datetime.now(tzlocal()).strftime("[%d/%b/%Y:%H:%M:%S %z]"))
 
 #============================================================================
 
