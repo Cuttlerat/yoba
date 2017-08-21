@@ -20,6 +20,8 @@ def start(bot, update):
     start_text = "\n".join([ i.strip() for i in start_text.split('\n') ])
     bot.send_message(chat_id=update.message.chat_id, text = start_text)
 
+#==== End of start function =================================================
+
 def get_emoji(emoji_code):
 
     emoji_code = str(emoji_code)
@@ -71,6 +73,8 @@ def get_emoji(emoji_code):
             emoji_code = emoji_code.replace(i,"⛈")
 
     return(emoji_code)
+
+#==== End of get_emoji function =============================================
 
 def weather(bot, update, args):
 
@@ -135,6 +139,8 @@ def weather(bot, update, args):
                  'username': update.message.from_user.username }
     print("{timestamp}: \"{message}\" by @{username}".format(**log_dict))
 
+#==== End of weather function ===============================================
+
 def ibash(bot, update, args):
 
     count = int(''.join(args)) if ''.join(args).isdigit() else 1
@@ -156,6 +162,8 @@ def ibash(bot, update, args):
                  'username': update.message.from_user.username }
     print("{timestamp}: ibash {count} by @{username}".format(**log_dict))
 
+#==== End of ibash function =================================================
+
 def loglist(bot, update, args):
 
     #TODO Merge into one function with ibash
@@ -175,7 +183,7 @@ def loglist(bot, update, args):
                  'username': update.message.from_user.username }
     print("{timestamp}: loglist {count} by @{username}".format(**log_dict))
 
-
+#==== End of loglist function ===============================================
 
 #============================================================================
 
