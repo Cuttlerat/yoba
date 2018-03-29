@@ -102,6 +102,7 @@ ENV/
 
 # tokens
 bot/tokens/*
+bot/config.yaml
 
 # db
 bot/data/*

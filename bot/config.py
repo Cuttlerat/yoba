@@ -1,0 +1,39 @@
+import yaml
+
+
+class Config:
+    def __init__(self):
+        with open("config.yaml", 'r') as ymlfile:
+            cfg = yaml.load(ymlfile)
+
+        self.__tg_token = cfg['tokens']['tg_token']
+        self.__weather_token = cfg['tokens']['weather_token']
+
+        self.__db_host = cfg['database']['host']
+
+        self.__tg_mode = cfg['telegram']['mode']
+        self.__tg_webhook_port = cfg['telegram']['webhook_port']
+        self.__tg_webhook_url = cfg['telegram']['webhook_url']
+
+        self.__tg_admins = cfg['admins']
+
+    def telegram_token(self):
+        return self.__tg_token
+
+    def weather_token(self):
+        return self.__weather_token
+
+    def telegram_mode(self):
+        return self.__tg_mode
+
+    def webhook_port(self):
+        return self.__tg_webhook_port
+
+    def webhook_url(self):
+        return self.__tg_webhook_url
+
+    def database_host(self):
+        return self.__db_host
+
+    def admins(self):
+        return self.__tg_admins

@@ -22,6 +22,7 @@ from telegram.ext import (
     CallbackQueryHandler
 )
 
+from config import Config
 from handlers.db import database_handler
 from handlers.helpers import start, bug, hat, chat_id, buttons
 from handlers.parser import parser
@@ -33,6 +34,7 @@ from tokens.tokens import *
 from handlers.weather import weather, wset
 
 if __name__ == '__main__':
+    config = Config()
     try:
         from bot.tokens.tokens import LISTEN_IP
     except ImportError:
