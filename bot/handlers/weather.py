@@ -1,17 +1,17 @@
 import pyowm
 from sqlalchemy.orm.exc import NoResultFound
 
-from models.models import connector, Locations, ENGINE
 from logger import log_print
+from models.models import connector, Locations
 from tokens.tokens import ADMINS, WEATHER_TOKEN
 
 
-def weather(bot, update, args):
+def weather(config, bot, update, args):
     city = " ".join(args)
     username = update.message.from_user.username
 
     if not city:
-        with connector(ENGINE) as ses:
+        with connector(config.engine()) as ses:
             try:
                 city = ses.query(Locations.city).filter(
                     Locations.username == username).one()
@@ -120,11 +120,11 @@ def weather(bot, update, args):
     log_print('Weather "{0}"'.format(city), username)
 
 
-def wset(bot, update, args):
+def wset(config, bot, update, args):
     city = " ".join(args)
     username = update.message.from_user.username
 
-    with connector(ENGINE) as ses:
+    with connector(config.engine()) as ses:
         try:
             ses.query(Locations.username).filter(
                 Locations.username == username).one()
