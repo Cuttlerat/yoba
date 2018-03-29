@@ -3,7 +3,6 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from logger import log_print
 from models.models import connector, Locations
-from tokens.tokens import ADMINS, WEATHER_TOKEN
 
 
 def weather(config, bot, update, args):
@@ -22,7 +21,7 @@ def weather(config, bot, update, args):
                         Locations.username == "default_city").one()
                     city = "".join([i for i in city])
                 except NoResultFound:
-                    if username in ADMINS:
+                    if username in config.admins():
                         error_message = '''
                         You didn't set the default city
                         You can add default city by this command:
@@ -37,7 +36,7 @@ def weather(config, bot, update, args):
                     return
 
     try:
-        owm = pyowm.OWM(WEATHER_TOKEN, language='en')
+        owm = pyowm.OWM(config.weather_token(), language='en')
     except:
         error_message = "Invalid API token"
         bot.send_message(chat_id=update.message.chat_id, text=error_message)
