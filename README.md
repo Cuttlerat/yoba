@@ -48,7 +48,7 @@ admins:
 Then just launch the bot
 
 ```bash
-./pybot.py
+./bot/main.py
 ```
 
 ### Starting into a docker container
