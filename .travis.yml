@@ -16,9 +16,9 @@ before_install:
   - docker version
 
 install:
-  - mkdir ./tokens
-  - mv .travis.tokens.py ./tokens/tokens.py
-  - echo "BOT_TOKEN = '${BOT_TOKEN}'" >> ./tokens/tokens.py
+  - mkdir ./bot/tokens
+  - mv .travis.tokens.py ./bot/tokens/tokens.py
+  - echo "BOT_TOKEN = '${BOT_TOKEN}'" >> ./bot/tokens/tokens.py
 
 before_script:
   - docker login -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
