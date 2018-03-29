@@ -5,3 +5,4 @@ python-telegram-bot>=7.0.1
 python-dateutil>=2.6.1
 SQLAlchemy>=1.1.13
 pyowm>=2.7.1
+pyyaml>=3.12
