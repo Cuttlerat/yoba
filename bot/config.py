@@ -14,7 +14,7 @@ class Config:
 
         self.__tg_mode = cfg['telegram']['mode']
         self.__tg_webhook_port = cfg['telegram']['webhook_port']
-        self.__tg_webhook_url = cfg['telegram']['webhook_url']
+        self.__tg_webhook_url = cfg['telegram']['webhook_url'].format(self.__tg_token)
         self.__tg_listen_ip = cfg['telegram']['listen_ip']
 
         self.__tg_admins = cfg['admins']
