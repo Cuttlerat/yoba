@@ -40,6 +40,8 @@ if __name__ == '__main__':
         level=logging.INFO
     )
 
+    db_handler = lambda bot, update, args: database_handler(config, bot, update, args)
+
     log_print('Started')
 
     try:
@@ -59,7 +61,7 @@ if __name__ == '__main__':
                 random_content, pass_args=True
             ),
             CommandHandler('wset', wset, pass_args=True),
-            CommandHandler('db', database_handler, pass_args=True),
+            CommandHandler('db', db_handler, pass_args=True),
             CommandHandler('ping', pinger_handler, pass_args=True),
             CallbackQueryHandler(buttons),
             MessageHandler(Filters.text, parser)

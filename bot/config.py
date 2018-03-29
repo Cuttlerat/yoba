@@ -1,4 +1,5 @@
 import yaml
+from sqlalchemy import create_engine
 
 
 class Config:
@@ -17,6 +18,9 @@ class Config:
         self.__tg_listen_ip = cfg['telegram']['listen_ip']
 
         self.__tg_admins = cfg['admins']
+
+        self.__database = 'sqlite:///{}'.format(self.__db_host)
+        self.__engine = create_engine(self.__database)
 
     def telegram_token(self):
         return self.__tg_token
@@ -41,3 +45,9 @@ class Config:
 
     def admins(self):
         return self.__tg_admins
+
+    def databse(self):
+        return self.__database
+
+    def engine(self):
+        return self.__engine
