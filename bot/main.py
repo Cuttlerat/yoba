@@ -28,17 +28,12 @@ from handlers.helpers import start, bug, hat, chat_id, buttons
 from handlers.parser import parser
 from handlers.pinger import pinger_handler
 from handlers.random_content import random_content
+from handlers.weather import weather, wset
 from logger import log_print
 from models.models import create_table
-from tokens.tokens import *
-from handlers.weather import weather, wset
 
 if __name__ == '__main__':
     config = Config()
-    try:
-        from bot.tokens.tokens import LISTEN_IP
-    except ImportError:
-        pass
 
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -50,7 +45,7 @@ if __name__ == '__main__':
     try:
         create_table()
 
-        updater = Updater(token=BOT_TOKEN)
+        updater = Updater(token=config.telegram_token())
         dispatcher = updater.dispatcher
 
         [dispatcher.add_handler(i) for i in [
@@ -70,15 +65,11 @@ if __name__ == '__main__':
             MessageHandler(Filters.text, parser)
         ]]
 
-        if MODE.lower() == 'webhook':
-            try:
-                LISTEN_IP
-            except NameError:
-                LISTEN_IP = "0.0.0.0"
-            updater.start_webhook(listen=LISTEN_IP,
-                                  port=WEBHOOK_PORT,
-                                  url_path=BOT_TOKEN)
-            updater.bot.set_webhook(WEBHOOK_URL)
+        if config.telegram_mode().lower() == 'webhook':
+            updater.start_webhook(listen=config.listen_ip(),
+                                  port=config.webhook_port(),
+                                  url_path=config.telegram_token())
+            updater.bot.set_webhook(config.webhook_url())
             updater.idle()
         else:
             updater.start_polling()
