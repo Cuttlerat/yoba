@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 
 class Config:
     def __init__(self):
-        for filename in glob.glob(r'config\.ya?ml'):
+        for filename in glob.glob('./config/config.y*ml'):
             with open(filename, 'r') as ymlfile:
                 cfg = yaml.load(ymlfile)
 
