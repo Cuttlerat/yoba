@@ -19,7 +19,7 @@ def database_handler(config, bot, update, args):
             command = command.replace(
                 "%%%chat_id%%%", str(update.message.chat_id))
 
-        engine = create_engine(config.databse())
+        engine = create_engine(config.database())
         connector = engine.connect()
 
         try:
