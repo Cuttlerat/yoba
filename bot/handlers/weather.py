@@ -1,4 +1,6 @@
 import pyowm
+from pyowm.exceptions.unauthorized_error import UnauthorizedError
+from  pyowm.exceptions.not_found_error import NotFoundError
 from sqlalchemy.orm.exc import NoResultFound
 
 from logger import log_print
@@ -36,19 +38,12 @@ def weather(config, bot, update, args):
                     return
 
     try:
-        owm = pyowm.OWM(config.weather_token(), language='en')
-    except:
-        error_message = "Invalid API token"
-        bot.send_message(chat_id=update.message.chat_id, text=error_message)
-        log_print('Weather "{0}"'.format(error_message), username)
-        return
-
-    try:
+        token = config.weather_token()
+        owm = pyowm.OWM(token, language='en')
         observation = owm.weather_at_place(city)
-    except pyowm.exceptions.not_found_error.NotFoundError:
-        error_message = "Wrong location"
-        bot.send_message(chat_id=update.message.chat_id, text=error_message)
-        log_print('"{0}"'.format(error_message), username)
+    except (UnauthorizedError, NotFoundError, NotImplementedError) as e:
+        bot.send_message(chat_id=update.message.chat_id, text=str(e))
+        log_print('Weather "{0}"'.format(str(e)), username)
         return
 
     forecast = owm.three_hours_forecast(city)

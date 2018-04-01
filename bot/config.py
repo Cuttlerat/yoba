@@ -1,5 +1,6 @@
-import yaml
 import glob
+
+import yaml
 from sqlalchemy import create_engine
 
 
@@ -10,7 +11,7 @@ class Config:
                 cfg = yaml.load(ymlfile)
 
         self.__tg_token = cfg['tokens']['tg_token']
-        self.__weather_token = cfg['tokens']['weather_token']
+        self.__weather_token = cfg['tokens']['weather_token'] if 'weather_token' in cfg['tokens'] else None
 
         self.__db_host = cfg['database']['host']
 
@@ -28,6 +29,8 @@ class Config:
         return self.__tg_token
 
     def weather_token(self):
+        if self.__weather_token is None:
+            raise NotImplementedError("Weather token in config-file is not declared")
         return self.__weather_token
 
     def telegram_mode(self):
