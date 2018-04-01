@@ -8,5 +8,5 @@ services:
             dockerfile: dockerfile/pybot.Dockerfile
         volumes:
           - ./bot/data:/pybot/data
-          - ./bot/tokens:/pybot/tokens:ro
+          - ./bot/config:/pybot/config:ro
         restart: always

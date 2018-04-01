@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 class Config:
     def __init__(self):
-        with open("config.yaml", 'r') as ymlfile:
+        with open("./config/config.yml", 'r') as ymlfile:
             cfg = yaml.load(ymlfile)
 
         self.__tg_token = cfg['tokens']['tg_token']
