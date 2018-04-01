@@ -1,11 +1,13 @@
 import yaml
+import glob
 from sqlalchemy import create_engine
 
 
 class Config:
     def __init__(self):
-        with open("./config/config.yml", 'r') as ymlfile:
-            cfg = yaml.load(ymlfile)
+        for filename in glob.glob(r'config\.ya?ml'):
+            with open(filename, 'r') as ymlfile:
+                cfg = yaml.load(ymlfile)
 
         self.__tg_token = cfg['tokens']['tg_token']
         self.__weather_token = cfg['tokens']['weather_token']
