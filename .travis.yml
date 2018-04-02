@@ -19,8 +19,8 @@ install:
   - mkdir ./bot/config
   - mv .travis.config.yml ./bot/config/config.yml
   - >
-    echo "tokens: " >> ./bot/config/config.yml
-    echo "  tg_token: \"${BOT_TOKEN}\"" >> ./bot/config/config.yml
+    echo "tokens: " >> ./bot/config/config.yml;
+    echo "  tg_token: \"${BOT_TOKEN}\"" >> ./bot/config/config.yml;
 
 before_script:
   - docker login -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
