@@ -18,8 +18,7 @@ from telegram.ext import (
     Updater,
     CommandHandler,
     MessageHandler,
-    Filters,
-    CallbackQueryHandler
+    Filters
 )
 
 from config import Config
@@ -32,6 +31,14 @@ from handlers.weather import weather, wset
 from logger import log_print
 from models.models import create_table
 
+
+def handler(action, input_config):
+    def new_action(bot, update, **kwargs):
+        action(input_config, bot, update, **kwargs)
+
+    return new_action
+
+
 if __name__ == '__main__':
     config = Config()
 
@@ -40,11 +47,9 @@ if __name__ == '__main__':
         level=logging.INFO
     )
 
-    db_handler = lambda bot, update, args: database_handler(config, bot, update, args)
-    weather_handler = lambda bot, update, args: weather(config, bot, update, args)
-    wset_handler = lambda bot, update, args: wset(config, bot, update, args)
-    parser_handler = lambda bot, update: parser(config, bot, update)
-    pinger_handler = lambda bot, update, args: pinger(config, bot, update, args)
+    functions = [database_handler, weather, wset, parser, pinger]
+    db_handler, weather_handler, wset_handler, parser_handler, pinger_handler = \
+        (handler(act, config) for act in functions)
 
     log_print('Started')
 
