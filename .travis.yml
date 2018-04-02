@@ -16,10 +16,11 @@ before_install:
   - docker version
 
 install:
-  - mkdir ./bot/config
-  - mv .travis.config.yml ./bot/config/config.yml
-  - echo "tokens: " >> ./bot/config/tokens.py
-  - echo "  tg_token: \"${BOT_TOKEN}\"" >> ./bot/config/tokens.py
+  - >
+    mkdir ./bot/config
+    mv .travis.config.yml ./bot/config/config.yml
+    echo "tokens: " >> ./bot/config/tokens.py
+    echo "  tg_token: \"${BOT_TOKEN}\"" >> ./bot/config/tokens.py
 
 before_script:
   - docker login -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
