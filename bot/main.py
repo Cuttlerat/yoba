@@ -23,6 +23,7 @@ from telegram.ext import (
 )
 
 from config import Config
+from handlers.crypto import crypto
 from handlers.db import database_handler
 from handlers.helpers import start, bug, hat, chat_id, buttons
 from handlers.parser import parser
@@ -67,6 +68,7 @@ if __name__ == '__main__':
             CommandHandler('wset', wset_handler, pass_args=True),
             CommandHandler('db', db_handler, pass_args=True),
             CommandHandler('ping', pinger_handler, pass_args=True),
+            CommandHandler('crypto', crypto, pass_args=True),
             CallbackQueryHandler(buttons),
             MessageHandler(Filters.text, parser_handler)
         ]]
