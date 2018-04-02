@@ -25,10 +25,9 @@ from telegram.ext import (
 from config import Config
 from handlers.crypto import crypto
 from handlers.db import database_handler
-from handlers.helpers import start, bug, hat, chat_id, buttons
+from handlers.helpers import start, bug, chat_id
 from handlers.parser import parser
 from handlers.pinger import pinger
-from handlers.random_content import random_content
 from handlers.weather import weather, wset
 from logger import log_print
 from models.models import create_table
@@ -60,16 +59,10 @@ if __name__ == '__main__':
             CommandHandler('chatid', chat_id),
             CommandHandler(['start', 'info'], start),
             CommandHandler(['weather', 'w'], weather_handler, pass_args=True),
-            CommandHandler('hat', hat),
-            CommandHandler(
-                ['ibash', 'loglist', 'cat', 'dog'],
-                random_content, pass_args=True
-            ),
             CommandHandler('wset', wset_handler, pass_args=True),
             CommandHandler('db', db_handler, pass_args=True),
             CommandHandler('ping', pinger_handler, pass_args=True),
             CommandHandler('crypto', crypto, pass_args=True),
-            CallbackQueryHandler(buttons),
             MessageHandler(Filters.text, parser_handler)
         ]]
 
