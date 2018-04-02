@@ -1,0 +1,2 @@
+database:
+  host: "data/pybot.db"

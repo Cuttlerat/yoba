@@ -2,28 +2,28 @@ from sqlalchemy import literal, and_, or_
 from sqlalchemy.orm.exc import NoResultFound
 
 from handlers.helpers import prepare_message
-from logger import log_print
-from models.models import connector, ENGINE, WeatherPhrases, Answers, PingPhrases, Pingers, PingExcludes
 from handlers.weather import weather
+from logger import log_print
+from models.models import connector, WeatherPhrases, Answers, PingPhrases, Pingers, PingExcludes
 
 
-def weather_parser(bot, update):
+def weather_parser(config, bot, update):
     in_text = prepare_message(update)
 
-    with connector(ENGINE) as ses:
+    with connector(config.engine()) as ses:
         try:
             phrase = "".join(ses.query(WeatherPhrases.match).filter(
                 literal(in_text.lower()).contains(WeatherPhrases.match)).one())
-            weather(bot, update, in_text.lower()[in_text.lower().find(phrase) + len(phrase):].split())
+            weather(config, bot, update, in_text.lower()[in_text.lower().find(phrase) + len(phrase):].split())
             return
         except NoResultFound:
             pass
 
 
-def answer_parser(bot, update):
+def answer_parser(config, bot, update):
     in_text = prepare_message(update)
 
-    with connector(ENGINE) as ses:
+    with connector(config.engine()) as ses:
         out_text = ses.query(Answers.answer).filter(
             literal(in_text).contains(Answers.match))
     for message in ["".join(i) for i in out_text]:
@@ -31,10 +31,10 @@ def answer_parser(bot, update):
         log_print("Answer", update.message.from_user.username)
 
 
-def ping_parser(bot, update):
+def ping_parser(config, bot, update):
     in_text = prepare_message(update)
 
-    with connector(ENGINE) as ses:
+    with connector(config.engine()) as ses:
         in_text_list = in_text.split()
         username = update.message.from_user.username
         chat_id = update.message.chat_id
@@ -87,7 +87,7 @@ def ping_parser(bot, update):
             pass
 
 
-def parser(bot, update):
-    weather_parser(bot, update)
-    ping_parser(bot, update)
-    answer_parser(bot, update)
+def parser(config, bot, update):
+    weather_parser(config, bot, update)
+    ping_parser(config, bot, update)
+    answer_parser(config, bot, update)
