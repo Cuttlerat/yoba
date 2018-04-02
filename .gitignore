@@ -101,7 +101,7 @@ ENV/
 .mypy_cache/
 
 # tokens
-bot/tokens/*
+bot/config/*
 
 # db
 bot/data/*

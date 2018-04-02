@@ -1,13 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.exc import ResourceClosedError
 
-from models.models import DATABASE
 from logger import log_print
-from tokens.tokens import ADMINS
 
 
-def database_handler(bot, update, args):
-    if update.message.from_user.username not in ADMINS:
+def database_handler(config, bot, update, args):
+    if update.message.from_user.username not in config.admins():
         out_text = "You are not an administrator. The incident will be reported"
         command = "not an administrator"
     else:
@@ -21,7 +19,7 @@ def database_handler(bot, update, args):
             command = command.replace(
                 "%%%chat_id%%%", str(update.message.chat_id))
 
-        engine = create_engine(DATABASE)
+        engine = create_engine(config.database())
         connector = engine.connect()
 
         try:

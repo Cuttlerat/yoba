@@ -27,23 +27,28 @@ git clone https://github.com/Cuttlerat/pybot.git
 cd pybot
 ```
 
-Add your telegram username, tokens, and database path into `./tokens/tokens.py` file
-```python
-BOT_TOKEN = '<YOUR TOKEN>'
-WEATHER_TOKEN = '<YOUR TOKEN>'
-DATABASE_HOST = 'data/pybot.db'
-ADMINS = [ 'YOUR TELEGRAM USERNAME WITHOUT @' ]
-MODE = 'Webhook' # Or Polling
-WEBHOOK_PORT = 30222
-WEBHOOK_URL = "https://example.com/{}".format(BOT_TOKEN)
-# Uncomment this if you want to run with webhook not in docker
-# LISTEN_IP = "<your ip>"
+Add your telegram username, tokens, and database path into `./bot/config.yaml` file
+```yaml
+tokens:
+  tg_token: YOUR_TOKEN
+  weather_token: YOUR_TOKEN
+telegram:
+  mode: Polling # or Webhook
+  webhook_port: 30222
+  webhook_url: https://example.com/{}
+  # Use this if you want to run with webhook not in docker
+  listen_ip: 0.0.0.0 # Your IP
+database:
+  host: data/pybot.db
+admins:
+  - Username1
+  - Username2
 ```
 
 Then just launch the bot
 
 ```bash
-./pybot.py
+./bot/main.py
 ```
 
 ### Starting into a docker container
