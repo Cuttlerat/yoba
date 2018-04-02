@@ -18,13 +18,13 @@ before_install:
 install:
   - mkdir ./bot/config
   - touch ./bot/config/config.yml
-  - >
+  - |
     echo >>./bot/config/config.yml <<EOF
-tokens:  
- tg_token: "${BOT_TOKEN}" 
-database:
-  host: "data/pybot.db"
-EOF
+    tokens:  
+      tg_token: "${BOT_TOKEN}" 
+    database:
+      host: "data/pybot.db"
+    EOF
 
 
 before_script:
