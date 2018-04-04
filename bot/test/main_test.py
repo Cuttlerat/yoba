@@ -1,6 +1,6 @@
 import pytest
 
-from bot.handlers.helpers import prepare_message
+from handlers.helpers import prepare_message
 from test.mocks import MockUpdate
 
 
