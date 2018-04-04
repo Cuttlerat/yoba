@@ -11,7 +11,7 @@ run:
   dir: pybot
   path: sh
   args:
-    - -exc
+    - -ec
     - |
       pip -q install pytest
       pip -q install -r requirements
