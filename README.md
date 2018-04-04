@@ -112,3 +112,7 @@ Cuttlebot: @Cuttlerat
 ```
 
 And is it! Enjoy your bot!
+
+### Ping
+
+This section still in progress
