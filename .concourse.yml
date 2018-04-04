@@ -13,7 +13,7 @@ run:
   args:
     - -exc
     - |
-      pip install pytest
-      pip install -r requirements
+      pip -q install pytest
+      pip -q install -r requirements
       cd bot
       python -m pytest
