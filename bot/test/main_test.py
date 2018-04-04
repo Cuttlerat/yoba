@@ -1,4 +1,4 @@
-from handlers.helpers import prepare_message, start, bug
+from handlers.helpers import prepare_message, start, bug, chat_id
 
 
 class TestHelpers:
@@ -21,5 +21,12 @@ class TestHelpers:
         expected_text = "Please report it here"
 
         bug(bot, update)
+
+        assert expected_text in bot.get_message()
+
+    def test_chat_id(self, bot, update):
+        expected_text = "`{0}`".format(update.message.chat_id)
+
+        chat_id(bot, update)
 
         assert expected_text in bot.get_message()
