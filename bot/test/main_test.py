@@ -1,19 +1,25 @@
-import pytest
-
-from handlers.helpers import prepare_message
-from test.mocks import MockUpdate
+from handlers.helpers import prepare_message, start, bug
 
 
-@pytest.fixture
-def update():
-    mock_update = MockUpdate("")
-    return mock_update
+class TestHelpers:
+    def test_prepare_message(self, update):
+        update.set_message("Текст с БОЛЬШИМИ буквами и Ё")
+        expected_text = "текст с большими буквами и е"
 
+        edited_text = prepare_message(update)
 
-def test_prepare_message(update):
-    update.set_message("Текст с БОЛЬШИМИ буквами и Ё")
-    expected_text = "текст с большими буквами и е"
+        assert edited_text == expected_text
 
-    edited_text = prepare_message(update)
+    def test_start(self, bot, update):
+        expected_text = "This is my first bot on Python."
 
-    assert edited_text == expected_text
+        start(bot, update)
+
+        assert expected_text in bot.get_message()
+
+    def test_bug(self, bot, update):
+        expected_text = "Please report it here"
+
+        bug(bot, update)
+
+        assert expected_text in bot.get_message()
