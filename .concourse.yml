@@ -16,4 +16,4 @@ run:
       pip -q install pytest
       pip -q install -r requirements
       cd bot
-      python -m pytest
+      python -m pytest --log-cli-level 1
