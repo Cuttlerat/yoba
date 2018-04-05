@@ -118,7 +118,7 @@ class PingerCommand:
         all_matches = ses.query(Pingers).filter(Pingers.chat_id == self.chat_id).all()
         out_text = ""
         for match in all_matches:
-            out_text += "\n{0} | {1}".format(match.username, match.match)
+            out_text += "\n@{0} | {1}".format(match.username, match.match)
         self.bot.send_message(chat_id=self.update.message.chat_id,
                               text=out_text)
 
