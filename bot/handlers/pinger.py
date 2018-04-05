@@ -30,13 +30,12 @@ class PingerCommand:
         try:
             ping_usernames = [ re.sub('[@]', '', i) for i in self.args if "@" == i[0] ]
             command = self.args[0]
-            try:
+            if "@" != self.args[-1][0]:
                 match = self.args[-1].lower()
-            except:
-                if command not in ["show", "all", "delete"]:
-                    ping_usernames = [ self.username ]
-                    match = self.args[0]
             if not ping_usernames:
+                ping_usernames = [self.username]
+                
+            if not match and not command:
                 raise Exception
         except:
             usage_text = "Usage: \n`/ping username <word>`\n`/ping show <username>`\n`/ping all`\n`/ping delete " \
@@ -119,7 +118,7 @@ class PingerCommand:
         all_matches = ses.query(Pingers).filter(Pingers.chat_id == self.chat_id).all()
         out_text = ""
         for match in all_matches:
-            out_text += "\n{}".format(match.match)
+            out_text += "\n{0} | {1}".format(match.username, match.match)
         self.bot.send_message(chat_id=self.update.message.chat_id,
                               text=out_text)
 
@@ -151,13 +150,11 @@ class PingerCommand:
 
     def __answer_for_delete_from_admin(self, ses):
         try:
-            p_usernames = [ re.sub('[@]', '', i) for i in self.args if "@" == i[0] ]
-            try:
+            p_usernames = [re.sub('[@]', '', i) for i in self.args if "@" == i[0]]
+            if "@" != self.args[-1][0]:
                 delete_match = self.args[-1].lower()
-
-            except:
-                p_usernames = [ self.username ]
-                delete_match = self.args[-1].lower()
+            if not p_usernames:
+                p_usernames = [self.username]
         except:
             out_text = "Usage `/ping delete username <word>`"
             self.bot.send_message(chat_id=self.update.message.chat_id,
