@@ -28,14 +28,15 @@ class PingerCommand:
 
     def ping_from_admin(self):
         try:
-            ping_username = re.sub('[@]', '', self.args[0])
+            ping_usernames = [ re.sub('[@]', '', i) for i in self.args if "@" == i[0] ]
+            command = self.args[0]
             try:
-                match = self.args[1].lower()
+                match = self.args[-1].lower()
             except:
-                if self.args[0] not in ["show", "all", "delete"]:
-                    ping_username = self.username
+                if command not in ["show", "all", "delete"]:
+                    ping_usernames = [ self.username ]
                     match = self.args[0]
-            if not ping_username:
+            if not ping_usernames:
                 raise Exception
         except:
             usage_text = "Usage: \n`/ping username <word>`\n`/ping show <username>`\n`/ping all`\n`/ping delete " \
@@ -47,24 +48,25 @@ class PingerCommand:
 
         with connector(self.config.engine()) as ses:
             try:
-                if ping_username == "all":
+                if command == "all":
                     self.__answer_for_all(ses)
-                elif ping_username == "show":
+                elif command == "show":
                     self.__answer_for_show(ses)
-                elif ping_username == "delete":
+                elif command == "delete":
                     self.__answer_for_delete_from_admin(ses)
                 else:
-                    with connector(self.config.engine()) as inner_ses:
-                        new_pinger = Pingers(
-                            username=ping_username,
-                            match=match,
-                            chat_id=self.chat_id)
-                        inner_ses.add(new_pinger)
-                    self.bot.send_message(chat_id=self.update.message.chat_id,
-                                          text="Successfully added ping for '{0}' with match '{1}'".format(
+                    for ping_username in ping_usernames:
+                        with connector(self.config.engine()) as inner_ses:
+                            new_pinger = Pingers(
+                                username=ping_username,
+                                match=match,
+                                chat_id=self.chat_id)
+                            inner_ses.add(new_pinger)
+                        self.bot.send_message(chat_id=self.update.message.chat_id,
+                                          text="Successfully added ping for @{0} with match '{1}'".format(
                                               ping_username,
                                               match))
-                    log_print('Added pinger "{0}"'.format(self.args_line), self.username)
+                        log_print('Added pinger @{0} with match "{1}"'.format(ping_username, match), self.username)
             except:
                 self.bot.send_message(chat_id=self.update.message.chat_id,
                                       text="There was some trouble")
@@ -73,7 +75,7 @@ class PingerCommand:
     def ping_from_user(self):
         try:
             try:
-                user_match = self.args[0].lower()
+                user_match = self.args[-1].lower()
                 if not user_match:
                     raise Exception
             except:
@@ -149,33 +151,35 @@ class PingerCommand:
 
     def __answer_for_delete_from_admin(self, ses):
         try:
-            p_username = re.sub('[@]', '', self.args[1])
+            p_usernames = [ re.sub('[@]', '', i) for i in self.args if "@" == i[0] ]
             try:
-                delete_match = self.args[2].lower()
+                delete_match = self.args[-1].lower()
 
             except:
-                p_username = self.username
-                delete_match = self.args[1].lower()
+                p_usernames = [ self.username ]
+                delete_match = self.args[-1].lower()
         except:
             out_text = "Usage `/ping delete username <word>`"
             self.bot.send_message(chat_id=self.update.message.chat_id,
                                   parse_mode='markdown',
                                   text=out_text)
             return
-        if delete_match == "all":
-            ses.query(Pingers).filter(and_(
-                Pingers.chat_id == self.chat_id,
-                Pingers.username == p_username)).delete()
-            self.bot.send_message(chat_id=self.update.message.chat_id,
-                                  text="Deleted all matches for user @{}".format(p_username))
-        else:
-            ses.query(Pingers).filter(and_(
-                Pingers.chat_id == self.chat_id,
-                Pingers.username == p_username,
-                Pingers.match == delete_match)).delete()
-            self.bot.send_message(chat_id=self.update.message.chat_id,
-                                  text="Deleted")
-        log_print('Delete pinger "{0}" by @{1}'.format(self.args_line, self.username))
+        for p_username in p_usernames:
+            if delete_match == "all":
+                ses.query(Pingers).filter(and_(
+                    Pingers.chat_id == self.chat_id,
+                    Pingers.username == p_username)).delete()
+                self.bot.send_message(chat_id=self.update.message.chat_id,
+                                      text="Deleted all matches for user @{}".format(p_username))
+                log_print('Delete all matches for pinger @{0} by @{1}'.format(p_username, self.username))
+            else:
+                ses.query(Pingers).filter(and_(
+                    Pingers.chat_id == self.chat_id,
+                    Pingers.username == p_username,
+                    Pingers.match == delete_match)).delete()
+                self.bot.send_message(chat_id=self.update.message.chat_id,
+                                      text="Deleted match '{0}' for user @{1}".format(delete_match, p_username))
+                log_print('Delete match "{0}" for pinger @{1} by @{2}'.format(delete_match, p_username, self.username))
 
     def __answer_for_delete(self, ses):
         try:
