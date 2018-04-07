@@ -2,7 +2,7 @@ import re
 
 import requests
 
-from handlers.crypto import new_crypto
+from handlers.crypto import crypto
 from services.crypto_compare import CryptoCompare
 
 
@@ -19,10 +19,15 @@ class TestCrypto:
 
         assert "BTC" in rate and "USD" in rate['BTC']
 
+    def test_service_negative(self):
+        rate = CryptoCompare.get_rate(["RGR"])
+
+        assert "Error" in rate['Response']
+
     def test_handler_positive(self, bot, update):
         message_regex = re.compile(r'(BTC).*(\$).*')
 
-        new_crypto(bot, update, [])
+        crypto(bot, update)
         message = bot.get_message()
 
         assert message_regex.search(message) is not None
