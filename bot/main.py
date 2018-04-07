@@ -22,7 +22,7 @@ from telegram.ext import (
 )
 
 from config import Config
-from handlers.crypto import crypto, new_crypto
+from handlers.crypto import crypto, crypto
 from handlers.db import database_handler
 from handlers.helpers import start, bug, chat_id
 from handlers.parser import parser
@@ -67,7 +67,7 @@ if __name__ == '__main__':
             CommandHandler('wset', wset_handler, pass_args=True),
             CommandHandler('db', db_handler, pass_args=True),
             CommandHandler('ping', pinger_handler, pass_args=True),
-            CommandHandler('crypto', new_crypto, pass_args=True),
+            CommandHandler('crypto', crypto),
             MessageHandler(Filters.text, parser_handler)
         ]]
 
