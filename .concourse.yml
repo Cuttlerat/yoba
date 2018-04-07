@@ -11,9 +11,9 @@ run:
   dir: pybot
   path: sh
   args:
-    - -exc
+    - -ec
     - |
-      pip install pytest
-      pip install -r requirements
+      pip -q install pytest
+      pip -q install -r requirements
       cd bot
-      python -m pytest
+      python -m pytest --log-cli-level 1
