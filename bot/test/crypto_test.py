@@ -20,7 +20,7 @@ class TestCrypto:
         assert "BTC" in rate and "USD" in rate['BTC']
 
     def test_handler_positive(self, bot, update):
-        message_regex = re.compile(r'(BTC).*(\$).*(₽)')
+        message_regex = re.compile(r'(BTC).*(\$).*')
 
         new_crypto(bot, update, [])
         message = bot.get_message()

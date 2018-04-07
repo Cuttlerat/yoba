@@ -39,10 +39,10 @@ def crypto(bot, update, args):
 
 
 def new_crypto(bot, update, args):
-    current_rate = CryptoCompare.get_rate(["BTC", "BCH", "ETH", "XMR"], ["USD", "RUR"])
+    current_rate = CryptoCompare.get_rate(["BTC", "BCH", "ETH", "XMR"], ["USD"])
     message = "```\n"
     for crypt, rates in sorted(current_rate.items()):
-        message += "1 " + str(crypt) + " = $" + str(round(rates['USD'], 2)) + " (" + str(round(rates['RUR'], 2)) + "₽)"
+        message += "1 " + str(crypt) + " = $" + str(round(rates['USD'], 2))
         message += "\n"
     message += "```"
     bot.send_message(chat_id=update.message.chat_id,
