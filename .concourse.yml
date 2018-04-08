@@ -20,6 +20,7 @@ run:
       echo <<EOF >./config/config.test.yaml
       tokens:
         weather_token: "${WEATHER_TOKEN}"
+        tg_token: "${TG_TOKEN}"
       database:
         host: data/pybot.test.db
       python -m pytest --log-cli-level 1
