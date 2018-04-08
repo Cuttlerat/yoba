@@ -16,4 +16,10 @@ run:
       pip -q install pytest
       pip -q install -r requirements
       cd bot
+      mkdir config
+      echo <<EOF >./config/config.test.yaml
+      tokens:
+        weather_token: "${WEATHER_TOKEN}"
+      database:
+        host: data/pybot.test.db
       python -m pytest --log-cli-level 1
