@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 
 
 class Config:
-    def __init__(self, file_path="./config/config.y*ml"):
+    def __init__(self, file_path="./config/config.y*ml", database_path=None):
         cfg = None
         for filename in glob.glob(file_path):
             with open(filename, 'r') as ymlfile:
@@ -16,7 +16,10 @@ class Config:
         self.__tg_token = cfg['tokens']['tg_token'] if 'tg_token' in cfg['tokens'] else None
         self.__weather_token = cfg['tokens']['weather_token'] if 'weather_token' in cfg['tokens'] else None
 
-        self.__db_host = cfg['database']['host'] if 'host' in cfg['database'] else None
+        if database_path is None:
+            self.__db_host = cfg['database']['host'] if 'host' in cfg['database'] else None
+        elif isinstance(database_path, str) and database_path != "":
+            self.__db_host = database_path
 
         self.__tg_mode = cfg['telegram']['mode'] if 'mode' in cfg['telegram'] else None
         self.__tg_webhook_port = cfg['telegram']['webhook_port'] if 'webhook_port' in cfg['telegram'] else None
