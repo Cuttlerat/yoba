@@ -17,10 +17,12 @@ run:
       pip -q install -r requirements
       cd bot
       mkdir config
-      echo <<EOF >./config/config.test.yaml
+      cat <<EOF >./config/config.test.yaml
       tokens:
         weather_token: "${WEATHER_TOKEN}"
         tg_token: "${TG_TOKEN}"
+      telegram:
+        mode: Polling
       database:
         host: data/pybot.test.db
       EOF
