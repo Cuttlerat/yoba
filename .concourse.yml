@@ -23,4 +23,5 @@ run:
         tg_token: "${TG_TOKEN}"
       database:
         host: data/pybot.test.db
+      EOF
       python -m pytest --log-cli-level 1
