@@ -2,7 +2,7 @@ import pyowm
 import pytest
 from pyowm.exceptions.unauthorized_error import UnauthorizedError
 
-from handlers.weather import weather
+from handlers.weather import weather, wset, get_emoji
 
 
 class TestWeather:
@@ -46,3 +46,19 @@ class TestWeather:
         weather(config, bot, update, [])
 
         assert expected_answer in bot.get_message()
+
+    def test_set_default_city(self, config, bot, update):
+        city = "Moscow"
+
+        wset(config, bot, update, [city])
+        weather(config, bot, update, [])
+
+        assert city in bot.get_message()
+
+    def test_weather_emoji(self):
+        status = "Extreme"
+        expected_emoji = "\U0001F32A"
+
+        emoji = get_emoji(status)
+
+        assert emoji == expected_emoji
