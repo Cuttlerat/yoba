@@ -1,3 +1,5 @@
+import asyncio
+
 from sqlalchemy import literal, and_, or_
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -7,7 +9,7 @@ from logger import log_print
 from models.models import connector, WeatherPhrases, Answers, PingPhrases, Pingers, PingExcludes
 
 
-def weather_parser(config, bot, update):
+async def weather_parser(config, bot, update):
     in_text = prepare_message(update)
 
     with connector(config.engine()) as ses:
@@ -20,7 +22,7 @@ def weather_parser(config, bot, update):
             pass
 
 
-def answer_parser(config, bot, update):
+async def answer_parser(config, bot, update):
     in_text = prepare_message(update)
 
     with connector(config.engine()) as ses:
@@ -31,7 +33,7 @@ def answer_parser(config, bot, update):
         log_print("Answer", update.message.from_user.username)
 
 
-def ping_parser(config, bot, update):
+async def ping_parser(config, bot, update):
     in_text = prepare_message(update)
 
     with connector(config.engine()) as ses:
@@ -88,6 +90,10 @@ def ping_parser(config, bot, update):
 
 
 def parser(config, bot, update):
-    weather_parser(config, bot, update)
-    ping_parser(config, bot, update)
-    answer_parser(config, bot, update)
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(asyncio.gather(weather_parser(config, bot, update),
+                                           ping_parser(config, bot, update),
+                                           answer_parser(config, bot, update))
+                            )
+    loop.close()
