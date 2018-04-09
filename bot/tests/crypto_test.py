@@ -19,6 +19,11 @@ class TestCrypto:
 
         assert "BTC" in rate and "USD" in rate['BTC']
 
+    def test_service_empty_args(self):
+        rate = CryptoCompare.get_rate()
+
+        assert "BTC" in rate and "USD" in rate['BTC']
+
     def test_service_negative(self):
         rate = CryptoCompare.get_rate(["RGR"])
 
