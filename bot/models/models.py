@@ -85,8 +85,11 @@ def create_table(config):
 
 def fill_db_with_mock_data(config):
     with connector(config.engine()) as ses:
-        phrase = PingPhrases(phrase="пни")
-        exclude = PingExcludes(match="кроме")
-        ping_one = Pingers(username="test_one", chat_id=-1, match="первого")
-        ping_two = Pingers(username="test_two", chat_id=-1, match="второго")
-        ses.add_all([phrase, exclude, ping_one, ping_two])
+        ses.add_all([
+            PingPhrases(phrase="пни"),
+            PingExcludes(match="кроме"),
+            Pingers(username="test_one", chat_id=-1, match="первого"),
+            Pingers(username="test_two", chat_id=-1, match="второго"),
+            Locations(username="default_city", city="Syktyvkar"),
+            Locations(username="test_one", city="London")
+        ])
