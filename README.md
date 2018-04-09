@@ -13,7 +13,7 @@ This is my first telegram bot written in Python
 /w <City>           - Short form of /w
 /weather <City>     - Weather in a city for now, today and tommorow
 /wset <City>        - Set default city for /weather
-/crypt              - Crypto-currency exchange rate
+/crypto             - Crypto-currency exchange rate
 ```
 
 ## Starting
@@ -23,11 +23,11 @@ git clone https://github.com/Cuttlerat/pybot.git
 cd pybot
 ```
 
-Add your telegram username, tokens, and database path into `./bot/config.yaml` file
+Add your telegram username, tokens, and database path into `./bot/config/config.yaml` file
 ```yaml
 tokens:
-  tg_token: YOUR_TOKEN
-  weather_token: YOUR_TOKEN
+  tg_token: YOUR_TOKEN       # Register your bot here: https://t.me/BotFather
+  weather_token: YOUR_TOKEN  # You can get a weather token here: http://openweathermap.org/
 telegram:
   mode: Polling # or Webhook
   webhook_port: 30222
@@ -52,11 +52,9 @@ Then just launch the bot
 In order to build and create a docker container, `docker-compose` must be installed in your system
 
 ```bash
-docker-compose up --build pybot
+docker-compose up --build
 ```
 
-You can get a weather token here: http://openweathermap.org/ <br>
-Register your bot here: https://t.me/BotFather
 
 ## How to manage database
 
@@ -73,6 +71,7 @@ Cutltebot: Hi!
 ```
 
 ### Ping
+#### Add it into database
 
 You also can use the `/ping` command for this, and so all the others (besides the administrator) can use this to add trigers but not more than 10
 
@@ -111,8 +110,60 @@ Cuttlerat: ping all except kosc
 Cuttlebot: @Cuttlerat
 ```
 
-And is it! Enjoy your bot!
+#### Add with /ping command
 
-### Ping
+This command setting notifications for users.
+When you will send a message with a match which in `ping_phrases` table and with match of user, bot will reply on your message with `@username` in his reply and that user will get a notification even if he disabled them
 
-This section still in progress
+Example:
+```
+> Ping CuttleRat
+< @CuttleRat
+```
+
+Ping command is different for admins and common users
+
+
+##### Admin
+
+```
+Usage: 
+/ping @username <word>
+/ping show @username
+/ping all
+/ping delete @username <word>
+```
+
+Examples:  
+`/ping @username match` - Add a ping for @username with match  
+`/ping show @username` - Show all matches of this user in this chat  
+`/ping show all` - Show all mathces for all users in this chat  
+`/ping delete @username match` - Delete a match for this user if it exists  
+
+For add and delete commands you also can use multiple usernames at once, example:  
+```
+/ping @user_1 @user_2 @user_3 match
+/ping delete @user_1 @user_2 @user_3 match
+```
+
+You can delete all matches for user:  
+`/ping delete @username all`  
+
+##### Common user
+
+```
+Usage: 
+/ping <word>
+/ping show @username
+/ping me
+/ping delete <word>
+```
+
+Examples:  
+`/ping match` - Add a match for you. You can have only 10 matches, or more if an administrator will add it for you  
+`/ping show @user_1` - Show all matches for @user_1  
+`/ping me` - Show all yours matches  
+`/ping delete match` - Delete a match  
+
+
+**And is it! Enjoy your bot!**
