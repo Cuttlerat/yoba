@@ -27,4 +27,4 @@ run:
       database:
         host: data/pybot.test.db
       EOF
-      python -m pytest --cov=. --log-cli-level 1 tests/
+      python -m pytest --cov=. --cov-report html --cov-config .coveragerc --log-cli-level 1 --basetemp=temp tests/
