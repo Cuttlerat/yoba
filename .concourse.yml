@@ -14,6 +14,7 @@ run:
     - -ec
     - |
       pip -q install pytest
+      pip -q install pytest-cov
       pip -q install -r requirements
       cd bot
       mkdir config
@@ -26,4 +27,4 @@ run:
       database:
         host: data/pybot.test.db
       EOF
-      python -m pytest --log-cli-level 1
+      python -m pytest --cov=. --log-cli-level 1 tests/
