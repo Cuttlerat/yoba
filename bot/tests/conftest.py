@@ -2,7 +2,7 @@ import pytest
 
 from config import Config
 from models.models import create_table, fill_db_with_mock_data
-from test.mocks import MockUpdate, MockBot
+from mocks.mocks import MockUpdate, MockBot
 
 
 @pytest.fixture
@@ -19,7 +19,7 @@ def bot():
 
 @pytest.fixture(scope="session")
 def config(tmpdir_factory):
-    database_dir = tmpdir_factory.mktemp('data').join('test.db')
+    database_dir = tmpdir_factory.mktemp('data').join('tests.db')
     mock_config = Config("./config/config.test.yaml", database_path=str(database_dir))
     create_table(mock_config)
     fill_db_with_mock_data(mock_config)
