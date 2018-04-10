@@ -1,4 +1,5 @@
 from handlers.helpers import prepare_message, start, bug, chat_id
+from models.models import connector, PingPhrases
 
 
 class TestHelpers:
@@ -30,3 +31,9 @@ class TestHelpers:
         chat_id(bot, update)
 
         assert expected_text in bot.get_message()
+
+    def test_db(self, config):
+        with connector(config.engine()) as ses:
+            phrase = ses.query(PingPhrases).one()
+
+            assert phrase.phrase == "пни"

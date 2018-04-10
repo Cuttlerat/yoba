@@ -14,6 +14,17 @@ run:
     - -ec
     - |
       pip -q install pytest
+      pip -q install pytest-cov
       pip -q install -r requirements
       cd bot
-      python -m pytest --log-cli-level 1
+      mkdir config
+      cat <<EOF >./config/config.test.yaml
+      tokens:
+        weather_token: "${WEATHER_TOKEN}"
+        tg_token: "${TG_TOKEN}"
+      telegram:
+        mode: Polling
+      database:
+        host: data/pybot.test.db
+      EOF
+      python -m pytest --cov=. --cov-report html --cov-config .coveragerc --log-cli-level 1 --basetemp=temp tests/

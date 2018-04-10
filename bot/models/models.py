@@ -81,3 +81,15 @@ def create_table(config):
         os.fdopen(db_check_file, 'w')
 
     meta.create_all(config.engine())
+
+
+def fill_db_with_mock_data(config):
+    with connector(config.engine()) as ses:
+        ses.add_all([
+            PingPhrases(phrase="пни"),
+            PingExcludes(match="кроме"),
+            Pingers(username="test_one", chat_id=-1, match="первого"),
+            Pingers(username="test_two", chat_id=-1, match="второго"),
+            Locations(username="default_city", city="Syktyvkar"),
+            Locations(username="test_one", city="London")
+        ])

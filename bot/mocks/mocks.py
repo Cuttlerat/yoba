@@ -2,20 +2,23 @@ class MockUpdate:
     def __init__(self, text):
         self.message = MockMessage(text)
 
-    def set_message(self, message):
-        self.message = MockMessage(message)
+    def set_message(self, message, username=None):
+        self.message = MockMessage(message, username)
 
 
 class MockUser():
-    def __init__(self):
-        self.username = "test user"
+    def __init__(self, username="test_one"):
+        self.username = username
 
 
 class MockMessage:
-    def __init__(self, input_text):
+    def __init__(self, input_text, username=None):
         self.text = input_text
         self.chat_id = -1
-        self.from_user = MockUser()
+        if username is None:
+            self.from_user = MockUser()
+        else:
+            self.from_user = MockUser(username)
         self.message_id = 123
 
 

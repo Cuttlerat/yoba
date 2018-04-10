@@ -1,6 +1,6 @@
 import pyowm
+from pyowm.exceptions.not_found_error import NotFoundError
 from pyowm.exceptions.unauthorized_error import UnauthorizedError
-from  pyowm.exceptions.not_found_error import NotFoundError
 from sqlalchemy.orm.exc import NoResultFound
 
 from logger import log_print
