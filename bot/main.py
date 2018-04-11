@@ -48,7 +48,7 @@ if __name__ == '__main__':
         level=logging.INFO
     )
 
-    pinger = Pinger(config)
+    new_pinger = Pinger(config)
 
     functions = [database_handler, weather, wset, parser, pinger]
     db_handler, weather_handler, wset_handler, parser_handler, pinger_handler = \
@@ -69,10 +69,10 @@ if __name__ == '__main__':
             CommandHandler(['weather', 'w'], weather_handler, pass_args=True),
             CommandHandler('wset', wset_handler, pass_args=True),
             CommandHandler('db', db_handler, pass_args=True),
-            CommandHandler('ping_show', pinger.show, pass_args=True),
-            CommandHandler('ping_show_all', pinger.show_all, pass_args=True),
-            CommandHandler('ping_delete', pinger.delete, pass_args=True),
-            CommandHandler('ping_add', pinger.add, pass_args=True),
+            CommandHandler('ping_show', new_pinger.show, pass_args=True),
+            CommandHandler('ping_show_all', new_pinger.show_all),
+            CommandHandler('ping_delete', new_pinger.delete, pass_args=True),
+            CommandHandler('ping_add', new_pinger.add, pass_args=True),
             CommandHandler('ping', pinger_handler, pass_args=True),
             CommandHandler('crypto', crypto),
             MessageHandler(Filters.text, parser_handler)

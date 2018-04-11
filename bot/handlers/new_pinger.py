@@ -128,6 +128,6 @@ class Pinger:
                         match=match,
                         chat_id=update.message.chat_id)
                     ses.add(ping)
-                    answer += "Match `{0}` for user `{1}` has been added".format(match, username)
+                    answer += "Match `{0}` for user `{1}` has been added\n".format(match, username)
         bot.send_message(chat_id=update.message.chat_id,
                          text=answer)
