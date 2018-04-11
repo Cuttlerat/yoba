@@ -12,7 +12,7 @@ class Pinger:
     def show(self, bot, update, args):
         usernames = " ".join(args).split()
         username = usernames[0] if usernames else ""
-        if not username or username == "me":
+        if not username:
             username = update.message.from_user.username
         elif username[0] == "@":
             username = username[1:]
@@ -33,7 +33,7 @@ class Pinger:
                 out_text = "No such user"
             bot.send_message(chat_id=update.message.chat_id,
                              text=out_text)
-            log_print('Show pings of "{0}", by {1}'.format(username, update.message.from_user.username))
+            log_print('Show pings of "@{0}", by {1}'.format(username, update.message.from_user.username))
 
     def show_all(self, bot, update):
         if update.message.from_user.username not in self.config.admins():
@@ -46,7 +46,7 @@ class Pinger:
             all_matches = ses.query(Pingers).filter(Pingers.chat_id == update.message.chat_id).all()
             out_text = ""
             for match in all_matches:
-                out_text += "\n@{0} | {1}".format(match.username, match.match)
+                out_text += "\n{0} | {1}".format(match.username, match.match)
             bot.send_message(chat_id=update.message.chat_id,
                              text=out_text)
 
@@ -81,10 +81,10 @@ class Pinger:
                         Pingers.username == username,
                         Pingers.match == match))
                     if not result.all():
-                        answer += "Match `{0}` for user `{1}` was not found\n".format(match, username)
+                        answer += "Match `{0}` for user `@{1}` was not found\n".format(match, username)
                     else:
                         result.delete()
-                        answer += "Match `{0}` for user `{1}` was deleted\n".format(match, username)
+                        answer += "Match `{0}` for user `@{1}` was deleted\n".format(match, username)
         bot.send_message(chat_id=update.message.chat_id,
                          parse_mode='markdown',
                          text=answer)
@@ -131,7 +131,7 @@ class Pinger:
                         match=match,
                         chat_id=update.message.chat_id)
                     ses.add(ping)
-                    answer += "Match `{0}` for user `{1}` has been added\n".format(match, username)
+                    answer += "Match `{0}` for user `@{1}` has been added\n".format(match, username)
         bot.send_message(chat_id=update.message.chat_id,
                          parse_mode='markdown',
                          text=answer)
