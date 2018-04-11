@@ -26,5 +26,7 @@ run:
         mode: Polling
       database:
         host: data/pybot.test.db
+      admins:
+        - test-one
       EOF
       python -m pytest --cov=. --cov-report html --cov-config .coveragerc --log-cli-level 1 --basetemp=temp tests/
