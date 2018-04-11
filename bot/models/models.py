@@ -90,6 +90,9 @@ def fill_db_with_mock_data(config):
             PingExcludes(match="кроме"),
             Pingers(username="test_one", chat_id=-1, match="первого"),
             Pingers(username="test_two", chat_id=-1, match="второго"),
+            Pingers(username="test_two", chat_id=-1, match="нумбер"),
+            Pingers(username="test_two", chat_id=-1, match="абырвалг"),
+            Pingers(username="test_three", chat_id=-1, match="абырвалг"),
             Locations(username="default_city", city="Syktyvkar"),
             Locations(username="test_one", city="London")
         ])

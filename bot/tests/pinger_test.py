@@ -60,3 +60,58 @@ class TestPingerShowAll:
         pinger.show_all(bot, update)
 
         assert expected in bot.get_message()
+
+
+class TestPingerDelete:
+    def test_delete_one_match(self, config, bot, update):
+        username = "@test_two"
+        match = "нумбер"
+        pinger = Pinger(config)
+
+        pinger.delete(bot, update, [username, match])
+
+        assert "deleted" in bot.get_message()
+
+    def test_delete_one_match_from_two_users(self, config, bot, update):
+        username = "@test_two"
+        username_two = "@user_three"
+        match = "абырвалг"
+        pinger = Pinger(config)
+
+        pinger.delete(bot, update, [username, username_two, match])
+
+        assert "deleted" in bot.get_message()
+
+    def test_delete_false_match(self, config, bot, update):
+        username = "@test_two"
+        match = "failed"
+        pinger = Pinger(config)
+
+        pinger.delete(bot, update, [username, match])
+
+        assert "not found" in bot.get_message()
+
+    def test_delete_own_match(self, config, bot, update):
+        match = "первого"
+        pinger = Pinger(config)
+
+        pinger.delete(bot, update, [match])
+
+        assert "deleted" in bot.get_message()
+
+    def test_delete_no_match(self, config, bot, update):
+        pinger = Pinger(config)
+
+        pinger.delete(bot, update, [])
+
+        assert "Usage" in bot.get_message()
+
+    def test_delete_another_user_no_admin(self, config, bot, update):
+        update.set_message("",username="test_two")
+        username = "@test_one"
+        match = "первого"
+        pinger = Pinger(config)
+
+        pinger.delete(bot, update, [username, match])
+
+        assert "reported" in bot.get_message()

@@ -1,3 +1,5 @@
+from sqlalchemy import and_
+
 from config import Config
 from logger import log_print
 from models.models import connector, Pingers
@@ -47,3 +49,40 @@ class Pinger:
                 out_text += "\n@{0} | {1}".format(match.username, match.match)
             bot.send_message(chat_id=update.message.chat_id,
                              text=out_text)
+
+    def delete(self, bot, update, args):
+        usernames = [name[1:] for name in args if name[0] == "@"]
+        matches = [match for match in args if match[0] != "@"]
+
+        user = update.message.from_user.username
+        if not usernames:
+            usernames = [user]
+
+        if not matches:
+            usage_text = "Usage: \n`/ping_delete [@username] [<match>]`\n`/ping_delete <match>`\n"
+            bot.send_message(chat_id=update.message.chat_id,
+                             text=usage_text)
+            return
+
+        if user not in self.config.admins() and (len(usernames) > 1 or len(
+                list(filter(lambda x: x != user, usernames))) != 0):
+            message = "Deleting ping of another user is allowed only for admins. This incident will be reported."
+            bot.send_message(chat_id=update.message.chat_id,
+                             text=message)
+            return
+
+        answer = ""
+        with connector(self.config.engine()) as ses:
+            for username in usernames:
+                for match in matches:
+                    result = ses.query(Pingers).filter(and_(
+                        Pingers.chat_id == update.message.chat_id,
+                        Pingers.username == username,
+                        Pingers.match == match))
+                    if not result.all():
+                        answer += "Match `{0}` for user `{1}` was not found\n".format(match, username)
+                    else:
+                        result.delete()
+                        answer += "Match `{0}` for user `{1}` was deleted\n".format(match, username)
+        bot.send_message(chat_id=update.message.chat_id,
+                         text=answer)

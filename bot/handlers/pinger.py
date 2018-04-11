@@ -115,6 +115,7 @@ class PingerCommand:
                                   text="There was some trouble")
             log_print('Error while add pinger "{0}"'.format(self.args_line), self.username)
 
+    # DEPRECATED
     def __answer_for_all(self, ses):
         all_matches = ses.query(Pingers).filter(Pingers.chat_id == self.chat_id).all()
         out_text = ""
@@ -151,6 +152,7 @@ class PingerCommand:
         #               self.username)
         pass
 
+    # DEPRECATED
     def __answer_for_delete_from_admin(self, ses):
         try:
             p_usernames = [re.sub('[@]', '', i) for i in self.args if "@" == i[0]]
@@ -181,6 +183,7 @@ class PingerCommand:
                                       text="Deleted match '{0}' for user @{1}".format(delete_match, p_username))
                 log_print('Delete match "{0}" for pinger @{1} by @{2}'.format(delete_match, p_username, self.username))
 
+    # DEPRECATED
     def __answer_for_delete(self, ses):
         try:
             delete_match = self.args[1].lower()
@@ -198,6 +201,7 @@ class PingerCommand:
                               text="Deleted")
         log_print('Delete pinger "{0}"'.format(self.args_line))
 
+    # DEPRECATED
     def __answer_for_me(self, ses):
         all_matches = ses.query(Pingers).filter(and_(
             Pingers.chat_id == self.chat_id,
