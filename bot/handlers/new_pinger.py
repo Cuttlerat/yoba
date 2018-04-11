@@ -17,7 +17,7 @@ class Pinger:
         elif username[0] == "@":
             username = username[1:]
         else:
-            usage_text = "Usage: \n`/ping_show @username`\n`/ping_show me`\n`/ping_show`\n"
+            usage_text = "Usage:\n`/ping_show @username`\n`/ping_show me`\n`/ping_show`\n"
             bot.send_message(chat_id=update.message.chat_id,
                              parse_mode='markdown',
                              text=usage_text)
@@ -37,7 +37,7 @@ class Pinger:
 
     def show_all(self, bot, update):
         if update.message.from_user.username not in self.config.admins():
-            message = "This command is allowed only for admins. This incident will be reported."
+            message = "This command is only allowed for admins."
             bot.send_message(chat_id=update.message.chat_id,
                              text=message)
             return
@@ -59,14 +59,15 @@ class Pinger:
             usernames = [user]
 
         if not matches:
-            usage_text = "Usage: \n`/ping_delete [@username] [<match>]`\n`/ping_delete <match>`\n"
+            usage_text = "Usage:\n`/ping_delete [@username] [match]`\n`/ping_delete [match]`"
             bot.send_message(chat_id=update.message.chat_id,
+                             parse_mode='markdown',
                              text=usage_text)
             return
 
         if user not in self.config.admins() and (len(usernames) > 1 or len(
                 list(filter(lambda x: x != user, usernames))) != 0):
-            message = "Deleting ping of another user is only allowed for admins. This incident will be reported."
+            message = "Deleting pings of another users is only allowed for admins."
             bot.send_message(chat_id=update.message.chat_id,
                              text=message)
             return
@@ -85,6 +86,7 @@ class Pinger:
                         result.delete()
                         answer += "Match `{0}` for user `{1}` was deleted\n".format(match, username)
         bot.send_message(chat_id=update.message.chat_id,
+                         parse_mode='markdown',
                          text=answer)
 
     def add(self, bot, update, args):
@@ -103,7 +105,7 @@ class Pinger:
 
         if user not in self.config.admins() and (len(usernames) > 1 or len(
                 list(filter(lambda x: x != user, usernames))) != 0):
-            message = "Adding ping for another user is only allowed for admins. This incident will be reported."
+            message = "Adding pings for another users is only allowed for admins."
             bot.send_message(chat_id=update.message.chat_id,
                              text=message)
             return
@@ -116,7 +118,7 @@ class Pinger:
             if count + len(matches) > 10:
                 bot.send_message(chat_id=update.message.chat_id,
                                  text="You can add only 10 matches")
-                log_print('Pinger limit is settled', user)
+                log_print('Pinger limit is exhausted', user)
                 return
 
         answer = ""
@@ -130,4 +132,5 @@ class Pinger:
                     ses.add(ping)
                     answer += "Match `{0}` for user `{1}` has been added\n".format(match, username)
         bot.send_message(chat_id=update.message.chat_id,
+                         parse_mode='markdown',
                          text=answer)
