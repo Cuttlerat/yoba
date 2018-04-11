@@ -98,8 +98,9 @@ class Pinger:
             usernames = [user]
 
         if not matches:
-            usage_text = "Usage: \n`/ping_add [@username] [<match>]`\n`/ping_add <match>`\n"
+            usage_text = "Usage:\n`/ping_add [@username] [match]`\n`/ping_add [match]`"
             bot.send_message(chat_id=update.message.chat_id,
+                             parse_mode='markdown',
                              text=usage_text)
             return
 
