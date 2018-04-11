@@ -86,3 +86,48 @@ class Pinger:
                         answer += "Match `{0}` for user `{1}` was deleted\n".format(match, username)
         bot.send_message(chat_id=update.message.chat_id,
                          text=answer)
+
+    def add(self, bot, update, args):
+        usernames = [name[1:] for name in args if name[0] == "@"]
+        matches = [match for match in args if match[0] != "@"]
+
+        user = update.message.from_user.username
+        if not usernames:
+            usernames = [user]
+
+        if not matches:
+            usage_text = "Usage: \n`/ping_add [@username] [<match>]`\n`/ping_add <match>`\n"
+            bot.send_message(chat_id=update.message.chat_id,
+                             text=usage_text)
+            return
+
+        if user not in self.config.admins() and (len(usernames) > 1 or len(
+                list(filter(lambda x: x != user, usernames))) != 0):
+            message = "Adding ping of another user is allowed only for admins. This incident will be reported."
+            bot.send_message(chat_id=update.message.chat_id,
+                             text=message)
+            return
+
+        if user not in self.config.admins():
+            with connector(self.config.engine()) as ses:
+                count = ses.query(Pingers).filter(and_(
+                    Pingers.chat_id == update.message.chat_id,
+                    Pingers.username == user)).count()
+            if count + len(matches) > 10:
+                bot.send_message(chat_id=update.message.chat_id,
+                                 text="You can add only 10 matches")
+                log_print('Pinger limit is settled', user)
+                return
+
+        answer = ""
+        with connector(self.config.engine()) as ses:
+            for username in usernames:
+                for match in matches:
+                    ping = Pingers(
+                        username=username,
+                        match=match,
+                        chat_id=update.message.chat_id)
+                    ses.add(ping)
+                    answer += "Match `{0}` for user `{1}` has been added".format(match, username)
+        bot.send_message(chat_id=update.message.chat_id,
+                         text=answer)

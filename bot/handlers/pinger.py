@@ -27,6 +27,7 @@ class PingerCommand:
         self.chat_id = update.message.chat_id
         self.username = update.message.from_user.username
 
+    # DEPRECATED
     def ping_from_admin(self):
         try:
             ping_usernames = [re.sub('[@]', '', i) for i in self.args if "@" == i[0]]
@@ -72,6 +73,7 @@ class PingerCommand:
                                       text="There was some trouble")
                 log_print('There was some trouble in pinger function by "{0}"'.format(self.args_line), self.username)
 
+    # DEPRECATED
     def ping_from_user(self):
         try:
             try:

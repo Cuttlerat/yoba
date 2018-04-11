@@ -107,7 +107,7 @@ class TestPingerDelete:
         assert "Usage" in bot.get_message()
 
     def test_delete_another_user_no_admin(self, config, bot, update):
-        update.set_message("",username="test_two")
+        update.set_message("", username="test_two")
         username = "@test_one"
         match = "первого"
         pinger = Pinger(config)
@@ -115,3 +115,51 @@ class TestPingerDelete:
         pinger.delete(bot, update, [username, match])
 
         assert "reported" in bot.get_message()
+
+
+class TestPingerAdd:
+    def test_add_for_me_not_admin(self, config, bot, update):
+        update.set_message("", username="test_two")
+        match = "тулук"
+        pinger = Pinger(config)
+
+        pinger.add(bot, update, [match])
+
+        assert "added" in bot.get_message()
+
+    def test_add_not_for_me_not_admin(self, config, bot, update):
+        update.set_message("", username="test_two")
+        username = "@test_one"
+        match = "тулук"
+        pinger = Pinger(config)
+
+        pinger.add(bot, update, [username, match])
+
+    def test_add_no_matches(self, config, bot, update):
+        update.set_message("", username="test_two")
+        pinger = Pinger(config)
+
+        pinger.add(bot, update, [])
+
+        assert "Usage" in bot.get_message()
+
+    def test_add_eleventh_match_no_admin(self, config, bot, update):
+        update.set_message("", username="test_add")
+        username = "@test_add"
+        match = "eleven"
+
+        pinger = Pinger(config)
+
+        pinger.add(bot, update, [username, match])
+
+        assert "only 10 matches" in bot.get_message()
+
+    def test_add_eleventh_match_admin(self, config, bot, update):
+        username = "@test_add"
+        match = "eleven"
+
+        pinger = Pinger(config)
+
+        pinger.add(bot, update, [username, match])
+
+        assert "has been added" in bot.get_message()
