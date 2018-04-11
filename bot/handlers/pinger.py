@@ -7,12 +7,15 @@ from models.models import connector, Pingers
 
 
 def pinger(config, bot, update, args):
-    username = update.message.from_user.username
-    pinger_command = PingerCommand(config, bot, update, args)
-    if username in config.admins():
-        pinger_command.ping_from_admin()
-    else:
-        pinger_command.ping_from_user()
+    # username = update.message.from_user.username
+    # pinger_command = PingerCommand(config, bot, update, args)
+    # if username in config.admins():
+    #     pinger_command.ping_from_admin()
+    # else:
+    #     pinger_command.ping_from_user()
+    message = "This method deprecated. Use `/ping_add`, `/ping_show`, `/ping_show_all` or `/ping_delete`"
+    bot.send_message(chat_id=update.message.chat_id,
+                     text=message)
 
 
 # DEPRECATED
