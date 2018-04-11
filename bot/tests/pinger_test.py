@@ -10,14 +10,6 @@ class TestPingerShow:
 
         assert expected_message in bot.get_message()
 
-    def test_show_me(self, config, bot, update):
-        expected_message = "первого"
-        pinger = Pinger(config)
-
-        pinger.show(bot, update, ["me"])
-
-        assert expected_message in bot.get_message()
-
     def test_show_username(self, config, bot, update):
         expected_message = "второго"
         pinger = Pinger(config)
