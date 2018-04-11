@@ -66,7 +66,7 @@ class Pinger:
 
         if user not in self.config.admins() and (len(usernames) > 1 or len(
                 list(filter(lambda x: x != user, usernames))) != 0):
-            message = "Deleting ping of another user is allowed only for admins. This incident will be reported."
+            message = "Deleting ping of another user is only allowed for admins. This incident will be reported."
             bot.send_message(chat_id=update.message.chat_id,
                              text=message)
             return
@@ -103,7 +103,7 @@ class Pinger:
 
         if user not in self.config.admins() and (len(usernames) > 1 or len(
                 list(filter(lambda x: x != user, usernames))) != 0):
-            message = "Adding ping of another user is allowed only for admins. This incident will be reported."
+            message = "Adding ping for another user is only allowed for admins. This incident will be reported."
             bot.send_message(chat_id=update.message.chat_id,
                              text=message)
             return
