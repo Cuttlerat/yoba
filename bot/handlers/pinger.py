@@ -15,6 +15,7 @@ def pinger(config, bot, update, args):
         pinger_command.ping_from_user()
 
 
+# DEPRECATED
 class PingerCommand:
     def __init__(self, config, bot, update, args):
         self.args = args
@@ -28,13 +29,13 @@ class PingerCommand:
 
     def ping_from_admin(self):
         try:
-            ping_usernames = [ re.sub('[@]', '', i) for i in self.args if "@" == i[0] ]
+            ping_usernames = [re.sub('[@]', '', i) for i in self.args if "@" == i[0]]
             command = self.args[0]
             if "@" != self.args[-1][0]:
                 match = self.args[-1].lower()
             if not ping_usernames:
                 ping_usernames = [self.username]
-                
+
             if not match and not command:
                 raise Exception
         except:
@@ -62,9 +63,9 @@ class PingerCommand:
                                 chat_id=self.chat_id)
                             inner_ses.add(new_pinger)
                         self.bot.send_message(chat_id=self.update.message.chat_id,
-                                          text="Successfully added ping for @{0} with match '{1}'".format(
-                                              ping_username,
-                                              match))
+                                              text="Successfully added ping for @{0} with match '{1}'".format(
+                                                  ping_username,
+                                                  match))
                         log_print('Added pinger @{0} with match "{1}"'.format(ping_username, match), self.username)
             except:
                 self.bot.send_message(chat_id=self.update.message.chat_id,
@@ -122,31 +123,33 @@ class PingerCommand:
         self.bot.send_message(chat_id=self.update.message.chat_id,
                               text=out_text)
 
+    # DEPRECATED
     def __answer_for_show(self, ses):
-        try:
-            username_show = re.sub('[@]', '', self.args[1])
-        except:
-            out_text = "Usage `/ping show @username`"
-            self.bot.send_message(chat_id=self.update.message.chat_id,
-                                  parse_mode='markdown',
-                                  text=out_text)
-            return
-        try:
-            user_matches = ses.query(Pingers).filter(Pingers.chat_id == self.chat_id,
-                                                     Pingers.username == username_show).all()
-            out_text = ""
-            for match in user_matches:
-                out_text += "\n{}".format(match.match)
-            if out_text == "":
-                out_text = "No such user"
-            self.bot.send_message(chat_id=self.update.message.chat_id,
-                                  text=out_text)
-            log_print('Show pings of "{0}", by {1}'.format(username_show, self.username))
-        except:
-            self.bot.send_message(chat_id=self.update.message.chat_id,
-                                  text="There was some trouble")
-            log_print('There was some trouble in pinger function by "{0}"'.format(self.args_line),
-                      self.username)
+        # try:
+        #     username_show = re.sub('[@]', '', self.args[1])
+        # except:
+        #     out_text = "Usage `/ping show @username`"
+        #     self.bot.send_message(chat_id=self.update.message.chat_id,
+        #                           parse_mode='markdown',
+        #                           text=out_text)
+        #     return
+        # try:
+        #     user_matches = ses.query(Pingers).filter(Pingers.chat_id == self.chat_id,
+        #                                              Pingers.username == username_show).all()
+        #     out_text = ""
+        #     for match in user_matches:
+        #         out_text += "\n{}".format(match.match)
+        #     if out_text == "":
+        #         out_text = "No such user"
+        #     self.bot.send_message(chat_id=self.update.message.chat_id,
+        #                           text=out_text)
+        #     log_print('Show pings of "{0}", by {1}'.format(username_show, self.username))
+        # except:
+        #     self.bot.send_message(chat_id=self.update.message.chat_id,
+        #                           text="There was some trouble")
+        #     log_print('There was some trouble in pinger function by "{0}"'.format(self.args_line),
+        #               self.username)
+        pass
 
     def __answer_for_delete_from_admin(self, ses):
         try:

@@ -1,7 +1,7 @@
 from handlers.new_pinger import Pinger
 
 
-class TestPinger:
+class TestPingerShow:
     def test_show_empty(self, config, bot, update):
         expected_message = "первого"
         pinger = Pinger(config)
@@ -41,3 +41,22 @@ class TestPinger:
         pinger.show(bot, update, ["fail"])
 
         assert expected_message in bot.get_message()
+
+
+class TestPingerShowAll:
+    def test_show_all_admin(self, config, bot, update):
+        expected = "первого"
+        pinger = Pinger(config)
+
+        pinger.show_all(bot, update)
+
+        assert expected in bot.get_message()
+
+    def test_show_all_not_admin(self, config, bot, update):
+        update.set_message("", username="test_two")
+        expected = "allowed only"
+        pinger = Pinger(config)
+
+        pinger.show_all(bot, update)
+
+        assert expected in bot.get_message()

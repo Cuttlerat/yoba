@@ -32,3 +32,18 @@ class Pinger:
             bot.send_message(chat_id=update.message.chat_id,
                              text=out_text)
             log_print('Show pings of "{0}", by {1}'.format(username, update.message.from_user.username))
+
+    def show_all(self, bot, update):
+        if update.message.from_user.username not in self.config.admins():
+            message = "This command is allowed only for admins. This incident will be reported."
+            bot.send_message(chat_id=update.message.chat_id,
+                             text=message)
+            return
+
+        with connector(self.config.engine()) as ses:
+            all_matches = ses.query(Pingers).filter(Pingers.chat_id == update.message.chat_id).all()
+            out_text = ""
+            for match in all_matches:
+                out_text += "\n@{0} | {1}".format(match.username, match.match)
+            bot.send_message(chat_id=update.message.chat_id,
+                             text=out_text)
