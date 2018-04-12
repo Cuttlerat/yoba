@@ -81,10 +81,33 @@ class Pinger:
                         Pingers.username == username,
                         Pingers.match == match))
                     if not result.all():
-                        answer += "Match `{0}` for user `@{1}` was not found\n".format(match, username)
+                        answer += "Match `{0}` for user `@{1}` not found\n".format(match, username)
                     else:
                         result.delete()
-                        answer += "Match `{0}` for user `@{1}` was deleted\n".format(match, username)
+                        answer += "Match `{0}` for user `@{1}` deleted\n".format(match, username)
+        bot.send_message(chat_id=update.message.chat_id,
+                         parse_mode='markdown',
+                         text=answer)
+
+    def drop(self, bot, update, args):
+        if update.message.from_user.username not in self.config.admins():
+            message = "This command is only allowed for admins."
+            bot.send_message(chat_id=update.message.chat_id,
+                             text=message)
+            return
+        usernames = [name[1:] for name in args if name[0] == "@"]
+
+        answer = ""
+        with connector(self.config.engine()) as ses:
+            for username in usernames:
+                result = ses.query(Pingers).filter(and_(
+                    Pingers.chat_id == update.message.chat_id,
+                    Pingers.username == username))
+                if not result.all():
+                    answer += "User `@{0}` not found\n".format(username)
+                else:
+                    result.delete()
+                    answer += "User `@{0}` deleted\n".format(username)
         bot.send_message(chat_id=update.message.chat_id,
                          parse_mode='markdown',
                          text=answer)
