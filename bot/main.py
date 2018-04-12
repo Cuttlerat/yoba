@@ -72,6 +72,7 @@ if __name__ == '__main__':
             CommandHandler('ping_show', new_pinger.show, pass_args=True),
             CommandHandler('ping_show_all', new_pinger.show_all),
             CommandHandler('ping_delete', new_pinger.delete, pass_args=True),
+            CommandHandler('ping_drop', new_pinger.drop, pass_args=True),
             CommandHandler('ping_add', new_pinger.add, pass_args=True),
             CommandHandler('ping', pinger_handler, pass_args=True),
             CommandHandler('crypto', crypto),

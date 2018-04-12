@@ -10,14 +10,6 @@ class TestPingerShow:
 
         assert expected_message in bot.get_message()
 
-    def test_show_me(self, config, bot, update):
-        expected_message = "первого"
-        pinger = Pinger(config)
-
-        pinger.show(bot, update, ["me"])
-
-        assert expected_message in bot.get_message()
-
     def test_show_username(self, config, bot, update):
         expected_message = "второго"
         pinger = Pinger(config)
@@ -35,7 +27,7 @@ class TestPingerShow:
         assert expected_message in bot.get_message()
 
     def test_show_no_nickname(self, config, bot, update):
-        expected_message = "Usage: "
+        expected_message = "Usage:"
         pinger = Pinger(config)
 
         pinger.show(bot, update, ["fail"])
@@ -54,7 +46,7 @@ class TestPingerShowAll:
 
     def test_show_all_not_admin(self, config, bot, update):
         update.set_message("", username="test_two")
-        expected = "allowed only"
+        expected = "only allowed"
         pinger = Pinger(config)
 
         pinger.show_all(bot, update)
@@ -114,7 +106,7 @@ class TestPingerDelete:
 
         pinger.delete(bot, update, [username, match])
 
-        assert "reported" in bot.get_message()
+        assert "Deleting" in bot.get_message()
 
 
 class TestPingerAdd:

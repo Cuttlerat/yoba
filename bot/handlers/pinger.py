@@ -13,8 +13,9 @@ def pinger(config, bot, update, args):
     #     pinger_command.ping_from_admin()
     # else:
     #     pinger_command.ping_from_user()
-    message = "This method deprecated. Use `/ping_add`, `/ping_show`, `/ping_show_all` or `/ping_delete`"
+    message = "This method is deprecated.\nUse this:\n`/ping_add`\n`/ping_show`\n`/ping_show_all`\n`/ping_delete`"
     bot.send_message(chat_id=update.message.chat_id,
+                     parse_mode='markdown',
                      text=message)
 
 
