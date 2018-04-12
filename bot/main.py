@@ -22,12 +22,11 @@ from telegram.ext import (
 )
 
 from config import Config
-from handlers.crypto import crypto, crypto
+from handlers.crypto import crypto
 from handlers.db import database_handler
 from handlers.helpers import start, bug, chat_id
-from handlers.new_pinger import Pinger
 from handlers.parser import parser
-from handlers.pinger import pinger
+from handlers.pinger import Pinger
 from handlers.weather import weather, wset
 from logger import log_print
 from models.models import create_table
@@ -48,10 +47,10 @@ if __name__ == '__main__':
         level=logging.INFO
     )
 
-    new_pinger = Pinger(config)
+    pinger = Pinger(config)
 
-    functions = [database_handler, weather, wset, parser, pinger]
-    db_handler, weather_handler, wset_handler, parser_handler, pinger_handler = \
+    functions = [database_handler, weather, wset, parser]
+    db_handler, weather_handler, wset_handler, parser_handler = \
         (handler(act, config) for act in functions)
 
     log_print('Started')
@@ -69,12 +68,11 @@ if __name__ == '__main__':
             CommandHandler(['weather', 'w'], weather_handler, pass_args=True),
             CommandHandler('wset', wset_handler, pass_args=True),
             CommandHandler('db', db_handler, pass_args=True),
-            CommandHandler('ping_show', new_pinger.show, pass_args=True),
-            CommandHandler('ping_show_all', new_pinger.show_all),
-            CommandHandler('ping_delete', new_pinger.delete, pass_args=True),
-            CommandHandler('ping_drop', new_pinger.drop, pass_args=True),
-            CommandHandler('ping_add', new_pinger.add, pass_args=True),
-            CommandHandler('ping', pinger_handler, pass_args=True),
+            CommandHandler('ping_show', pinger.show, pass_args=True),
+            CommandHandler('ping_show_all', pinger.show_all),
+            CommandHandler('ping_delete', pinger.delete, pass_args=True),
+            CommandHandler('ping_drop', pinger.drop, pass_args=True),
+            CommandHandler('ping_add', pinger.add, pass_args=True),
             CommandHandler('crypto', crypto),
             MessageHandler(Filters.text, parser_handler)
         ]]
