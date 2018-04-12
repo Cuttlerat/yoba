@@ -103,6 +103,9 @@ def fill_db_with_mock_data(config):
             Pingers(username="test_add", chat_id=-1, match="eight"),
             Pingers(username="test_add", chat_id=-1, match="nine"),
             Pingers(username="test_add", chat_id=-1, match="ten"),
+            Pingers(username="for_delete", chat_id=-1, match="one"),
+            Pingers(username="for_delete", chat_id=-1, match="two"),
+            Pingers(username="for_delete", chat_id=-1, match="three"),
             Locations(username="default_city", city="Syktyvkar"),
             Locations(username="test_one", city="London")
         ])
