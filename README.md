@@ -8,7 +8,7 @@ This is my first telegram bot written in Python
 /bug                - Link to create issue on github
 /db <SQL query>     - Manage your database (Only for admins)
 /info               - Information about this bot
-/ping               - Show usage of pinger command wich allow to
+/ping               - [DEPRECATED] Show usage of pinger command wich allow to
                     + add ping phrases for user who call this command
 /w <City>           - Short form of /w
 /weather <City>     - Weather in a city for now, today and tommorow
@@ -110,9 +110,12 @@ Cuttlerat: ping all except kosc
 Cuttlebot: @Cuttlerat
 ```
 
-#### Add with /ping command
+#### Add with /ping_* commands
 
-This command setting notifications for users.
+`/ping` command is deprecated!  
+Use `/ping_add`, `/ping_show`, `/ping_show_all` and `/ping_delete` instead  
+
+This commands setting notifications for users.  
 When you will send a message with a match which in `ping_phrases` table and with match of user, bot will reply on your message with `@username` in his reply and that user will get a notification even if he disabled them
 
 Example:
@@ -128,42 +131,27 @@ Ping command is different for admins and common users
 
 ```
 Usage: 
-/ping @username <word>
-/ping show @username
-/ping all
-/ping delete @username <word>
+/ping_add [@username] [match] - Add a ping for @username with match
+/ping_show [@username] - Show all matches of this user in this chat
+/ping_show_all - Show all mathces for all users in this chat
+/ping_delete [@username] [match] - Delete a match for this user if it exists
+/ping_drop [@username]` - Delete all matches for this user if it exists
 ```
-
-Examples:  
-`/ping @username match` - Add a ping for @username with match  
-`/ping show @username` - Show all matches of this user in this chat  
-`/ping show all` - Show all mathces for all users in this chat  
-`/ping delete @username match` - Delete a match for this user if it exists  
 
 For add and delete commands you also can use multiple usernames at once, example:  
 ```
-/ping @user_1 @user_2 @user_3 match
-/ping delete @user_1 @user_2 @user_3 match
+/ping_add @user_1 @user_2 @user_3 match
+/ping_delete @user_1 @user_2 @user_3 match
+/ping_drop @user_1 @user_2 @user_3 match
 ```
-
-You can delete all matches for user:  
-`/ping delete @username all`  
 
 ##### Common user
 
 ```
 Usage: 
-/ping <word>
-/ping show @username
-/ping me
-/ping delete <word>
+/ping_add [match] - Add a match for you. You can have only 10 matches, or more if an administrator will add it for you  
+/ping_show [@username] - Show all matches for @user_1  
+/ping_delete [match] - Delete a match  
 ```
-
-Examples:  
-`/ping match` - Add a match for you. You can have only 10 matches, or more if an administrator will add it for you  
-`/ping show @user_1` - Show all matches for @user_1  
-`/ping me` - Show all yours matches  
-`/ping delete match` - Delete a match  
-
 
 **And is it! Enjoy your bot!**

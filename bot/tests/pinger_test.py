@@ -1,4 +1,4 @@
-from handlers.new_pinger import Pinger
+from handlers.pinger import Pinger
 
 
 class TestPingerShow:
@@ -155,3 +155,37 @@ class TestPingerAdd:
         pinger.add(bot, update, [username, match])
 
         assert "has been added" in bot.get_message()
+
+
+class TestPingerDrop:
+    def test_drop_from_admin(self, config, bot, update):
+        username = "@for_delete"
+        pinger = Pinger(config)
+
+        pinger.drop(bot, update, [username])
+
+        assert "deleted" in bot.get_message()
+
+    def test_drop_false_username(self, config, bot, update):
+        username = "@false_user"
+        pinger = Pinger(config)
+
+        pinger.drop(bot, update, [username])
+
+        assert "not found" in bot.get_message()
+
+    def test_drop_no_admin(self, config, bot, update):
+        update.set_message("", username="not_admin")
+        username = "@some_user"
+        pinger = Pinger(config)
+
+        pinger.drop(bot, update, [username])
+
+        assert "allowed for admins" in bot.get_message()
+
+    def test_drop_empty(self, config, bot, update):
+        pinger = Pinger(config)
+
+        pinger.drop(bot, update, [])
+
+        assert "Usage" in bot.get_message()
