@@ -8,7 +8,7 @@ This is my first telegram bot written in Python
 /bug                - Link to create issue on github
 /db <SQL query>     - Manage your database (Only for admins)
 /info               - Information about this bot
-/ping               - Show usage of pinger command wich allow to
+/ping               - [DEPRECATED] Show usage of pinger command wich allow to
                     + add ping phrases for user who call this command
 /w <City>           - Short form of /w
 /weather <City>     - Weather in a city for now, today and tommorow
