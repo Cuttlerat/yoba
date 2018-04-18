@@ -1,8 +1,10 @@
 import pytest
+from odr.container import register_as
 
 from config import Config
-from models.models import create_table, fill_db_with_mock_data
+from handlers.pinger import Pinger
 from mocks.mocks import MockUpdate, MockBot
+from models.models import create_table, fill_db_with_mock_data
 
 
 @pytest.fixture
@@ -24,3 +26,10 @@ def config(tmpdir_factory):
     create_table(mock_config)
     fill_db_with_mock_data(mock_config)
     return mock_config
+
+
+@pytest.fixture
+def pinger(config):
+    register_as(config, Config)
+    pinger = Pinger()
+    return pinger
