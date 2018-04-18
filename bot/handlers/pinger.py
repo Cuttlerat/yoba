@@ -1,3 +1,4 @@
+from odr.injector import inject
 from sqlalchemy import and_
 
 from config import Config
@@ -6,6 +7,7 @@ from models.models import connector, Pingers
 
 
 class Pinger:
+    @inject
     def __init__(self, config: Config):
         self.config = config
 

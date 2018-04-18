@@ -14,6 +14,7 @@
 import logging
 import sqlite3
 
+from odr.container import register
 from telegram.ext import (
     Updater,
     CommandHandler,
@@ -41,13 +42,14 @@ def handler(action, input_config):
 
 if __name__ == '__main__':
     config = Config()
+    register(config)
 
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         level=logging.INFO
     )
 
-    pinger = Pinger(config)
+    pinger = Pinger()
 
     functions = [database_handler, weather, wset, parser]
     db_handler, weather_handler, wset_handler, parser_handler = \
