@@ -79,8 +79,7 @@ async def ping_parser(config, bot, update):
 def parser(config, bot, update):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(asyncio.gather(weather_parser(config, bot, update),
-                                           ping_parser(config, bot, update),
+    loop.run_until_complete(asyncio.gather(ping_parser(config, bot, update),
                                            answer_parser(config, bot, update))
                             )
     loop.close()
