@@ -45,12 +45,6 @@ class Pingers(Base):
     match = Column('match', Unicode(255))
 
 
-class WeatherPhrases(Base):
-    __tablename__ = 'w_phrases'
-
-    match = Column('match', Unicode(255), primary_key=True)
-
-
 class Answers(Base):
     __tablename__ = 'answers'
     match = Column('match', Unicode(255), primary_key=True)
