@@ -6,20 +6,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from handlers.helpers import prepare_message
 from handlers.weather import weather
 from logger import log_print
-from models.models import connector, WeatherPhrases, Answers, PingPhrases, Pingers, PingExcludes
-
-
-async def weather_parser(config, bot, update):
-    in_text = prepare_message(update)
-
-    with connector(config.engine()) as ses:
-        try:
-            phrase = "".join(ses.query(WeatherPhrases.match).filter(
-                literal(in_text.lower()).contains(WeatherPhrases.match)).one())
-            weather(config, bot, update, in_text.lower()[in_text.lower().find(phrase) + len(phrase):].split())
-            return
-        except NoResultFound:
-            pass
+from models.models import connector, Answers, PingPhrases, Pingers, PingExcludes
 
 
 async def answer_parser(config, bot, update):
