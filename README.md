@@ -142,7 +142,7 @@ For add and delete commands you also can use multiple usernames at once, example
 ```
 /ping_add @user_1 @user_2 @user_3 match
 /ping_delete @user_1 @user_2 @user_3 match
-/ping_drop @user_1 @user_2 @user_3 match
+/ping_drop @user_1 @user_2 @user_3
 ```
 
 ##### Common user
