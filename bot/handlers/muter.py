@@ -1,5 +1,8 @@
 from config import Config
 from logger import log_print
+from telegram.error import BadRequest
+from time import time
+from handlers.parser import parser
 
 
 def mute_on(config, bot, update):
@@ -49,3 +52,5 @@ def mute(config, bot, update):
             return
         bot.send_message(chat_id, text="Muted for 5 minutes",
                      reply_to_message_id=update.message.message_id)
+    elif update.message.text:
+        parser(config, bot, update)

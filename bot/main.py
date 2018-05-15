@@ -79,8 +79,7 @@ if __name__ == '__main__':
             CommandHandler('mute_on', mute_on_handler),
             CommandHandler('mute_off', mute_off_handler),
             CommandHandler('crypto', crypto),
-            MessageHandler(Filters.text, parser_handler)
-            MessageHandler(mute_handler)
+            MessageHandler(Filters.all, mute_handler)
         ]]
 
         if config.telegram_mode().lower() == 'webhook':
