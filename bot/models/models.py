@@ -47,6 +47,7 @@ class Pingers(Base):
 
 class Answers(Base):
     __tablename__ = 'answers'
+
     match = Column('match', Unicode(255), primary_key=True)
     answer = Column('string', Unicode(255))
 
