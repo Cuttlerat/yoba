@@ -28,6 +28,7 @@ class Config:
         self.__tg_listen_ip = cfg['telegram']['listen_ip'] if 'listen_ip' in cfg['telegram'] else None
 
         self.__tg_admins = cfg['admins'] if 'admins' in cfg else []
+        self.__tg_get_mute = False
 
         self.__database = 'sqlite:///{}'.format(self.__db_host) if self.__db_host is not None else None
         self.__engine = create_engine(self.__database) if self.__database is not None else None
@@ -69,6 +70,12 @@ class Config:
 
     def admins(self):
         return self.__tg_admins
+
+    def get_mute(self):
+        return self.__tg_get_mute
+
+    def set_mute(self, new_val):
+        self.__tg_get_mute = new_val
 
     def database(self):
         if self.__database is None:

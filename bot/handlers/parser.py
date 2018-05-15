@@ -2,7 +2,9 @@ import asyncio
 
 from sqlalchemy import literal, and_, or_
 from sqlalchemy.orm.exc import NoResultFound
+from time import time
 
+from telegram.error import BadRequest
 from handlers.helpers import prepare_message
 from handlers.weather import weather
 from logger import log_print
@@ -76,10 +78,24 @@ async def ping_parser(config, bot, update):
             pass
 
 
+async def muter(config, bot, update):
+    
+    chat_id=update.message.chat_id
+    user_id=update.message.from_user.id
+    if config.get_mute():
+        try:
+            bot.restrict_chat_member(chat_id, user_id, until_date=time()+300)
+        except BadRequest:
+            return
+        bot.send_message(chat_id, text="Muted for 5 minutes",
+                     reply_to_message_id=update.message.message_id)
+
+
 def parser(config, bot, update):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncio.gather(ping_parser(config, bot, update),
-                                           answer_parser(config, bot, update))
-                            )
+                                           answer_parser(config, bot, update),
+                                           muter(config, bot, update))
+                           )
     loop.close()
