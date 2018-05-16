@@ -14,6 +14,8 @@ This is my first telegram bot written in Python
 /weather <City>     - Weather in a city for now, today and tommorow
 /wset <City>        - Set default city for /weather
 /crypto             - Crypto-currency exchange rate
+/mute_on            - Turn on auto ban (readonly) for all messages for 5 minutes (except admins)
+/mute_off           - Turn off auto ban
 ```
 
 ## Starting
