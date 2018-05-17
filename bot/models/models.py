@@ -57,6 +57,10 @@ class PingPhrases(Base):
 
     phrase = Column('phrase', Unicode(255), primary_key=True)
 
+class Welcome(Base):
+    __tablename__ = 'welcome'
+
+    welcome = Column('welcome', Unicode(255), primary_key=True)
 
 class PingExcludes(Base):
     __tablename__ = 'ping_exclude'
