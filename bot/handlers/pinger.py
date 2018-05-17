@@ -61,7 +61,10 @@ class Pinger:
             usernames = [user]
 
         if not matches:
-            usage_text = "Usage:\n`/ping_delete [@username] [match]`\n`/ping_delete [match]`"
+            if user not in self.config.admins():
+                usage_text = "Usage:\n`/ping_delete [match]`"
+            else:
+                usage_text = "Usage:\n`/ping_delete [@username] [match]`\n`/ping_delete [match]`"
             bot.send_message(chat_id=update.message.chat_id,
                              parse_mode='markdown',
                              text=usage_text)
@@ -130,7 +133,10 @@ class Pinger:
             usernames = [user]
 
         if not matches:
-            usage_text = "Usage:\n`/ping_add [@username] [match]`\n`/ping_add [match]`"
+            if user not in self.config.admins():
+                usage_text = "Usage:\n`/ping_add [match]`"
+            else:
+                usage_text = "Usage:\n`/ping_add [@username] [match]`\n`/ping_add [match]`"
             bot.send_message(chat_id=update.message.chat_id,
                              parse_mode='markdown',
                              text=usage_text)
