@@ -3,6 +3,7 @@ from logger import log_print
 from telegram.error import BadRequest
 from time import time
 from handlers.parser import parser
+from handlers.welcome import welcome
 
 
 def mute_on(config, bot, update):
@@ -54,3 +55,5 @@ def mute(config, bot, update):
                      reply_to_message_id=update.message.message_id)
     elif update.message.text:
         parser(config, bot, update)
+    elif update.message.new_chat_members:
+        welcome(config, bot, update)
