@@ -45,7 +45,7 @@ class Pinger:
             return
 
         with connector(self.config.engine()) as ses:
-            all_matches = ses.query(Pingers).filter(Pingers.chat_id == update.message.chat_id).all()
+            all_matches = ses.query(Pingers).filter(Pingers.chat_id == update.message.chat_id).order_by(Pingers.username).all()
             out_text = ""
             for match in all_matches:
                 out_text += "\n{0} | {1}".format(match.username, match.match)
