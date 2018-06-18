@@ -54,7 +54,7 @@ class Pinger:
 
     def delete(self, bot, update, args):
         usernames = [name[1:] for name in args if name[0] == "@"]
-        matches = [match for match in args if match[0] != "@"]
+        matches = [match.lower() for match in args if match[0] != "@"]
 
         user = update.message.from_user.username
         if not usernames:
@@ -126,7 +126,7 @@ class Pinger:
 
     def add(self, bot, update, args):
         usernames = [name[1:] for name in args if name[0] == "@"]
-        matches = [match for match in args if match[0] != "@"]
+        matches = [match.lower() for match in args if match[0] != "@"]
 
         user = update.message.from_user.username
         if not usernames:
