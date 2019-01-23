@@ -43,6 +43,7 @@ class Pingers(Base):
     username = Column('username', Unicode(255))
     chat_id = Column('chat_id', Unicode(255))
     match = Column('match', Unicode(255))
+    me = Column('me', Integer, default=0)
 
 
 class Answers(Base):

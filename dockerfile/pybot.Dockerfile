@@ -1,7 +1,8 @@
-FROM python:3.6-alpine
+FROM python:3.6
 LABEL maintainer="Aleksei Kioller <avkioller@gmail.com>"
 ENV PYTHONUNBUFFERED 0
-RUN apk add --update --no-cache tzdata \
+RUN apt-get update -y &&\
+    apt-get install -y tzdata \
  && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 COPY ./requirements /pybot/requirements
 WORKDIR /pybot
