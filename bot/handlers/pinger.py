@@ -22,7 +22,7 @@ class Pinger:
         elif username[0] == "@":
             username = username[1:]
         else:
-            usage_text = "Usage:\n`/ping_show @username`\n`/ping_show me`\n`/ping_show`\n"
+            usage_text = "Usage:\n`/ping_show[_me] @username`\n`/ping_show me`\n`/ping_show`\n"
             bot.send_message(chat_id=update.message.chat_id,
                              parse_mode='markdown',
                              text=usage_text)
@@ -141,9 +141,9 @@ class Pinger:
 
         if not matches:
             if user not in self.config.admins():
-                usage_text = "Usage:\n`/ping_add [match]`"
+                usage_text = "Usage:\n`/ping_add[_me] [match]`"
             else:
-                usage_text = "Usage:\n`/ping_add [@username] [match]`\n`/ping_add [match]`"
+                usage_text = "Usage:\n`/ping_add[_me] [@username] [match]`\n`/ping_add [match]`"
             bot.send_message(chat_id=update.message.chat_id,
                              parse_mode='markdown',
                              text=usage_text)
@@ -171,13 +171,21 @@ class Pinger:
         with connector(self.config.engine()) as ses:
             for username in usernames:
                 for match in matches:
-                    ping = Pingers(
-                        username=username,
-                        match=match,
-                        chat_id=update.message.chat_id,
-                        me=me)
-                    ses.add(ping)
-                    answer += "Match `{0}` for user `@{1}` has been added\n".format(match, username)
+                    match_exists = ses.query(Pingers).filter(and_(
+                        Pingers.chat_id == update.message.chat_id,
+                        Pingers.username == username,
+                        Pingers.match == match)).all()
+                    if not match_exists:
+                        ping = Pingers(
+                            username=username,
+                            match=match,
+                            chat_id=update.message.chat_id,
+                            me=me)
+                        ses.add(ping)
+                        answer += "Match `{0}` for user `@{1}` has been added\n".format(match, username)
+                    else:
+                        answer += "Match `{0}` for user `@{1}` already exists!\n".format(match, username)
+
         bot.send_message(chat_id=update.message.chat_id,
                          parse_mode='markdown',
                          text=answer)
