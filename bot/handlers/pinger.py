@@ -11,7 +11,10 @@ class Pinger:
     def __init__(self, config: Config):
         self.config = config
 
-    def show(self, bot, update, args):
+    def show_me(self, bot, update, args):
+        self.show(bot, update, args, 1)
+
+    def show(self, bot, update, args, me=0):
         usernames = " ".join(args).split()
         username = usernames[0] if usernames else ""
         if not username:
@@ -27,7 +30,8 @@ class Pinger:
 
         with connector(self.config.engine()) as ses:
             user_matches = ses.query(Pingers).filter(Pingers.chat_id == update.message.chat_id,
-                                                     Pingers.username == username).all()
+                                                     Pingers.username == username,
+                                                     Pingers.me == me).all()
             out_text = ""
             for match in user_matches:
                 out_text += "\n{}".format(match.match)
@@ -124,7 +128,10 @@ class Pinger:
                          parse_mode='markdown',
                          text=answer)
 
-    def add(self, bot, update, args):
+    def add_me(self, bot, update, args):
+        self.add(bot, update, args, 1)
+
+    def add(self, bot, update, args, me=0):
         usernames = [name[1:] for name in args if name[0] == "@"]
         matches = [match.lower().replace('ё', 'е') for match in args if match[0] != "@"]
 
@@ -167,7 +174,8 @@ class Pinger:
                     ping = Pingers(
                         username=username,
                         match=match,
-                        chat_id=update.message.chat_id)
+                        chat_id=update.message.chat_id,
+                        me=me)
                     ses.add(ping)
                     answer += "Match `{0}` for user `@{1}` has been added\n".format(match, username)
         bot.send_message(chat_id=update.message.chat_id,
