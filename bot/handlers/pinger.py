@@ -185,6 +185,7 @@ class Pinger:
                         answer += "Match `{0}` for user `@{1}` has been added\n".format(match, username)
                     else:
                         answer += "Match `{0}` for user `@{1}` already exists!\n".format(match, username)
+
         bot.send_message(chat_id=update.message.chat_id,
                          parse_mode='markdown',
                          text=answer)

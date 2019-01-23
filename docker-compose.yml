@@ -3,7 +3,7 @@ version: "3"
 services:
 
     pybot:
-        image: pybot
+        image: cuttlerat/pybot
         build:
             context: .
             dockerfile: dockerfile/pybot.Dockerfile

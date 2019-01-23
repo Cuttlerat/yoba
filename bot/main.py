@@ -30,6 +30,7 @@ from handlers.parser import parser
 from handlers.muter import mute, mute_on, mute_off
 from handlers.pinger import Pinger
 from handlers.weather import weather, wset
+from handlers.me import me
 from logger import log_print
 from models.models import create_table
 
@@ -52,8 +53,8 @@ if __name__ == '__main__':
 
     pinger = Pinger()
 
-    functions = [database_handler, weather, wset, parser, mute, mute_on, mute_off]
-    db_handler, weather_handler, wset_handler, parser_handler, mute_handler, mute_on_handler, mute_off_handler = \
+    functions = [database_handler, weather, me, wset, parser, mute, mute_on, mute_off]
+    db_handler, weather_handler, me_handler, wset_handler, parser_handler, mute_handler, mute_on_handler, mute_off_handler = \
         (handler(act, config) for act in functions)
 
     log_print('Started')
@@ -70,8 +71,11 @@ if __name__ == '__main__':
             CommandHandler(['start', 'info'], start),
             CommandHandler(['weather', 'w'], weather_handler, pass_args=True),
             CommandHandler('wset', wset_handler, pass_args=True),
+            CommandHandler('me', me_handler, pass_args=True),
             CommandHandler('db', db_handler, pass_args=True),
+            CommandHandler('ping_add_me', pinger.add_me, pass_args=True),
             CommandHandler('ping_show', pinger.show, pass_args=True),
+            CommandHandler('ping_show_me', pinger.show_me, pass_args=True),
             CommandHandler('ping_show_all', pinger.show_all),
             CommandHandler('ping_delete', pinger.delete, pass_args=True),
             CommandHandler('ping_drop', pinger.drop, pass_args=True),
