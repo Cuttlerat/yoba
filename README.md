@@ -5,17 +5,25 @@ This is my first telegram bot written in Python
 ## Commands
 
 ```
-/bug                - Link to create issue on github
-/db <SQL query>     - Manage your database (Only for admins)
-/info               - Information about this bot
-/ping               - [DEPRECATED] Show usage of pinger command wich allow to
-                    + add ping phrases for user who call this command
-/w <City>           - Short form of /w
-/weather <City>     - Weather in a city for now, today and tommorow
-/wset <City>        - Set default city for /weather
-/crypto             - Crypto-currency exchange rate
-/mute_on            - Turn on auto ban (readonly) for all messages for 5 minutes (except admins)
-/mute_off           - Turn off auto ban
+/bug                    - Link to create issue on github
+/db <SQL query>         - Manage your database (Only for admins)
+/info                   - Information about this bot
+/ping_add [matches]     - Add casts for user, for admins allows to use 
+                        + /ping_add @username1 @username2 match1 match2
+/ping_add_me            - Add casts for user which can be randomly chosen in /me
+/ping_show              - Show all casts for user
+/ping_show_all          - Show all casts in DB for this chat (only for admins)
+/ping_delete [matches]  - Delete matches for user, for admins the same usage as in /ping_add
+/ping_delete_me         - Delete matches for user which can be used in /me
+/ping_drop <Username>   - Delete all matches for user (only for admins)
+/me [message]           - Deletes source message and send message like this
+                        + <Random cast for user which was added by /ping_add_me> [message]
+/w <City>               - Short form of /w
+/weather <City>         - Weather in a city for now, today and tommorow
+/wset <City>            - Set default city for /weather
+/crypto                 - Crypto-currency exchange rate
+/mute_on                - Turn on auto ban (readonly) for all messages for 5 minutes (except admins)
+/mute_off               - Turn off auto ban
 ```
 
 ## Starting
