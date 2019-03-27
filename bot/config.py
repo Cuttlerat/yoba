@@ -15,6 +15,8 @@ class Config:
 
         self.__tg_token = cfg['tokens']['tg_token'] if 'tg_token' in cfg['tokens'] else None
         self.__weather_token = cfg['tokens']['weather_token'] if 'weather_token' in cfg['tokens'] else None
+        self.__coc_remcg = cfg['tokens']['coc_remcg'] if 'coc_remcg' in cfg['tokens'] else None
+        self.__coc_secret = cfg['tokens']['coc_secret'] if 'coc_secret' in cfg['tokens'] else None
 
         if database_path is None:
             self.__db_host = cfg['database']['host'] if 'host' in cfg['database'] else None
@@ -42,6 +44,16 @@ class Config:
         if self.__weather_token is None:
             raise NotImplementedError("Weather token in config-file is not declared")
         return self.__weather_token
+
+    def coc_remcg(self):
+        if self.__coc_remcg is None:
+            raise NotImplementedError("coc_remcg in config-file is not declared")
+        return self.__coc_remcg
+
+    def coc_secret(self):
+        if self.__coc_secret is None:
+            raise NotImplementedError("coc_secret in config-file is not declared")
+        return self.__coc_secret
 
     def telegram_mode(self):
         if self.__tg_mode is None:
