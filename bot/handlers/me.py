@@ -22,7 +22,7 @@ def me(config, bot, update, *args, **kwargs):
         else:
             match = username
         out_text=italize("{match} {message}".format(
-            match=match,
+            match=match.capitalize(),
             message=update.message.text.split(' ', 1)[1]))        
         bot.send_message(chat_id=update.message.chat_id,
                          text=out_text,
