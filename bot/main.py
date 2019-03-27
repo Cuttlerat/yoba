@@ -24,6 +24,7 @@ from telegram.ext import (
 
 from config import Config
 from handlers.crypto import crypto
+from handlers.coc import coc
 from handlers.db import database_handler
 from handlers.helpers import start, bug, chat_id
 from handlers.parser import parser
@@ -53,8 +54,8 @@ if __name__ == '__main__':
 
     pinger = Pinger()
 
-    functions = [database_handler, weather, me, wset, parser, mute, mute_on, mute_off]
-    db_handler, weather_handler, me_handler, wset_handler, parser_handler, mute_handler, mute_on_handler, mute_off_handler = \
+    functions = [database_handler, weather, me, wset, parser, mute, mute_on, mute_off, coc]
+    db_handler, weather_handler, me_handler, wset_handler, parser_handler, mute_handler, mute_on_handler, mute_off_handler, coc_handler= \
         (handler(act, config) for act in functions)
 
     log_print('Started')
@@ -83,6 +84,7 @@ if __name__ == '__main__':
             CommandHandler('mute_on', mute_on_handler),
             CommandHandler('mute_off', mute_off_handler),
             CommandHandler('crypto', crypto),
+            CommandHandler('coc', coc_handler),
             MessageHandler(Filters.all, mute_handler)
         ]]
 
