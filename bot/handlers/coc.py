@@ -23,7 +23,7 @@ def coc(config, bot, update):
                      parse_mode="markdown")
     last_game["message_id"] = sent.message_id
 
-    with open("/tmp/coc_{}".format(update.message.chat_id, "w") as file:
+    with open("/tmp/coc_{}".format(update.message.chat_id), "w") as file:
         file.write(json.loads(last_game)) 
 
 
