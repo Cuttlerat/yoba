@@ -24,7 +24,7 @@ def coc(config, bot, update):
     last_game["message_id"] = sent.message_id
 
     with open("/tmp/coc_{}".format(update.message.chat_id), "w") as file:
-        file.write(json.loads(last_game)) 
+        file.write(json.dumps(last_game)) 
 
 
     log_print('Clash of Code "{}"'.format(coc_id))
@@ -34,7 +34,7 @@ def coc_start(config, bot, update):
 
     try:
         with open("/tmp/coc_{}".format(update.message.chat_id), "r") as file:
-            last_game = dict(file.read())
+            last_game = json.loads(file.read())
     except IOError:
         last_game = {"coc_id":"", "message_id":""}
 
