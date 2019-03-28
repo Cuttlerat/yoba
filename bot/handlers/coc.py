@@ -33,7 +33,7 @@ def coc(config, bot, update):
 def coc_start(config, bot, update):
 
     try:
-        with open("/tmp/coc_{}".format(update.message.chat_id, "r") as file:
+        with open("/tmp/coc_{}".format(update.message.chat_id), "r") as file:
             last_game = dict(file.read())
     except IOError:
         last_game = {"coc_id":"", "message_id":""}
