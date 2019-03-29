@@ -50,7 +50,7 @@ def coc_start(config, bot, update):
         else:
             message = 'Could not start "{}" CoC game...'
     else:
-        coc_id = "None"
+        last_game["coc_id"] = "None"
         message = "Could not find last CoC id"
 
     if last_game["message_id"]:
@@ -62,4 +62,5 @@ def coc_start(config, bot, update):
         bot.send_message(chat_id=update.message.chat_id,
                          text=message,
                          parse_mode="markdown")
-    log_print('Clash of Code "{}" started'.format(last_game["coc_id"]))
+    if last_game["coc_id"] != "None":
+        log_print('Clash of Code "{}" started'.format(last_game["coc_id"]))
