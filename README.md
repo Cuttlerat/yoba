@@ -24,7 +24,8 @@ This is my first telegram bot written in Python
 /crypto                 - Crypto-currency exchange rate
 /mute_on                - Turn on auto ban (readonly) for all messages for 5 minutes (except admins)
 /mute_off               - Turn off auto ban
-/coc                    - Start CoC competition (https://condingame.com)
+/coc                    - Create CoC competition (https://condingame.com)
+/coc_start              - Start CoC competition
 ```
 
 ## Starting
