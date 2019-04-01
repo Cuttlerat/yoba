@@ -35,7 +35,6 @@ class Locations(Base):
     username = Column('username', Unicode(255), primary_key=True)
     city = Column('city', Unicode(255))
 
-
 class Pingers(Base):
     __tablename__ = 'pingers'
 
@@ -44,6 +43,12 @@ class Pingers(Base):
     chat_id = Column('chat_id', Unicode(255))
     match = Column('match', Unicode(255))
     me = Column('me', Integer, default=0)
+
+class ClashExclude(Base):
+    __tablename__ = 'clash_exclude'
+
+    username = Column('username', Unicode(255), primary_key=True)
+    chat_id = Column('chat_id', Unicode(255))
 
 
 class Answers(Base):
