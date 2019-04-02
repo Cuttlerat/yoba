@@ -8,4 +8,5 @@ COPY ./requirements /pybot/requirements
 WORKDIR /pybot
 RUN pip install -r requirements
 COPY ./bot /pybot
-ENTRYPOINT [ "python", "main.py" ]
+ENTRYPOINT [ "python" ]
+CMD [ "main.py" ]
