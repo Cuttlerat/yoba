@@ -48,7 +48,11 @@ def weather(config, bot, update, args):
 
     forecast = owm.three_hours_forecast(city)
     now_weather = observation.get_weather()
-    city = observation.get_location().get_name()
+    location = observation.get_location()
+    city = location.get_name()
+    lat = location.get_lat()
+    lon = location.get_lon()
+    uvi = owm.uvindex_around_coords(lat, lon).get_value()
 
     weathers = {}
 
@@ -95,11 +99,14 @@ def weather(config, bot, update, args):
         *Morning:* {7} {8} {9}
         *Noon:* {10} {11} {12}
         *Evening:* {13} {14} {15}
+
+        *UV Index:* {16}
         """.format(city,
                    now_temp,
                    now_emoji,
                    now_status,
-                   *[weathers[i] for i in weathers]))
+                   *[weathers[i] for i in weathers],
+                   uvi))
     except IndexError:
         error_message = "Something wrong with API:\n\n{}".format(weathers)
         bot.send_message(chat_id=update.message.chat_id, text=error_message)
