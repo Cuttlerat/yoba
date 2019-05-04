@@ -111,3 +111,6 @@ bot/temp/*
 
 # test cache
 .pytest_cache
+
+# ctags
+tags
