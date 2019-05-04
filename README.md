@@ -1,6 +1,6 @@
-# PyBot
+# YOBA
 
-This is my first telegram bot written in Python
+Yet One Bot Assistant - just a funny telegeram bot.
 
 ## Commands
 

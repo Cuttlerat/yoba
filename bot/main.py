@@ -5,7 +5,7 @@
 #    DESCRIPTION: Telegram bot in python
 #         AUTHOR: Kioller Alexey
 #         E-MAIL: avkioller@gmail.com
-#         GITHUB: https://github.com/Cuttlerat/pybot
+#         GITHUB: https://github.com/Cuttlerat/yoba
 #        CREATED: 02.08.2017
 #        VERSION: 1.0
 #

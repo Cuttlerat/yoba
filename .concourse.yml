@@ -6,11 +6,11 @@ image_resource:
     repository: python
     tag: 3.6-alpine
 inputs:
-  - name: pybot
+  - name: yoba
 outputs:
   - name: coverage
 run:
-  dir: pybot
+  dir: yoba
   path: sh
   args:
     - -ec
@@ -27,7 +27,7 @@ run:
       telegram:
         mode: Polling
       database:
-        host: data/pybot.test.db
+        host: data/yoba.test.db
       admins:
         - test_one
       EOF

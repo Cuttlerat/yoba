@@ -2,12 +2,12 @@
 version: "3"
 services:
 
-    pybot:
-        image: cuttlerat/pybot
+    yoba:
+        image: cuttlerat/yoba
         build:
             context: .
-            dockerfile: dockerfile/pybot.Dockerfile
+            dockerfile: dockerfile/yoba.Dockerfile
         volumes:
-          - ./bot/data:/pybot/data
-          - ./bot/config:/pybot/config:ro
+          - ./bot/data:/yoba/data
+          - ./bot/config:/yoba/config:ro
         restart: always
