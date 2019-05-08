@@ -26,13 +26,16 @@ def clash(config, bot, update):
             users = [ x for x in users for x in x ]
             out_text = ""
         clash_id = json.loads(r.text)["success"]["publicHandle"]
+        users=" ".join(["@{}".format(user) for user in users])
         message = """
+Clash of Code!
+
 Please send /clash_disable if you don't want to be notified about new CoC games
 
 https://www.codingame.com/clashofcode/clash/{clash_id}
 
 {users}
-        """.format(clash_id=clash_id, users=" ".join(["@{}".format(user) for user in users]))
+        """.format(clash_id=clash_id, users=users)
         last_game["clash_id"] = clash_id
     else:
         clash_id = "Error"
@@ -40,6 +43,7 @@ https://www.codingame.com/clashofcode/clash/{clash_id}
 
     sent = bot.send_message(chat_id=update.message.chat_id,
                      text=message)
+    last_game["users"] = users
     last_game["username"] = username
     last_game["message_id"] = sent.message_id
 
@@ -72,10 +76,15 @@ def clash_start(config, bot, update):
                     clash_id=last_game["clash_id"]))
 
             if r.status_code == 200:
-                message = 'CoC is about to start! Hurry up!'
+                if last_game["users"]:
+                    message = '{}\nClash is about to start! Hurry up!'.format(last_game["users"])
+                else:
+                    message = 'Clash is about to start! Hurry up!'
+                log_print('Clash of Code "{}" started'.format(last_game["clash_id"]))
             else:
                 message = 'Could not start "{}" CoC game...'
         else:
+            last_game["message_id"] = update.message.message_id
             message = 'Only @{} is allowed to start the game'.format(last_game["username"])
     else:
         last_game["clash_id"] = "None"
@@ -90,8 +99,6 @@ def clash_start(config, bot, update):
         bot.send_message(chat_id=update.message.chat_id,
                          text=message,
                          parse_mode="markdown")
-    if last_game["clash_id"] != "None":
-        log_print('Clash of Code "{}" started'.format(last_game["clash_id"]))
 
 
 def clash_disable(config, bot, update):
