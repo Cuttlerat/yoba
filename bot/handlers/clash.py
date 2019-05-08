@@ -77,18 +77,18 @@ def clash_start(config, bot, update):
 
             if r.status_code == 200:
                 if last_game["users"]:
-                    message = '{}\nClash is about to start! Hurry up!'.format(last_game["users"])
+                    message = '{}\n\nClash is about to start! Hurry up!'.format(last_game["users"])
                 else:
                     message = 'Clash is about to start! Hurry up!'
                 log_print('Clash of Code "{}" started'.format(last_game["clash_id"]))
             else:
-                message = 'Could not start "{}" CoC game...'
+                message = 'Could not start "{}" a Clash game...'
         else:
             last_game["message_id"] = update.message.message_id
             message = 'Only @{} is allowed to start the game'.format(last_game["username"])
     else:
         last_game["clash_id"] = "None"
-        message = "Could not find last CoC id"
+        message = "Could not find the last Clash id"
 
     if last_game["message_id"]:
         bot.send_message(chat_id=update.message.chat_id,
