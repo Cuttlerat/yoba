@@ -61,7 +61,7 @@ def clash_start(config, bot, update):
         last_game = {"clash_id":"", "message_id":"", "username": username}
 
     if last_game["clash_id"]:
-        if last_game["username"] == username
+        if last_game["username"] == username:
             r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/startClashByHandle',
                 headers={"content-type":"application/json;charset=UTF-8",
                          "cookie":"remcg={remcg};rememberMe={remember_me};cgSession={cg_session}".format(
