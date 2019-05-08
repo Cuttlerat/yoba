@@ -24,7 +24,7 @@ from telegram.ext import (
 
 from config import Config
 from handlers.crypto import crypto
-from handlers.coc import coc, coc_start, coc_disable, coc_enable
+from handlers.clash import clash, clash_start, clash_disable, clash_enable
 from handlers.db import database_handler
 from handlers.helpers import start, bug, chat_id
 from handlers.parser import parser
@@ -54,8 +54,8 @@ if __name__ == '__main__':
 
     pinger = Pinger()
 
-    functions = [database_handler, weather, me, wset, parser, mute, mute_on, mute_off, coc, coc_start, coc_enable, coc_disable]
-    db_handler, weather_handler, me_handler, wset_handler, parser_handler, mute_handler, mute_on_handler, mute_off_handler, coc_handler, coc_start_handler, coc_enable_handler, coc_disable_handler= \
+    functions = [database_handler, weather, me, wset, parser, mute, mute_on, mute_off, clash, clash_start, clash_enable, clash_disable]
+    db_handler, weather_handler, me_handler, wset_handler, parser_handler, mute_handler, mute_on_handler, mute_off_handler, clash_handler, clash_start_handler, clash_enable_handler, clash_disable_handler= \
         (handler(act, config) for act in functions)
 
     log_print('Started')
@@ -84,10 +84,10 @@ if __name__ == '__main__':
             CommandHandler('mute_on', mute_on_handler),
             CommandHandler('mute_off', mute_off_handler),
             CommandHandler('crypto', crypto),
-            CommandHandler('coc', coc_handler),
-            CommandHandler('coc_start', coc_start_handler),
-            CommandHandler('coc_enable', coc_enable_handler),
-            CommandHandler('coc_disable', coc_disable_handler),
+            CommandHandler('clash', clash_handler),
+            CommandHandler('clash_start', clash_start_handler),
+            CommandHandler('clash_enable', clash_enable_handler),
+            CommandHandler('clash_disable', clash_disable_handler),
             MessageHandler(Filters.all, mute_handler)
         ]]
 

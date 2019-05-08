@@ -48,7 +48,7 @@ class ClashExclude(Base):
     __tablename__ = 'clash_exclude'
 
     username = Column('username', Unicode(255), primary_key=True)
-    chat_id = Column('chat_id', Unicode(255))
+    chat_id = Column('chat_id', Unicode(255), primary_key=True)
 
 
 class Answers(Base):

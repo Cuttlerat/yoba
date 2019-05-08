@@ -24,8 +24,8 @@ Yet One Bot Assistant - just a funny telegeram bot.
 /crypto                 - Crypto-currency exchange rate
 /mute_on                - Turn on auto ban (readonly) for all messages for 5 minutes (except admins)
 /mute_off               - Turn off auto ban
-/coc                    - Create CoC competition (https://condingame.com)
-/coc_start              - Start CoC competition
+/clash                    - Create CoC competition (https://condingame.com)
+/clash_start              - Start CoC competition
 ```
 
 ## Starting
@@ -40,8 +40,8 @@ Add your telegram username, tokens, and database path into `./bot/config/config.
 tokens:
   tg_token: YOUR_TOKEN       # Register your bot here: https://t.me/BotFather
   weather_token: YOUR_TOKEN  # You can get a weather token here: http://openweathermap.org/
-  coc_remcg: COOKIE          # You can take it from https://codingame.com cookies
-  coc_secret: SECRET         # You can take it from https://codingame.com requests
+  clash_remcg: COOKIE          # You can take it from https://codingame.com cookies
+  clash_secret: SECRET         # You can take it from https://codingame.com requests
 telegram:
   mode: Polling # or Webhook
   webhook_port: 30222

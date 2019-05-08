@@ -15,8 +15,11 @@ class Config:
 
         self.__tg_token = cfg['tokens']['tg_token'] if 'tg_token' in cfg['tokens'] else None
         self.__weather_token = cfg['tokens']['weather_token'] if 'weather_token' in cfg['tokens'] else None
-        self.__coc_remcg = cfg['tokens']['coc_remcg'] if 'coc_remcg' in cfg['tokens'] else None
-        self.__coc_secret = cfg['tokens']['coc_secret'] if 'coc_secret' in cfg['tokens'] else None
+        self.__clash_remcg = cfg['tokens']['clash_remcg'] if 'clash_remcg' in cfg['tokens'] else None
+        self.__clash_remember_me = cfg['tokens']['clash_remember_me'] if 'clash_remember_me' in cfg['tokens'] else None
+        self.__clash_secret = cfg['tokens']['clash_secret'] if 'clash_secret' in cfg['tokens'] else None
+        self.__clash_cg_session = cfg['tokens']['clash_cg_session'] if 'clash_cg_session' in cfg['tokens'] else None
+
 
         if database_path is None:
             self.__db_host = cfg['database']['host'] if 'host' in cfg['database'] else None
@@ -45,15 +48,24 @@ class Config:
             raise NotImplementedError("Weather token in config-file is not declared")
         return self.__weather_token
 
-    def coc_remcg(self):
-        if self.__coc_remcg is None:
-            raise NotImplementedError("coc_remcg in config-file is not declared")
-        return self.__coc_remcg
+    def clash_remcg(self):
+        if self.__clash_remcg is None:
+            raise NotImplementedError("clash_remcg in config-file is not declared")
+        return self.__clash_remcg
+    def clash_remember_me(self):
+        if self.__clash_remember_me is None:
+            raise NotImplementedError("clash_remember_me in config-file is not declared")
+        return self.__clash_remember_me
 
-    def coc_secret(self):
-        if self.__coc_secret is None:
-            raise NotImplementedError("coc_secret in config-file is not declared")
-        return self.__coc_secret
+    def clash_cg_session(self):
+        if self.__clash_cg_session is None:
+            raise NotImplementedError("clash_cg_session in config-file is not declared")
+        return self.__clash_cg_session
+
+    def clash_secret(self):
+        if self.__clash_secret is None:
+            raise NotImplementedError("clash_secret in config-file is not declared")
+        return self.__clash_secret
 
     def telegram_mode(self):
         if self.__tg_mode is None:

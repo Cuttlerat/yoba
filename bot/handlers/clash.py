@@ -5,12 +5,17 @@ import json
 from models.models import connector, ClashExclude, Pingers
 from sqlalchemy import and_
 
-def coc(config, bot, update):
+def clash(config, bot, update):
     last_game={}
+    username = update.message.from_user.username
+
     r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
         headers={"content-type":"application/json;charset=UTF-8",
-                 "cookie":"remcg={}".format(config.coc_remcg())},
-        data='[{}, {{"SHORT":true}}]'.format(config.coc_secret()))
+                 "cookie":"remcg={remcg};rememberMe={remember_me};cgSession={cg_session}".format(
+                     remcg=config.clash_remcg(),
+                     remember_me=config.clash_remember_me(),
+                     cg_session=config.clash_cg_session())},
+        data='[{}, {{"SHORT":true}}]'.format(config.clash_secret()))
 
     if r.status_code == 200:
 
@@ -20,51 +25,60 @@ def coc(config, bot, update):
             users = [ x for x in all_matches if x not in exclude ]
             users = [ x for x in users for x in x ]
             out_text = ""
-        coc_id = json.loads(r.text)["success"]["publicHandle"]
+        clash_id = json.loads(r.text)["success"]["publicHandle"]
         message = """
-Please send /coc_disable if you don't want to be notified about new CoC games
+Please send /clash_disable if you don't want to be notified about new CoC games
 
-https://www.codingame.com/clashofcode/clash/{coc_id}
+https://www.codingame.com/clashofcode/clash/{clash_id}
 
 {users}
-        """.format(coc_id=coc_id, users=" ".join(["@{}".format(user) for user in users]))
-        last_game["coc_id"] = coc_id
+        """.format(clash_id=clash_id, users=" ".join(["@{}".format(user) for user in users]))
+        last_game["clash_id"] = clash_id
     else:
-        coc_id = "Error"
+        clash_id = "Error"
         message = "Something went wrong..."
 
     sent = bot.send_message(chat_id=update.message.chat_id,
                      text=message)
+    last_game["username"] = username
     last_game["message_id"] = sent.message_id
 
-    with open("/tmp/coc_{}".format(update.message.chat_id), "w") as file:
+    with open("/tmp/clash_{}".format(update.message.chat_id), "w") as file:
         file.write(json.dumps(last_game)) 
 
 
-    log_print('Clash of Code "{}"'.format(coc_id))
+    log_print('Clash of Code "{}"'.format(clash_id))
 
 
-def coc_start(config, bot, update):
+def clash_start(config, bot, update):
+
+    username = update.message.from_user.username
 
     try:
-        with open("/tmp/coc_{}".format(update.message.chat_id), "r") as file:
+        with open("/tmp/clash_{}".format(update.message.chat_id), "r") as file:
             last_game = json.loads(file.read())
     except IOError:
-        last_game = {"coc_id":"", "message_id":""}
+        last_game = {"clash_id":"", "message_id":"", "username": username}
 
-    if last_game["coc_id"]:
-        r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/startClashByHandle',
-            headers={"content-type":"application/json;charset=UTF-8",
-                     "cookie":"remcg={}".format(config.coc_remcg())},
-            data='[{coc_secret}, "{coc_id}"]'.format(coc_secret=config.coc_secret(),
-                coc_id=last_game["coc_id"]))
+    if last_game["clash_id"]:
+        if last_game["username"] == username
+            r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/startClashByHandle',
+                headers={"content-type":"application/json;charset=UTF-8",
+                         "cookie":"remcg={remcg};rememberMe={remember_me};cgSession={cg_session}".format(
+                             remcg=config.clash_remcg(),
+                             remember_me=config.clash_remember_me(),
+                             cg_session=config.clash_cg_session())},
+                data='[{clash_secret}, "{clash_id}"]'.format(clash_secret=config.clash_secret(),
+                    clash_id=last_game["clash_id"]))
 
-        if r.status_code == 200:
-            message = 'CoC is about to start! Hurry up!'
+            if r.status_code == 200:
+                message = 'CoC is about to start! Hurry up!'
+            else:
+                message = 'Could not start "{}" CoC game...'
         else:
-            message = 'Could not start "{}" CoC game...'
+            message = 'Only @{} is allowed to start the game'.format(username)
     else:
-        last_game["coc_id"] = "None"
+        last_game["clash_id"] = "None"
         message = "Could not find last CoC id"
 
     if last_game["message_id"]:
@@ -76,11 +90,11 @@ def coc_start(config, bot, update):
         bot.send_message(chat_id=update.message.chat_id,
                          text=message,
                          parse_mode="markdown")
-    if last_game["coc_id"] != "None":
-        log_print('Clash of Code "{}" started'.format(last_game["coc_id"]))
+    if last_game["clash_id"] != "None":
+        log_print('Clash of Code "{}" started'.format(last_game["clash_id"]))
 
 
-def coc_disable(config, bot, update):
+def clash_disable(config, bot, update):
     username = update.message.from_user.username
     chat_id = update.message.chat_id
     message_id = update.message.message_id
@@ -97,13 +111,13 @@ def coc_disable(config, bot, update):
                         username=username,
                         chat_id=chat_id)
                 ses.add(exclude)
-                msg = "You won't get any CoC notifications anymore. You can enable notifcations by /coc_enable"
+                msg = "You won't get any CoC notifications anymore. You can enable notifcations by /clash_enable"
     bot.send_message(chat_id=update.message.chat_id,
             reply_to_message_id=message_id,
             text=msg)
     log_print('Clash of Code enable', username)
 
-def coc_enable(config, bot, update):
+def clash_enable(config, bot, update):
     username = update.message.from_user.username
     chat_id = update.message.chat_id
     message_id = update.message.message_id
