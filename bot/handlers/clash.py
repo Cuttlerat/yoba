@@ -76,7 +76,7 @@ def clash_start(config, bot, update):
             else:
                 message = 'Could not start "{}" CoC game...'
         else:
-            message = 'Only @{} is allowed to start the game'.format(username)
+            message = 'Only @{} is allowed to start the game'.format(last_game["username"])
     else:
         last_game["clash_id"] = "None"
         message = "Could not find last CoC id"
