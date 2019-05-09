@@ -4,6 +4,7 @@ import json
 from models.models import connector, ClashExclude, Pingers
 from sqlalchemy import and_
 import datetime
+from tabulate import tabulate
 
 def clash(config, bot, update):
     last_game={}
@@ -191,25 +192,23 @@ def clash_results(config, bot, update, args):
                     clash_mode=results["success"]["mode"].capitalize(),
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if results["success"]["mode"] == "SHORTEST":
-                    message += "*Position* | *Username* | *Score* | *Time* | *Characters*\n"
                     for player in results["success"]["players"]:
-                        leaderboard.insert(player["rank"], 
-                        '{position} | {username} | {score} | {time} | {characters}'.format(
-                            username=player["codingamerNickname"],
-                            score='{}%'.format(player["score"]),
-                            position=player["rank"],
-                            time=str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0],
-                            characters=player["criterion"]))
+                        leaderboard.insert(player["rank"], [
+                            player["codingamerNickname"],
+                            '{}%'.format(player["score"]),
+                            player["rank"],
+                            str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0],
+                            player["criterion"]])
+                    message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*", "Characters"], tablefmt='orgtbl')
                 else:
-                    message += "*Position* | *Username* | *Score* | *Time*\n"
                     for player in results["success"]["players"]:
-                        leaderboard.insert(player["rank"], 
-                        '{position} | {username} | {score} | {time}'.format(
-                            username=player["codingamerNickname"],
-                            score='{}%'.format(player["score"]),
-                            position=player["rank"],
-                            time=str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0]))
-                message += "\n".join(sorted(leaderboard))
+                        leaderboard.insert(player["rank"], [
+                            player["codingamerNickname"],
+                            '{}%'.format(player["score"]),
+                            player["rank"],
+                            str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0]])
+                    message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*"], tablefmt='orgtbl')
+                message += "\n".join(
                 message += "\n"
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
