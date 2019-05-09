@@ -150,3 +150,31 @@ def clash_enable(config, bot, update):
             parse_mode="markdown")
     log_print('Clash of Code enable', username)
 
+def clash_results(config, bot, update, args):
+    if args:
+        clash_ids = args
+    else:
+        try:
+            with open("/tmp/clash_{}".format(update.message.chat_id), "r") as file:
+                clash_ids = [json.loads(file.read())["clash_id"]]
+        except IOError:
+            clash_ids = []
+
+    if not clash_id:
+        clash_results_usage()
+        return
+
+    message = {}
+    for clash_id in clash_ids
+        r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/findClashReportInfoByHandle',
+            headers={"content-type":"application/json;charset=UTF-8",
+            data='[{}]'.format(clash_id))
+
+        if r.status_code == 200:
+            message[clash_id] = json.loads(r.text)
+
+     bot.send_message(chat_id=update.message.chat_id,
+         text=message,
+         parse_mode="markdown")
+
+    log_print('Clash of Code results for {}', clash_ids)
