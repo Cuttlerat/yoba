@@ -211,8 +211,7 @@ def clash_results(config, bot, update, args):
                             score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"])))
-                    for player in sorted(leaderboard):
-                        message += player
+                    message += "\n".join(sorted(leaderboard))
                 message += "\n"
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
