@@ -191,30 +191,30 @@ def clash_results(config, bot, update, args):
                     clash_id=clash_id,
                     clash_mode=clash_mode,
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
-                if results["success"]["mode"] == "SHORTEST":
-                    for player in results["success"]["players"]:
-                        cache = []
-                        cache.insert(0, player["rank"])
-                        cache.insert(1, player["codingamerNickname"])
-                        cache.insert(2, '{}%'.format(player["score"]))
-                        cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
-                        cache.insert(4, player["criterion"])
-                        leaderboard.insert(player["rank"], cache)
-                    message += '```\n'
-                    message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time", "Characters"], tablefmt='fancy_grid')
-                    message += '```'
-                else:
-                    for player in results["success"]["players"]:
-                        cache = []
-                        cache.insert(0, player["rank"])
-                        cache.insert(1, player["codingamerNickname"])
-                        cache.insert(2, '{}%'.format(player["score"]))
-                        cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
-                        leaderboard.insert(player["rank"], cache)
-                    message += '```\n'
-                    message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='fancy_grid')
-                    message += '```'
-                message += "\n"
+                if clash_mode:
+                    if clash_mode == "SHORTEST":
+                        for player in results["success"]["players"]:
+                            cache = []
+                            cache.insert(0, player["rank"])
+                            cache.insert(1, player["codingamerNickname"])
+                            cache.insert(2, '{}%'.format(player["score"]))
+                            cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                            cache.insert(4, player["criterion"])
+                            leaderboard.insert(player["rank"], cache)
+                        message += '```\n'
+                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time", "Characters"], tablefmt='fancy_grid')
+                        message += '```'
+                    else:
+                        for player in results["success"]["players"]:
+                            cache = []
+                            cache.insert(0, player["rank"])
+                            cache.insert(1, player["codingamerNickname"])
+                            cache.insert(2, '{}%'.format(player["score"]))
+                            cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                            leaderboard.insert(player["rank"], cache)
+                        message += '```\n'
+                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='fancy_grid')
+                        message += '```'
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
                 bot.send_message(chat_id=update.message.chat_id,
