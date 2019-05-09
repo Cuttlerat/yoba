@@ -189,7 +189,7 @@ def clash_results(config, bot, update, args):
                 '''.format(
                     clash_id=clash_id,
                     clash_mode=results["success"]["mode"].capitalize(),
-                    clash_mode="Finished" if results["success"]["finished"] else "In progress")
+                    clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if results["success"]["mode"] == "SHORTEST":
                     message += "*Position* | *Username* | *Score* | *Time* | *Characters*\n"
                     for player in results["success"]["players"]:
