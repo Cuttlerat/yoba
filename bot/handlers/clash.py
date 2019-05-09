@@ -193,21 +193,27 @@ def clash_results(config, bot, update, args):
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if results["success"]["mode"] == "SHORTEST":
                     for player in results["success"]["players"]:
-                        leaderboard.insert(player["rank"], [
-                            player["codingamerNickname"],
-                            '{}%'.format(player["score"]),
-                            player["rank"],
-                            str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0],
-                            player["criterion"]])
-                    message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*", "Characters"], tablefmt='orgtbl')
+                        cache = []
+                        cache.insert(0, player["codingamerNickname"])
+                        cache.insert(1, '{}%'.format(player["score"]))
+                        cache.insert(2, player["rank"])
+                        cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                        cache.insert(4, player["criterion"]])
+                        leaderboard.insert(player["rank"], sorted(cache))
+                    message += '```'
+                    message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*", "*Characters*"], tablefmt='orgtbl')
+                    message += '```'
                 else:
                     for player in results["success"]["players"]:
-                        leaderboard.insert(player["rank"], [
-                            player["codingamerNickname"],
-                            '{}%'.format(player["score"]),
-                            player["rank"],
-                            str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0]])
+                        cache = []
+                        cache.insert(0, player["codingamerNickname"])
+                        cache.insert(1, '{}%'.format(player["score"]))
+                        cache.insert(2, player["rank"])
+                        cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                        leaderboard.insert(player["rank"], sorted(cache))
+                    message += '```'
                     message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*"], tablefmt='orgtbl')
+                    message += '```'
                 message += "\n"
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
