@@ -5,7 +5,7 @@ from models.models import connector, ClashExclude, Pingers
 from sqlalchemy import and_
 import datetime
 from tabulate import tabulate
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 def clash(config, bot, update):
     last_game={}
@@ -229,7 +229,8 @@ def clash_results(config, bot, update, args):
 
                 img = Image.new('RGB', (300, 250), color = (90, 90, 90))
                 d = ImageDraw.Draw(img)
-                d.text((10,10), message.encode('utf-8'), fill=(230,230,230))
+                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 15)
+                d.text((10,10), message.encode('utf-8'), font=font, fill=(230,230,230))
                 img.save('/tmp/report.png')
                 bot.sendPhoto(chat_id=update.message.chat_id,
                               photo=open('/tmp/report.png', 'rb'),

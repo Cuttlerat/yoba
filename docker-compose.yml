@@ -9,5 +9,6 @@ services:
             dockerfile: dockerfile/yoba.Dockerfile
         volumes:
           - ./bot/data:/yoba/data
+          - ./bot/fonts:/usr/share/fonts:ro
           - ./bot/config:/yoba/config:ro
         restart: always
