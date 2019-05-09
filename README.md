@@ -174,7 +174,7 @@ Usage:
 
 ## Clash of code
 
-These commands will help you to create a new Clash of Code game and not miss any games created by someone else.
+These commands will help you to create a new [Clash of Code](https://www.codingame.com/multiplayer/clashofcode) game and not miss any games created by someone else.
 
 ### Create a new game
 
@@ -210,7 +210,7 @@ Cutlebot:
 You will be notified when a new game is created!
 ```
 
-### Manually start the last game
+### Manually start the last created game
 
 Remember that only the creator can start the game.
 
