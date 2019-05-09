@@ -188,7 +188,7 @@ def clash_results(config, bot, update, args):
                 '''.format(
                     clash_id=clash_id,
                     clash_type=results["success"]["mode"])
-                for player in sorted(results["success"]["players"], key=results["success"]["players"]["position"]:
+                for player in sorted(results["success"]["players"], key=results["success"]["players"]["position"]):
                     message += '''
                     {}
                     '''.format(player)
