@@ -158,7 +158,7 @@ def clash_results_usage(config, bot, update):
 def clash_results(config, bot, update, args):
 
     clash_ids = []
-    message = {}
+    results = {}
 
     if args:
         clash_ids = args
@@ -178,10 +178,29 @@ def clash_results(config, bot, update, args):
                           headers={"content-type":"application/json;charset=UTF-8"},
                           data='[{}]'.format(clash_id))
         if r.status_code == 200:
-            message[clash_id] = json.loads(r.text)
+            results = json.loads(r.text)
+            if results["success"]:
+                message += '''
+                *Game id*: {clash_id}
+                *Game mode*: {clash_mode}
+
+                *Leaderboard*
+                '''.format(
+                    clash_id=clash_id
+                    clash_type=results["success"]["mode"])
+                for player in sorted(results["success"]["players"], key=results["success"]["players"]["position"]:
+                    message += '''
+                    {}
+                    '''.format(player)
+                    #    username=player["codingamerNickname"]
+                    #    score='{}%'.format(player["score"])
+
+
+                message = "\n".join([i.strip() for i in start_text.split('\n')])
+
 
     bot.send_message(chat_id=update.message.chat_id,
                      text=message,
                      parse_mode="markdown")
 
-    log_print('Clash of Code results for {}', clash_ids)
+    log_print('Clash of Code results for {}', ", ".join(clash_ids))
