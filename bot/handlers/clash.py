@@ -172,13 +172,13 @@ def clash_results(config, bot, update, args):
     message = {}
     for clash_id in clash_ids:
         r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/findClashReportInfoByHandle',
-            headers={"content-type":"application/json;charset=UTF-8"},
-            data='[{}]'.format(clash_id))
+                          headers={"content-type":"application/json;charset=UTF-8"},
+                          data='[{}]'.format(clash_id))
         if r.status_code == 200:
             message[clash_id] = json.loads(r.text)
 
-     bot.send_message(chat_id=update.message.chat_id,
-            text=message,
-            parse_mode="markdown")
+    bot.send_message(chat_id=update.message.chat_id,
+                     text=message,
+                     parse_mode="markdown")
 
     log_print('Clash of Code results for {}', clash_ids)
