@@ -229,7 +229,7 @@ def clash_results(config, bot, update, args):
 
                 img = Image.new('RGB', (1000, 500), color = (130, 130, 130))
                 d = ImageDraw.Draw(img)
-                d.text((10,10), message, fill=(230,230,230))
+                d.text((10,10), message.encode('utf-8'), fill=(230,230,230))
                 img.save('/tmp/report.png')
                 bot.sendPhoto(chat_id=update.message.chat_id,
                               photo='/tmp/report.png',
