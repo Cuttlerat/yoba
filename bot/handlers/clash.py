@@ -84,7 +84,7 @@ def clash_start(config, bot, update):
                 log_print('Clash of Code "{}" started'.format(last_game["clash_id"]))
             else:
                 message = 'Could not start "{}" Clash game...'.format(
-                    last_game["clash_id")
+                    last_game["clash_id"])
                 log_print(message)
         else:
             last_game["message_id"] = update.message.message_id
