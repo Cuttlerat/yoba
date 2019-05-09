@@ -159,6 +159,7 @@ def clash_results(config, bot, update, args):
 
     clash_ids = []
     results = {}
+    message = ''
 
     if args:
         clash_ids = args
