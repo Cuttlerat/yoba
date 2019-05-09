@@ -200,7 +200,7 @@ def clash_results(config, bot, update, args):
                         cache.insert(4, player["criterion"])
                         leaderboard.insert(player["rank"], cache)
                     message += '```\n'
-                    message += tabulate(sorted(leaderboard), headers=["Position", "Username", "Score", "Time", "Characters"], tablefmt='github')
+                    message += tabulate(sorted(leaderboard), headers=["Position", "Username", "Score", "Time", "Characters"], tablefmt='fancy_grid')
                     message += '```'
                 else:
                     for player in results["success"]["players"]:
@@ -211,7 +211,7 @@ def clash_results(config, bot, update, args):
                         cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
                         leaderboard.insert(player["rank"], cache)
                     message += '```\n'
-                    message += tabulate(sorted(leaderboard), headers=["Position", "Username", "Score", "Time"], tablefmt='github')
+                    message += tabulate(sorted(leaderboard), headers=["Position", "Username", "Score", "Time"], tablefmt='fancy_grid')
                     message += '```'
                 message += "\n"
 
