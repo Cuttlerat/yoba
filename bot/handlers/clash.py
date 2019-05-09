@@ -198,7 +198,7 @@ def clash_results(config, bot, update, args):
                         cache.insert(1, '{}%'.format(player["score"]))
                         cache.insert(2, player["rank"])
                         cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
-                        cache.insert(4, player["criterion"]])
+                        cache.insert(4, player["criterion"])
                         leaderboard.insert(player["rank"], sorted(cache))
                     message += '```'
                     message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*", "*Characters*"], tablefmt='orgtbl')
