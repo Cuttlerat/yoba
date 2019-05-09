@@ -156,6 +156,10 @@ def clash_results_usage(config, bot, update):
          parse_mode="markdown")
 
 def clash_results(config, bot, update, args):
+
+    clash_ids = []
+    message = {}
+
     if args:
         clash_ids = args
     else:
@@ -163,13 +167,12 @@ def clash_results(config, bot, update, args):
             with open("/tmp/clash_{}".format(update.message.chat_id), "r") as file:
                 clash_ids = [json.loads(file.read())["clash_id"]]
         except IOError:
-            clash_ids = []
+            pass
 
-    if not clash_id:
+    if not clash_ids:
         clash_results_usage(config, bot, update)
         return
 
-    message = {}
     for clash_id in clash_ids:
         r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/findClashReportInfoByHandle',
                           headers={"content-type":"application/json;charset=UTF-8"},
