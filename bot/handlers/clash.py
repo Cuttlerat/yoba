@@ -191,7 +191,7 @@ def clash_results(config, bot, update, args):
                     clash_id=clash_id,
                     clash_mode=results["success"]["mode"].capitalize())
                 if results["success"]["mode"] == "SHORTEST":
-                    messge += "*Position* | *Username* | *Score* | *Time* | *Characters*"
+                    message += "*Position* | *Username* | *Score* | *Time* | *Characters*"
                     for player in results["success"]["players"]:
                         message += '''
                         {position} | {username} | {score} | {time} | {characters}\n
@@ -202,7 +202,7 @@ def clash_results(config, bot, update, args):
                             time=datetime.timedelta(milliseconds=player["duration"]),
                             characters=player["criterion"])
                 else:
-                    messge += "*Position* | *Username* | *Score* | *Time*"
+                    message += "*Position* | *Username* | *Score* | *Time*"
                     for player in results["success"]["players"]:
                         message += '''
                         {position} | {username} | {score} | {time}\n
