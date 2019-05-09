@@ -5,6 +5,7 @@ from models.models import connector, ClashExclude, Pingers
 from sqlalchemy import and_
 import datetime
 from tabulate import tabulate
+from PIL import Image, ImageDraw
 
 def clash(config, bot, update):
     last_game={}
@@ -225,9 +226,13 @@ def clash_results(config, bot, update, args):
                         message += '```'
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
-                bot.send_message(chat_id=update.message.chat_id,
-                                 reply_to_message_id=update.message.message_id,
-                                 text=message,
-                                 parse_mode="markdown")
+
+		img = Image.new('RGB', (100, 30), color = (130, 130, 130))
+		d = ImageDraw.Draw(img)
+		d.text((10,10), message, fill=(230,230,230))
+		img.save('/tmp/report.png')
+                bot.sendPhoto(chat_id=update.message.chat_id,
+			      photo='/tmp/report.png',
+                              reply_to_message_id=update.message.message_id)
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
