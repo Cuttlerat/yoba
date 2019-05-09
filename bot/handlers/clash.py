@@ -162,7 +162,7 @@ def clash_results(config, bot, update, args):
     results = {}
 
     if args:
-        clash_ids = args
+        clash_ids = (list(set(args)))
     else:
         try:
             with open("/tmp/clash_{}".format(update.message.chat_id), "r") as file:
