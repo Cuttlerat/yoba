@@ -69,18 +69,18 @@ if __name__ == '__main__':
                  clash_disable,
                  clash_results]
     
-    db_handler,
-    weather_handler,
-    me_handler,
-    wset_handler,
-    parser_handler,
-    mute_handler,
-    mute_on_handler,
-    mute_off_handler,
-    clash_handler,
-    clash_start_handler,
-    clash_enable_handler,
-    clash_disable_handler,
+    db_handler,\
+    weather_handler,\
+    me_handler,\
+    wset_handler,\
+    parser_handler,\
+    mute_handler,\
+    mute_on_handler,\
+    mute_off_handler,\
+    clash_handler,\
+    clash_start_handler,\
+    clash_enable_handler,\
+    clash_disable_handler,\
     clash_results_handler = (handler(act, config) for act in functions)
 
     log_print('Started')
