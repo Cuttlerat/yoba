@@ -1,4 +1,4 @@
-rom services.crypto_compare import CryptoCompare
+from services.crypto_compare import CryptoCompare
 from logger import log_print
 import requests
 import json
