@@ -200,7 +200,7 @@ def clash_results(config, bot, update, args):
                             score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"]),
-                            characters=player["criterion"])
+                            characters=player["criterion"]))
                     for player in leaderboard:
                         message += player
                 else:
@@ -212,7 +212,7 @@ def clash_results(config, bot, update, args):
                             username=player["codingamerNickname"],
                             score='{}%'.format(player["score"]),
                             position=player["position"],
-                            time=datetime.timedelta(milliseconds=player["duration"]))
+                            time=datetime.timedelta(milliseconds=player["duration"])))
                     for player in leaderboard:
                         message += player
                 message += "\n"
