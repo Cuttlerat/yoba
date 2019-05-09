@@ -4,6 +4,7 @@ import requests
 import json
 from models.models import connector, ClashExclude, Pingers
 from sqlalchemy import and_
+import datetime
 
 def clash(config, bot, update):
     last_game={}
@@ -188,14 +189,29 @@ def clash_results(config, bot, update, args):
                 *Leaderboard*
                 '''.format(
                     clash_id=clash_id,
-                    clash_mode=results["success"]["mode"])
-                for player in sorted(results["success"]["players"], key=results["success"]["players"]["position"]):
-                    message += '''
-                    {}
-                    '''.format(player)
-                    #    username=player["codingamerNickname"],
-                    #    score='{}%'.format(player["score"])
-
+                    clash_mode=results["success"]["mode"].capitalize())
+                if results["success"]["mode"] == "SHORTEST":
+                    messge += "*Position* | *Username* | *Score* | *Time* | *Characters*"
+                    for player in results["success"]["players"]:
+                        message += '''
+                        {position} | {username} | {score} | {time} | {characters}\n
+                        '''.format(
+                            username=player["codingamerNickname"],
+                            score='{}%'.format(player["score"],
+                            position=player["position"],
+                            time=datetime.timedelta(milliseconds=player["duration"]),
+                            position=player["criterion"])
+                else:
+                    messge += "*Position* | *Username* | *Score* | *Time*"
+                    for player in results["success"]["players"]:
+                        message += '''
+                        {position} | {username} | {score} | {time}\n
+                        '''.format(
+                            username=player["codingamerNickname"],
+                            score='{}%'.format(player["score"],
+                            position=player["position"],
+                            time=datetime.timedelta(milliseconds=player["duration"]))
+                message += "\n"
 
                 message = "\n".join([i.strip() for i in start_text.split('\n')])
 
