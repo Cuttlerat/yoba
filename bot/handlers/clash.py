@@ -232,7 +232,7 @@ def clash_results(config, bot, update, args):
                 d.text((10,10), message.encode('utf-8'), fill=(230,230,230))
                 img.save('/tmp/report.png')
                 bot.sendPhoto(chat_id=update.message.chat_id,
-                              photo='/tmp/report.png',
+                              photo=open('/tmp/report.png', 'rb'),
                               reply_to_message_id=update.message.message_id)
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
