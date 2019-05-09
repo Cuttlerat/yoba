@@ -152,9 +152,17 @@ def clash_enable(config, bot, update):
     log_print('Clash of Code enable', username)
 
 def clash_results_usage(config, bot, update):
-     bot.send_message(chat_id=update.message.chat_id,
-         text="Test usage",
-         parse_mode="markdown")
+
+    message="""
+    I haven't found the last game, try to use it like this:
+    ```
+    /clash_results GAME_ID
+    ```
+    """
+    message = "\n".join([i.strip() for i in message.split('\n')])
+    bot.send_message(chat_id=update.message.chat_id,
+                     text=message,
+                     parse_mode="markdown")
 
 def clash_results(config, bot, update, args):
 
@@ -221,7 +229,5 @@ def clash_results(config, bot, update, args):
                                  reply_to_message_id=update.message.message_id,
                                  text=message,
                                  parse_mode="markdown")
-
-
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
