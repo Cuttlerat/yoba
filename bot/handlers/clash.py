@@ -165,7 +165,7 @@ def clash_results(config, bot, update, args):
         return
 
     message = {}
-    for clash_id in clash_ids
+    for clash_id in clash_ids:
         r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/findClashReportInfoByHandle',
             headers={"content-type":"application/json;charset=UTF-8",
             data='[{}]'.format(clash_id))

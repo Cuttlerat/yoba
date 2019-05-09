@@ -24,7 +24,7 @@ from telegram.ext import (
 
 from config import Config
 from handlers.crypto import crypto
-from handlers.clash import clash, clash_start, clash_disable, clash_enable
+from handlers.clash import clash, clash_start, clash_disable, clash_enable, clash_results
 from handlers.db import database_handler
 from handlers.helpers import start, bug, chat_id
 from handlers.parser import parser
@@ -54,9 +54,34 @@ if __name__ == '__main__':
 
     pinger = Pinger()
 
-    functions = [database_handler, weather, me, wset, parser, mute, mute_on, mute_off, clash, clash_start, clash_enable, clash_disable]
-    db_handler, weather_handler, me_handler, wset_handler, parser_handler, mute_handler, mute_on_handler, mute_off_handler, clash_handler, clash_start_handler, clash_enable_handler, clash_disable_handler= \
-        (handler(act, config) for act in functions)
+
+functions = [database_handler,
+             weather,
+             me,
+             wset,
+             parser,
+             mute,
+             mute_on,
+             mute_off,
+             clash,
+             clash_start,
+             clash_enable,
+             clash_disable,
+             clash_results]
+
+db_handler,
+weather_handler,
+me_handler,
+wset_handler,
+parser_handler,
+mute_handler,
+mute_on_handler,
+mute_off_handler,
+clash_handler,
+clash_start_handler,
+clash_enable_handler,
+clash_disable_handler,
+clash_results_handler = (handler(act, config) for act in functions)
 
     log_print('Started')
 
@@ -88,6 +113,7 @@ if __name__ == '__main__':
             CommandHandler('clash_start', clash_start_handler),
             CommandHandler('clash_enable', clash_enable_handler),
             CommandHandler('clash_disable', clash_disable_handler),
+            CommandHandler('clash_results', clash_results_handler, pass_args=True),
             MessageHandler(Filters.all, mute_handler)
         ]]
 
