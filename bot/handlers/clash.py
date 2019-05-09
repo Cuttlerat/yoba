@@ -30,11 +30,11 @@ def clash(config, bot, update):
         message = """
 Clash of Code!
 
-Please send /clash_disable if you don't want to be notified about new CoC games
-
 https://www.codingame.com/clashofcode/clash/{clash_id}
 
 {users}
+
+Please send /clash_disable if you don't want to receive these notifications
         """.format(clash_id=clash_id, users=users)
         last_game["clash_id"] = clash_id
     else:
@@ -76,13 +76,16 @@ def clash_start(config, bot, update):
                     clash_id=last_game["clash_id"]))
 
             if r.status_code == 200:
+                message="The game is about to start, hurry up!"
                 if last_game["users"]:
-                    message = '{}\n\nClash is about to start! Hurry up!'.format(last_game["users"])
-                else:
-                    message = 'Clash is about to start! Hurry up!'
+                    message = '{users}\n\n{msg}'.format(
+                        users=last_game["users"],
+                        msg=message)
                 log_print('Clash of Code "{}" started'.format(last_game["clash_id"]))
             else:
-                message = 'Could not start "{}" a Clash game...'
+                message = 'Could not start "{}" Clash game...'.format(
+                    last_game["clash_id")
+                log_print(message)
         else:
             last_game["message_id"] = update.message.message_id
             message = 'Only @{} is allowed to start the game'.format(last_game["username"])
@@ -106,30 +109,30 @@ def clash_disable(config, bot, update):
     chat_id = update.message.chat_id
     message_id = update.message.message_id
     if not username:
-        msg = "You don't have username"
+        msg = "The unnamed ones are free from these silly humans vanity"
     else:
         with connector(config.engine()) as ses:
             all_excludes = ses.query(ClashExclude.username).filter(ClashExclude.chat_id == update.message.chat_id).all()
             all_excludes = [ x for x in all_excludes for x in x ]
             if username in all_excludes:
-                msg = "You are already excluded"
+                msg = "You've already disabled notifications"
             else:
                 exclude = ClashExclude( 
                         username=username,
                         chat_id=chat_id)
                 ses.add(exclude)
-                msg = "You won't get any CoC notifications anymore. You can enable notifcations by /clash_enable"
+                msg = "Now you won't receive any notifications about Clash of Code games"
     bot.send_message(chat_id=update.message.chat_id,
             reply_to_message_id=message_id,
             text=msg)
-    log_print('Clash of Code enable', username)
+    log_print('Clash of Code disable', username)
 
 def clash_enable(config, bot, update):
     username = update.message.from_user.username
     chat_id = update.message.chat_id
     message_id = update.message.message_id
     if not username:
-        msg = "You don't have username"
+        msg = "The unnamed ones are free from these silly humans vanity"
     else:
         with connector(config.engine()) as ses:
             all_excludes = ses.query(ClashExclude.username).filter(ClashExclude.chat_id == update.message.chat_id).all()
@@ -138,12 +141,12 @@ def clash_enable(config, bot, update):
                 ses.query(ClashExclude).filter(and_(
                     ClashExclude.chat_id == chat_id,
                     ClashExclude.username == username)).delete()
-                msg = "You will get CoC notifications now!"
+                msg = "You will be notified when a new game is created!"
             else:
-                msg = "You are already excluded"
+                msg = "You've already subscribed"
     bot.send_message(chat_id=update.message.chat_id,
             reply_to_message_id=message_id,
             text=msg,
             parse_mode="markdown")
-    log_print('Clash of Code disable', username)
+    log_print('Clash of Code enable', username)
 
