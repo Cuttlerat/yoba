@@ -212,6 +212,8 @@ You will be notified when a new game is created!
 
 ### Manually start the last game
 
+Remember that only the creator can start the game.
+
 ```
 /clash_start
 
