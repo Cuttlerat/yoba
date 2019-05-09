@@ -1,4 +1,4 @@
-from services.crypto_compare import CryptoCompare
+rom services.crypto_compare import CryptoCompare
 from logger import log_print
 import requests
 import json
@@ -213,7 +213,7 @@ def clash_results(config, bot, update, args):
                             time=datetime.timedelta(milliseconds=player["duration"]))
                 message += "\n"
 
-                message = "\n".join([i.strip() for i in start_text.split('\n')])
+                message = "\n".join([i.strip() for i in message.split('\n')])
 
 
     bot.send_message(chat_id=update.message.chat_id,
