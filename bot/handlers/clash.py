@@ -159,7 +159,6 @@ def clash_results(config, bot, update, args):
 
     clash_ids = []
     results = {}
-    message = ''
 
     if args:
         clash_ids = args
@@ -182,7 +181,7 @@ def clash_results(config, bot, update, args):
             results = json.loads(r.text)
             if results["success"]:
                 leaderboard = []
-                message += '''
+                message = '''
                 *Game id*: {clash_id}
                 *Game mode*: {clash_mode}
 
