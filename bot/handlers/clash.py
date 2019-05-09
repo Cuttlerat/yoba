@@ -197,7 +197,7 @@ def clash_results(config, bot, update, args):
                         {position} | {username} | {score} | {time} | {characters}\n
                         '''.format(
                             username=player["codingamerNickname"],
-                            score='{}%'.format(player["score"],
+                            score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"]),
                             position=player["criterion"])
@@ -208,7 +208,7 @@ def clash_results(config, bot, update, args):
                         {position} | {username} | {score} | {time}\n
                         '''.format(
                             username=player["codingamerNickname"],
-                            score='{}%'.format(player["score"],
+                            score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"]))
                 message += "\n"
