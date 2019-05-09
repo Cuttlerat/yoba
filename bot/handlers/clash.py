@@ -199,7 +199,7 @@ def clash_results(config, bot, update, args):
                     clash_id=clash_id,
                     clash_mode=clash_mode,
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
-                if clash_mode:
+                if clash_mode != "Unknown":
                     if clash_mode == "SHORTEST":
                         for player in results["success"]["players"]:
                             cache = []
