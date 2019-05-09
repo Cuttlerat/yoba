@@ -24,8 +24,10 @@ Yet One Bot Assistant - just a funny telegeram bot.
 /crypto                 - Crypto-currency exchange rate
 /mute_on                - Turn on auto ban (readonly) for all messages for 5 minutes (except admins)
 /mute_off               - Turn off auto ban
-/clash                    - Create CoC competition (https://condingame.com)
-/clash_start              - Start CoC competition
+/clash                  - Create CoC competition (https://condingame.com)
+/clash_start            - Start CoC competition
+/clash_enable           - Enable CoC notifications
+/clash_disable          - Disable CoC notifications
 ```
 
 ## Starting
@@ -40,8 +42,10 @@ Add your telegram username, tokens, and database path into `./bot/config/config.
 tokens:
   tg_token: YOUR_TOKEN       # Register your bot here: https://t.me/BotFather
   weather_token: YOUR_TOKEN  # You can get a weather token here: http://openweathermap.org/
-  clash_remcg: COOKIE          # You can take it from https://codingame.com cookies
-  clash_secret: SECRET         # You can take it from https://codingame.com requests
+  clash_remcg: COOKIE        # You can take it from https://codingame.com cookies
+  clash_remember_me: COOKIE  # You can take it from https://codingame.com cookies
+  clash_cg_session: COOKIE   # You can take it from https://codingame.com cookies
+  clash_secret: SECRET       # You can take it from https://codingame.com requests
 telegram:
   mode: Polling # or Webhook
   webhook_port: 30222
@@ -168,4 +172,55 @@ Usage:
 /ping_delete [match] - Delete a match  
 ```
 
-**And is it! Enjoy your bot!**
+## Clash of code
+
+These commands will help you to create a new Clash of Code game and not miss any games created by someone else.
+
+### Create a new game
+
+```
+/clash
+
+Cuttlebot:
+
+Clash of Code!
+
+https://www.codingame.com/clashofcode/clash/GAME_ID
+
+@User1 @User2 @User3
+
+Please send /clash_disable if you don't want to receive these notifications
+```
+
+### Disable and enable notifications
+
+```
+/clash_disable
+
+Cutlebot:
+
+Now you won't receive any notifications about Clash of Code games
+```
+
+```
+/clash_enable
+
+Cutlebot:
+
+You will be notified when a new game is created!
+```
+
+### Manually start the last game
+
+```
+/clash_start
+
+Cuttlebot:
+
+The game is about to start, hurry up!
+
+@User1 @User2 @User3
+```
+
+**Enjoy your bot!**
+
