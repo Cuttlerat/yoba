@@ -186,7 +186,6 @@ def clash_results(config, bot, update, args):
                 *Game id*: {clash_id}
                 *Game mode*: {clash_mode}
 
-                *Leaderboard*
                 '''.format(
                     clash_id=clash_id,
                     clash_mode=results["success"]["mode"].capitalize())
@@ -213,10 +212,11 @@ def clash_results(config, bot, update, args):
                 message += "\n"
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
+                bot.send_message(chat_id=update.message.chat_id,
+                                 reply_to_message_id=update.message.message_id,
+                                 text=message,
+                                 parse_mode="markdown")
 
 
-    bot.send_message(chat_id=update.message.chat_id,
-                     text=message,
-                     parse_mode="markdown")
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
