@@ -193,9 +193,8 @@ def clash_results(config, bot, update, args):
                 if results["success"]["mode"] == "SHORTEST":
                     message += "*Position* | *Username* | *Score* | *Time* | *Characters*\n"
                     for player in results["success"]["players"]:
-                        leaderboard.insert(player["position"], '''
-                        {position} | {username} | {score} | {time} | {characters}
-                        '''.format(
+                        leaderboard.insert(player["position"], 
+                        '{position} | {username} | {score} | {time} | {characters}'.format(
                             username=player["codingamerNickname"],
                             score='{}%'.format(player["score"]),
                             position=player["position"],
@@ -206,9 +205,8 @@ def clash_results(config, bot, update, args):
                 else:
                     message += "*Position* | *Username* | *Score* | *Time*\n"
                     for player in results["success"]["players"]:
-                        leaderboard.insert(player["position"], '''
-                        {position} | {username} | {score} | {time}
-                        '''.format(
+                        leaderboard.insert(player["position"], 
+                        '{position} | {username} | {score} | {time}'.format(
                             username=player["codingamerNickname"],
                             score='{}%'.format(player["score"]),
                             position=player["position"],
