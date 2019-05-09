@@ -181,6 +181,7 @@ def clash_results(config, bot, update, args):
         if r.status_code == 200:
             results = json.loads(r.text)
             if results["success"]:
+                leaderboard = []
                 message += '''
                 *Game id*: {clash_id}
                 *Game mode*: {clash_mode}
