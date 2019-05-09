@@ -200,7 +200,7 @@ def clash_results(config, bot, update, args):
                             score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"]),
-                            position=player["criterion"])
+                            characters=player["criterion"])
                 else:
                     messge += "*Position* | *Username* | *Score* | *Time*"
                     for player in results["success"]["players"]:
