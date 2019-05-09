@@ -200,8 +200,6 @@ def clash_results(config, bot, update, args):
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"]),
                             characters=player["criterion"]))
-                    for player in leaderboard:
-                        message += player
                 else:
                     message += "*Position* | *Username* | *Score* | *Time*\n"
                     for player in results["success"]["players"]:
@@ -211,7 +209,7 @@ def clash_results(config, bot, update, args):
                             score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"])))
-                    message += "\n".join(sorted(leaderboard))
+                message += "\n".join(sorted(leaderboard))
                 message += "\n"
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
