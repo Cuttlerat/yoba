@@ -182,13 +182,14 @@ def clash_results(config, bot, update, args):
             results = json.loads(r.text)
             if results["success"]:
                 leaderboard = []
+                clash_mode = results["success"]["mode"].capitalize() if "mode" in results["success"] else "Unknown"
                 message = '''
                 *Game id*: {clash_id}
                 *Game mode*: {clash_mode}
                 *Status*: {clash_status}
                 '''.format(
                     clash_id=clash_id,
-                    clash_mode=results["success"]["mode"].capitalize(),
+                    clash_mode=clash_mode,
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if results["success"]["mode"] == "SHORTEST":
                     for player in results["success"]["players"]:
