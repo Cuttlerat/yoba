@@ -199,7 +199,7 @@ def clash_results(config, bot, update, args):
                         cache.insert(2, player["rank"])
                         cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
                         cache.insert(4, player["criterion"])
-                        leaderboard.insert(player["rank"], sorted(cache))
+                        leaderboard.insert(player["rank"], cache)
                     message += '```'
                     message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*", "*Characters*"], tablefmt='orgtbl')
                     message += '```'
@@ -210,7 +210,7 @@ def clash_results(config, bot, update, args):
                         cache.insert(1, '{}%'.format(player["score"]))
                         cache.insert(2, player["rank"])
                         cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
-                        leaderboard.insert(player["rank"], sorted(cache))
+                        leaderboard.insert(player["rank"], cache)
                     message += '```'
                     message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*"], tablefmt='orgtbl')
                     message += '```'
