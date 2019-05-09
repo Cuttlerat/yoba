@@ -208,7 +208,6 @@ def clash_results(config, bot, update, args):
                             player["rank"],
                             str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0]])
                     message += tabulate(sorted(leaderboard), headers=["*Position*", "*Username*", "*Score*", "*Time*"], tablefmt='orgtbl')
-                message += "\n".join(
                 message += "\n"
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
