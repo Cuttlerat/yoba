@@ -1,4 +1,3 @@
-from services.crypto_compare import CryptoCompare
 from logger import log_print
 import requests
 import json
@@ -191,26 +190,30 @@ def clash_results(config, bot, update, args):
                     clash_id=clash_id,
                     clash_mode=results["success"]["mode"].capitalize())
                 if results["success"]["mode"] == "SHORTEST":
-                    message += "*Position* | *Username* | *Score* | *Time* | *Characters*"
+                    message += "*Position* | *Username* | *Score* | *Time* | *Characters*\n"
                     for player in results["success"]["players"]:
-                        message += '''
-                        {position} | {username} | {score} | {time} | {characters}\n
+                        leaderboard[player["position"]] = '''
+                        {position} | {username} | {score} | {time} | {characters}
                         '''.format(
                             username=player["codingamerNickname"],
                             score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"]),
                             characters=player["criterion"])
+                    for player in leaderboard:
+                        message += player
                 else:
-                    message += "*Position* | *Username* | *Score* | *Time*"
+                    message += "*Position* | *Username* | *Score* | *Time*\n"
                     for player in results["success"]["players"]:
-                        message += '''
-                        {position} | {username} | {score} | {time}\n
+                        leaderboard[player["position"]] = '''
+                        {position} | {username} | {score} | {time}
                         '''.format(
                             username=player["codingamerNickname"],
                             score='{}%'.format(player["score"]),
                             position=player["position"],
                             time=datetime.timedelta(milliseconds=player["duration"]))
+                    for player in leaderboard:
+                        message += player
                 message += "\n"
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
