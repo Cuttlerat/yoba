@@ -5,29 +5,31 @@ Yet One Bot Assistant - just a funny telegeram bot.
 ## Commands
 
 ```
-/bug                    - Link to create an issue on github
-/db <SQL query>         - Manage your database (Only for admins)
-/info                   - Information about this bot
-/ping_add [matches]     - Add casts for users. Admins can use it like this 
-                        + /ping_add @username1 @username2 match1 match2
-/ping_add_me            - Add casts for user which can be randomly chosen in /me command
-/ping_show              - Show all casts for user
-/ping_show_all          - Show all casts from DB for this chat (only for admins)
-/ping_delete [matches]  - Delete matches for user. The same usage for admins as for /ping_add
-/ping_delete_me         - Delete matches for user which can be used in /me
-/ping_drop <Username>   - Delete all matches for user (only for admins)
-/me [message]           - Delete source message and replace it with this one
-                        + <Random cast for user which was added by /ping_add_me> [message]
-/w <City>               - Short form of /w
-/weather <City>         - Weather in a city for now, today and tommorow
-/wset <City>            - Set the default city for /weather
-/crypto                 - Crypto-currency exchange rate
-/mute_on                - Turn on an auto-ban (readonly) for everyone for 5 minutes (except admins)
-/mute_off               - Turn off an auto-ban
-/clash                  - Create a CoC competition (https://condingame.com)
-/clash_start            - Start a CoC competition
-/clash_enable           - Enable CoC notifications
-/clash_disable          - Disable CoC notifications
+/bug                       - Link to create an issue on github
+/db <SQL query>            - Manage your database (Only for admins)
+/info                      - Information about this bot
+/ping_add [matches]        - Add casts for users. Admins can use it like this 
+                           + /ping_add @username1 @username2 match1 match2
+/ping_add_me               - Add casts for user which can be randomly chosen in /me command
+/ping_show                 - Show all casts for user
+/ping_show_all             - Show all casts from DB for this chat (only for admins)
+/ping_delete [matches]     - Delete matches for user. The same usage for admins as for /ping_add
+/ping_delete_me            - Delete matches for user which can be used in /me
+/ping_drop <Username>      - Delete all matches for user (only for admins)
+/me [message]              - Delete source message and replace it with this one
+                           + <Random cast for user which was added by /ping_add_me> [message]
+/w <City>                  - Short form of /w
+/weather <City>            - Weather in a city for now, today and tommorow
+/wset <City>               - Set the default city for /weather
+/crypto                    - Crypto-currency exchange rate
+/mute_on                   - Turn on an auto-ban (readonly) for everyone for 5 minutes (except admins)
+/mute_off                  - Turn off an auto-ban
+/clash                     - Create a CoC competition (https://condingame.com)
+/clash_start               - Start a CoC competition
+/clash_enable              - Enable CoC notifications
+/clash_disable             - Disable CoC notifications
+/clash_results <clash_id>  - CoC results of a given <clash_id> game,
+                           + or the last one if called without any args
 ```
 
 ## Starting
@@ -222,6 +224,24 @@ Cuttlebot:
 The game is about to start, hurry up!
 
 @User1 @User2 @User3
+```
+
+### Get game results
+
+```
+/clash_results <game_id>
+
+Game id: <game_id>
+Game mode: Shortest
+Status: Finished
+
+╒════╤═══════════╤═════════╤═════════╤══════════════╕
+│    │ Username  │ Score   │ Time    │   Characters │
+╞════╪═══════════╪═════════╪═════════╪══════════════╡
+│  1 │ User1     │ 100%    │ 0:01:00 │           87 │
+├────┼───────────┼─────────┼─────────┼──────────────┤
+│  2 │ User2     │ 100%    │ 0:05:00 │          107 │
+╘════╧═══════════╧═════════╧═════════╧══════════════╛
 ```
 
 **Enjoy your bot!**

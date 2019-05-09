@@ -1,9 +1,10 @@
-from services.crypto_compare import CryptoCompare
 from logger import log_print
 import requests
 import json
 from models.models import connector, ClashExclude, Pingers
 from sqlalchemy import and_
+import datetime
+from tabulate import tabulate
 
 def clash(config, bot, update):
     last_game={}
@@ -150,3 +151,83 @@ def clash_enable(config, bot, update):
             parse_mode="markdown")
     log_print('Clash of Code enable', username)
 
+def clash_results_usage(config, bot, update):
+
+    message="""
+    I haven't found the last game, try to use it like this:
+    ```
+    /clash_results GAME_ID
+    ```
+    """
+    message = "\n".join([i.strip() for i in message.split('\n')])
+    bot.send_message(chat_id=update.message.chat_id,
+                     text=message,
+                     parse_mode="markdown")
+
+def clash_results(config, bot, update, args):
+
+    clash_ids = []
+    results = {}
+
+    if args:
+        clash_ids = (list(set(args)))
+    else:
+        try:
+            with open("/tmp/clash_{}".format(update.message.chat_id), "r") as file:
+                clash_ids = [json.loads(file.read())["clash_id"]]
+        except IOError:
+            pass
+
+    if not clash_ids:
+        clash_results_usage(config, bot, update)
+        return
+
+    for clash_id in clash_ids:
+        r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/findClashReportInfoByHandle',
+                          headers={"content-type":"application/json;charset=UTF-8"},
+                          data='[{}]'.format(clash_id))
+        if r.status_code == 200:
+            results = json.loads(r.text)
+            if results["success"]:
+                leaderboard = []
+                clash_mode = results["success"]["mode"].capitalize() if "mode" in results["success"] else "Unknown"
+                message = '''
+                *Game id*: {clash_id}
+                *Game mode*: {clash_mode}
+                *Status*: {clash_status}
+                '''.format(
+                    clash_id=clash_id,
+                    clash_mode=clash_mode,
+                    clash_status="Finished" if results["success"]["finished"] else "In progress")
+                if clash_mode != "Unknown":
+                    if clash_mode == "SHORTEST":
+                        for player in results["success"]["players"]:
+                            cache = []
+                            cache.insert(0, player["rank"])
+                            cache.insert(1, player["codingamerNickname"])
+                            cache.insert(2, '{}%'.format(player["score"]))
+                            cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                            cache.insert(4, player["criterion"])
+                            leaderboard.insert(player["rank"], cache)
+                        message += '```\n'
+                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time", "Characters"], tablefmt='fancy_grid')
+                        message += '```'
+                    else:
+                        for player in results["success"]["players"]:
+                            cache = []
+                            cache.insert(0, player["rank"])
+                            cache.insert(1, player["codingamerNickname"])
+                            cache.insert(2, '{}%'.format(player["score"]))
+                            cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                            leaderboard.insert(player["rank"], cache)
+                        message += '```\n'
+                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='fancy_grid')
+                        message += '```'
+
+                message = "\n".join([i.strip() for i in message.split('\n')])
+                bot.send_message(chat_id=update.message.chat_id,
+                                 reply_to_message_id=update.message.message_id,
+                                 text=message,
+                                 parse_mode="markdown")
+
+    log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))

@@ -8,3 +8,4 @@ pyowm==2.7.1
 pyyaml==3.12
 pytest
 odr
+tabulate
