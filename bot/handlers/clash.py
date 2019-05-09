@@ -227,7 +227,7 @@ def clash_results(config, bot, update, args):
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
-                img = Image.new('RGB', (1000, 500), color = (130, 130, 130))
+                img = Image.new('RGB', (300, 250), color = (90, 90, 90))
                 d = ImageDraw.Draw(img)
                 d.text((10,10), message.encode('utf-8'), fill=(230,230,230))
                 img.save('/tmp/report.png')
