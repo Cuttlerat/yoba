@@ -223,4 +223,4 @@ def clash_results(config, bot, update, args):
                      text=message,
                      parse_mode="markdown")
 
-    log_print('Clash of Code results for {}', ", ".join(clash_ids))
+    log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
