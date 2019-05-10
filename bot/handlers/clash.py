@@ -226,7 +226,7 @@ def clash_results(config, bot, update, args):
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
                 font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 48)
-                img = Image.new('RGB', (100, 100), color = (100, 100, 100))
+                img = Image.new('RGB', (100, 100), color = (50, 50, 50))
                 d_temp = ImageDraw.Draw(img)
                 text_size = d_temp.textsize(message, font)
                 start_pos = (50, 20)
