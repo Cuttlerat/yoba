@@ -227,13 +227,13 @@ def clash_results(config, bot, update, args):
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
-                img = Image.new('RGB', (300, 250), color = (90, 90, 90))
+                img = Image.new('RGB', (300, 270), color = (100, 100, 100))
                 d = ImageDraw.Draw(img)
-                font = ImageFont.load('/usr/share/fonts/Monospace.ttf')
-                d.text((10,10), message, font=font, fill=(230,230,230))
-                #img.save('/tmp/report.png')
+                font = ImageFont.load('/usr/share/fonts/Monospace.ttf', 24)
+                d.text((10,10), message, font=font, fill=(240,240,240))
+                img.save('/tmp/report.png')
                 bot.sendPhoto(chat_id=update.message.chat_id,
-                              photo=str(img),
+                              photo=open('/tmp/report.png', 'rb'),
                               reply_to_message_id=update.message.message_id)
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
