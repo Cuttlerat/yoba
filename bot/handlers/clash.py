@@ -221,7 +221,7 @@ def clash_results(config, bot, update, args):
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if clash_mode != "Unknown":
                     headers=["", "Username", "Score", "Time"]
-                    if clash_mode == "SHORTEST":
+                    if clash_mode == "Shortest":
                         headers.append("Characters")
                     for player in results["success"]["players"]:
                         cache = []
@@ -229,7 +229,7 @@ def clash_results(config, bot, update, args):
                         cache.insert(1, player["codingamerNickname"])
                         cache.insert(2, '{}%'.format(player["score"]))
                         cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
-                        if clash_mode == "SHORTEST":
+                        if clash_mode == "Shortest":
                             cache.insert(4, player["criterion"])
 
                         leaderboard.insert(player["rank"], cache)
