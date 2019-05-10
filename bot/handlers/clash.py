@@ -166,6 +166,23 @@ def clash_results_usage(config, bot, update):
                      text=message,
                      parse_mode="markdown")
 
+def clash_results_to_byte_arr(message):
+
+    font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 48)
+    img = Image.new('RGB', (100, 100), color = (50, 50, 50))
+    d_temp = ImageDraw.Draw(img)
+    text_size = d_temp.textsize(message, font)
+    start_pos = (50, 20)
+    text_size = (text_size[0]+start_pos[0]*2, text_size[1]+start_pos[1]*2)
+    img = img.resize(text_size)
+    d = ImageDraw.Draw(img)
+    d.text(start_pos, message, font=font, fill=(240,240,240))
+
+    img_byte_arr = io.BytesIO()
+    img.save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+    return img_byte_arr
+
 def clash_results(config, bot, update, args):
 
     clash_ids = []
@@ -203,8 +220,8 @@ def clash_results(config, bot, update, args):
                     clash_mode=clash_mode,
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if clash_mode != "Unknown":
+                    headers=["", "Username", "Score", "Time"]
                     for player in results["success"]["players"]:
-                        headers=["", "Username", "Score", "Time"]
                         cache = []
                         cache.insert(0, player["rank"])
                         cache.insert(1, player["codingamerNickname"])
@@ -222,22 +239,10 @@ def clash_results(config, bot, update, args):
                 message += "\n"
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
-                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 48)
-                img = Image.new('RGB', (100, 100), color = (50, 50, 50))
-                d_temp = ImageDraw.Draw(img)
-                text_size = d_temp.textsize(message, font)
-                start_pos = (50, 20)
-                text_size = (text_size[0]+start_pos[0]*2, text_size[1]+start_pos[1]*2)
-                img = img.resize(text_size)
-                d = ImageDraw.Draw(img)
-                d.text(start_pos, message, font=font, fill=(240,240,240))
-
-                img_byte_arr = io.BytesIO()
-                img.save(img_byte_arr, format='PNG')
-                img_byte_arr = img_byte_arr.getvalue()
+                img_byte_arr = clash_results_to_byte_arr(message)
 
                 bot.sendPhoto(chat_id=update.message.chat_id,
-                              photo=img_byte_arr,
+                              photo=io.BufferedReader(img_byte_arr),
                               caption='https://www.codingame.com/clashofcode/clash/report/{}'.format(
                                        clash_id))
 
