@@ -225,19 +225,10 @@ def clash_results(config, bot, update, args):
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
-                img = Image.new('RGB', (600, 270), color = (100, 100, 100))
+                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 25)
+                img = Image.new('RGB', font.getsize(message), color = (100, 100, 100))
                 d = ImageDraw.Draw(img)
-                img_fraction = 0.80
-                fontsize = 10
-                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', fontsize)
-                while font.getsize(message)[0] < img_fraction*img.size[0]:
-                    print(fontsize)
-                    fontsize += 1
-                    font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', fontsize)
-                print(font.getsize(message))
-                print(img.size)
                 d.text((10,10), message, font=font, fill=(240,240,240))
-                fontsize -= 1
                 img.save('/tmp/report.png')
                 bot.sendPhoto(chat_id=update.message.chat_id,
                               photo=open('/tmp/report.png', 'rb'),
