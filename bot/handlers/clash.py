@@ -226,10 +226,13 @@ def clash_results(config, bot, update, args):
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
                 font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 25)
-                img = Image.new('RGB', font.getsize(message), color = (100, 100, 100))
+                img = Image.new('RGB', (100, 100), color = (100, 100, 100))
                 d = ImageDraw.Draw(img)
+                text_size = d.textsize(message, font)
+                img = img.resize(text_size)
                 d.text((10,10), message, font=font, fill=(240,240,240))
                 img.save('/tmp/report.png')
+
                 bot.sendPhoto(chat_id=update.message.chat_id,
                               photo=open('/tmp/report.png', 'rb'),
                               reply_to_message_id=update.message.message_id)
