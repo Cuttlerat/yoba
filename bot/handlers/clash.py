@@ -192,9 +192,11 @@ def clash_results(config, bot, update, args):
             if results["success"]:
                 leaderboard = []
                 clash_mode = results["success"]["mode"].capitalize() if "mode" in results["success"] else "Unknown"
-                message = '''Game id: {clash_id}
+                message = '''
+                Game id: {clash_id}
                 Game mode: {clash_mode}
                 Status: {clash_status}
+
                 '''.format(
                     clash_id=clash_id,
                     clash_mode=clash_mode,
