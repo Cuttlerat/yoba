@@ -193,9 +193,9 @@ def clash_results(config, bot, update, args):
                 leaderboard = []
                 clash_mode = results["success"]["mode"].capitalize() if "mode" in results["success"] else "Unknown"
                 message = '''
-                *Game id*: {clash_id}
-                *Game mode*: {clash_mode}
-                *Status*: {clash_status}
+                Game id: {clash_id}
+                Game mode: {clash_mode}
+                Status: {clash_status}
                 '''.format(
                     clash_id=clash_id,
                     clash_mode=clash_mode,
@@ -221,16 +221,20 @@ def clash_results(config, bot, update, args):
                             cache.insert(2, '{}%'.format(player["score"]))
                             cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
                             leaderboard.insert(player["rank"], cache)
-                        message += '```\n'
                         message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='fancy_grid')
-                        message += '```'
 
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
-                img = Image.new('RGB', (300, 270), color = (100, 100, 100))
+                img = Image.new('RGB', (600, 270), color = (100, 100, 100))
                 d = ImageDraw.Draw(img)
-                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 24)
+                img_fraction = 0.80
+                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 1)
+                while font.getsize(txt)[0] < img_fraction*image.size[0]:
+                    fontsize += 1
+                    font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', fontsize)
+                print(image.size)
                 d.text((10,10), message, font=font, fill=(240,240,240))
+                fontsize -= 1
                 img.save('/tmp/report.png')
                 bot.sendPhoto(chat_id=update.message.chat_id,
                               photo=open('/tmp/report.png', 'rb'),
