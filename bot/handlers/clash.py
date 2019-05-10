@@ -192,8 +192,7 @@ def clash_results(config, bot, update, args):
             if results["success"]:
                 leaderboard = []
                 clash_mode = results["success"]["mode"].capitalize() if "mode" in results["success"] else "Unknown"
-                message = '''
-                Game id: {clash_id}
+                message = '''Game id: {clash_id}
                 Game mode: {clash_mode}
                 Status: {clash_status}
                 '''.format(
@@ -210,9 +209,7 @@ def clash_results(config, bot, update, args):
                             cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
                             cache.insert(4, player["criterion"])
                             leaderboard.insert(player["rank"], cache)
-                        message += '```\n'
                         message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time", "Characters"], tablefmt='fancy_grid')
-                        message += '```'
                     else:
                         for player in results["success"]["players"]:
                             cache = []
@@ -223,13 +220,15 @@ def clash_results(config, bot, update, args):
                             leaderboard.insert(player["rank"], cache)
                         message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='fancy_grid')
 
+                message += "\n"
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
-                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 25)
+                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 48)
                 img = Image.new('RGB', (100, 100), color = (100, 100, 100))
-                d = ImageDraw.Draw(img)
-                text_size = d.textsize(message, font)
+                d_temp = ImageDraw.Draw(img)
+                text_size = d_temp.textsize(message, font)
                 img = img.resize(text_size)
+                d = ImageDraw.Draw(img)
                 d.text((10,10), message, font=font, fill=(240,240,240))
                 img.save('/tmp/report.png')
 
