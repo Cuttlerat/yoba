@@ -238,6 +238,6 @@ def clash_results(config, bot, update, args):
 
                 bot.sendPhoto(chat_id=update.message.chat_id,
                               photo=open('/tmp/report.png', 'rb'),
-                              reply_to_message_id=update.message.message_id)
+                              caption=clash_id)
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
