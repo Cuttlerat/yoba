@@ -209,7 +209,7 @@ def clash_results(config, bot, update, args):
                             cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
                             cache.insert(4, player["criterion"])
                             leaderboard.insert(player["rank"], cache)
-                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time", "Characters"], tablefmt='fancy_grid')
+                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time", "Characters"], tablefmt='psql')
                     else:
                         for player in results["success"]["players"]:
                             cache = []
@@ -218,7 +218,7 @@ def clash_results(config, bot, update, args):
                             cache.insert(2, '{}%'.format(player["score"]))
                             cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
                             leaderboard.insert(player["rank"], cache)
-                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='fancy_grid')
+                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='psql')
 
                 message += "\n"
                 message = "\n".join([i.strip() for i in message.split('\n')])
@@ -227,9 +227,11 @@ def clash_results(config, bot, update, args):
                 img = Image.new('RGB', (100, 100), color = (100, 100, 100))
                 d_temp = ImageDraw.Draw(img)
                 text_size = d_temp.textsize(message, font)
+                start_pos = (20, 20)
+                text_size = (text_size[0]+start_pos[0]*2, text_size[1]+start_pos[1]*2)
                 img = img.resize(text_size)
                 d = ImageDraw.Draw(img)
-                d.text((10,10), message, font=font, fill=(240,240,240))
+                d.text(start_pos, message, font=font, fill=(240,240,240))
                 img.save('/tmp/report.png')
 
                 bot.sendPhoto(chat_id=update.message.chat_id,
