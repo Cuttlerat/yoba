@@ -222,14 +222,14 @@ def clash_results(config, bot, update, args):
                             leaderboard.insert(player["rank"], cache)
                         message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='psql')
 
-                message += "\n"
+                    message += "\n"
                 message = "\n".join([i.strip() for i in message.split('\n')])
 
                 font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 48)
                 img = Image.new('RGB', (100, 100), color = (100, 100, 100))
                 d_temp = ImageDraw.Draw(img)
                 text_size = d_temp.textsize(message, font)
-                start_pos = (20, 20)
+                start_pos = (50, 20)
                 text_size = (text_size[0]+start_pos[0]*2, text_size[1]+start_pos[1]*2)
                 img = img.resize(text_size)
                 d = ImageDraw.Draw(img)
