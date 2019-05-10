@@ -9,3 +9,4 @@ pyyaml==3.12
 pytest
 odr
 tabulate
+Pillow

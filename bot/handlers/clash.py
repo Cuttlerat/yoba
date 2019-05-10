@@ -5,6 +5,8 @@ from models.models import connector, ClashExclude, Pingers
 from sqlalchemy import and_
 import datetime
 from tabulate import tabulate
+from PIL import Image, ImageDraw, ImageFont
+import io
 
 def clash(config, bot, update):
     last_game={}
@@ -164,6 +166,23 @@ def clash_results_usage(config, bot, update):
                      text=message,
                      parse_mode="markdown")
 
+def clash_results_to_byte_arr(message):
+
+    font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 48)
+    img = Image.new('RGB', (100, 100), color = (50, 50, 50))
+    d_temp = ImageDraw.Draw(img)
+    text_size = d_temp.textsize(message, font)
+    start_pos = (50, 20)
+    text_size = (text_size[0]+start_pos[0]*2, text_size[1]+start_pos[1]*2)
+    img = img.resize(text_size)
+    d = ImageDraw.Draw(img)
+    d.text(start_pos, message, font=font, fill=(240,240,240))
+
+    img_byte_arr = io.BytesIO()
+    img.save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+    return img_byte_arr
+
 def clash_results(config, bot, update, args):
 
     clash_ids = []
@@ -192,42 +211,40 @@ def clash_results(config, bot, update, args):
                 leaderboard = []
                 clash_mode = results["success"]["mode"].capitalize() if "mode" in results["success"] else "Unknown"
                 message = '''
-                *Game id*: {clash_id}
-                *Game mode*: {clash_mode}
-                *Status*: {clash_status}
+                Game id: {clash_id}
+                Game mode: {clash_mode}
+                Status: {clash_status}
+
                 '''.format(
                     clash_id=clash_id,
                     clash_mode=clash_mode,
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if clash_mode != "Unknown":
-                    if clash_mode == "SHORTEST":
-                        for player in results["success"]["players"]:
-                            cache = []
-                            cache.insert(0, player["rank"])
-                            cache.insert(1, player["codingamerNickname"])
-                            cache.insert(2, '{}%'.format(player["score"]))
-                            cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                    headers=["", "Username", "Score", "Time"]
+                    if clash_mode == "Shortest":
+                        headers.append("Characters")
+                    for player in results["success"]["players"]:
+                        cache = []
+                        cache.insert(0, player["rank"])
+                        cache.insert(1, player["codingamerNickname"])
+                        cache.insert(2, '{}%'.format(player["score"]))
+                        cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                        if clash_mode == "Shortest":
                             cache.insert(4, player["criterion"])
-                            leaderboard.insert(player["rank"], cache)
-                        message += '```\n'
-                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time", "Characters"], tablefmt='fancy_grid')
-                        message += '```'
-                    else:
-                        for player in results["success"]["players"]:
-                            cache = []
-                            cache.insert(0, player["rank"])
-                            cache.insert(1, player["codingamerNickname"])
-                            cache.insert(2, '{}%'.format(player["score"]))
-                            cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
-                            leaderboard.insert(player["rank"], cache)
-                        message += '```\n'
-                        message += tabulate(sorted(leaderboard), headers=["", "Username", "Score", "Time"], tablefmt='fancy_grid')
-                        message += '```'
 
+                        leaderboard.insert(player["rank"], cache)
+
+                    message += tabulate(sorted(leaderboard), 
+                                        headers,
+                                        tablefmt='psql')
+                message += "\n"
                 message = "\n".join([i.strip() for i in message.split('\n')])
-                bot.send_message(chat_id=update.message.chat_id,
-                                 reply_to_message_id=update.message.message_id,
-                                 text=message,
-                                 parse_mode="markdown")
+
+                img_byte_arr = clash_results_to_byte_arr(message)
+
+                bot.sendPhoto(chat_id=update.message.chat_id,
+                              photo=io.BufferedReader(img_byte_arr),
+                              caption='https://www.codingame.com/clashofcode/clash/report/{}'.format(
+                                       clash_id))
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
