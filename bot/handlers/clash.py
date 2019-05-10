@@ -228,7 +228,8 @@ def clash_results(config, bot, update, args):
                 img = Image.new('RGB', (600, 270), color = (100, 100, 100))
                 d = ImageDraw.Draw(img)
                 img_fraction = 0.80
-                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', 1)
+                fontsize = 10
+                font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', fontsize)
                 while font.getsize(message)[0] < img_fraction*img.size[0]:
                     fontsize += 1
                     font = ImageFont.truetype('/usr/share/fonts/Monospace.ttf', fontsize)
