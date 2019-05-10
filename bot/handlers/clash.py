@@ -230,10 +230,10 @@ def clash_results(config, bot, update, args):
                 img = Image.new('RGB', (300, 250), color = (90, 90, 90))
                 d = ImageDraw.Draw(img)
                 font = ImageFont.load('/usr/share/fonts/Monospace.ttf')
-                d.text((10,10), message.encode('utf-8'), font=font, fill=(230,230,230))
-                img.save('/tmp/report.png')
+                d.text((10,10), message, font=font, fill=(230,230,230))
+                #img.save('/tmp/report.png')
                 bot.sendPhoto(chat_id=update.message.chat_id,
-                              photo=open('/tmp/report.png', 'rb'),
+                              photo=str(img),
                               reply_to_message_id=update.message.message_id)
 
     log_print('Clash of Code results for {}'.format(", ".join(clash_ids)))
