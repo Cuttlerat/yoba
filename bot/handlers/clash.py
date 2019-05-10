@@ -6,6 +6,7 @@ from sqlalchemy import and_
 import datetime
 from tabulate import tabulate
 from PIL import Image, ImageDraw, ImageFont
+import io
 
 def clash(config, bot, update):
     last_game={}
