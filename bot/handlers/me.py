@@ -23,7 +23,7 @@ def me(config, bot, update, *args, **kwargs):
             match = username
         out_text=italize("{match} {message}".format(
             match=match.capitalize(),
-            message=update.message.text.split(' ', 1)[1]))        
+            message=update.message.text.split(' ', 1)[1]))
         bot.send_message(chat_id=update.message.chat_id,
                          text=out_text,
                          parse_mode=telegram.ParseMode.MARKDOWN)

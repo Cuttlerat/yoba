@@ -8,7 +8,7 @@ Yet One Bot Assistant - just a funny telegeram bot.
 /bug                       - Link to create an issue on github
 /db <SQL query>            - Manage your database (Only for admins)
 /info                      - Information about this bot
-/ping_add [matches]        - Add casts for users. Admins can use it like this 
+/ping_add [matches]        - Add casts for users. Admins can use it like this
                            + /ping_add @username1 @username2 match1 match2
 /ping_add_me               - Add casts for user which can be randomly chosen in /me command
 /ping_show                 - Show all casts for user
@@ -132,10 +132,10 @@ Cuttlebot: @Cuttlerat
 
 #### Add with /ping_* commands
 
-`/ping` command is deprecated!  
-Use `/ping_add`, `/ping_show`, `/ping_show_all` and `/ping_delete` instead  
+`/ping` command is deprecated!
+Use `/ping_add`, `/ping_show`, `/ping_show_all` and `/ping_delete` instead
 
-These commands set and delete ping phrases for users and show them the existing ones.  
+These commands set and delete ping phrases for users and show them the existing ones.
 When you send a message with a match from `ping_phrases` table and with a match that user sets, bot will reply on your message with his `@username` in and that user will get a notification even if he disabled them for this chat.
 
 Example:
@@ -150,7 +150,7 @@ Ping command is different for admins and common users
 ##### Admins usage
 
 ```
-Usage: 
+Usage:
 /ping_add [@username] [match] - Add a ping for @username with match
 /ping_show [@username] - Show all matches of this user in this chat
 /ping_show_all - Show all mathces for all users in this chat
@@ -158,7 +158,7 @@ Usage:
 /ping_drop [@username]` - Delete all matches for this user if it exists
 ```
 
-For `/ping_add` and `/ping_delete` commands you can also use multiple usernames at once  
+For `/ping_add` and `/ping_delete` commands you can also use multiple usernames at once
 ```
 /ping_add @user_1 @user_2 @user_3 match
 /ping_delete @user_1 @user_2 @user_3 match
@@ -168,10 +168,10 @@ For `/ping_add` and `/ping_delete` commands you can also use multiple usernames 
 ##### Common user
 
 ```
-Usage: 
-/ping_add [match] - Add a match for you. You can have only 10 matches, or more if an administrator will add it for you  
-/ping_show [@username] - Show all matches for @user_1  
-/ping_delete [match] - Delete a match  
+Usage:
+/ping_add [match] - Add a match for you. You can have only 10 matches, or more if an administrator will add it for you
+/ping_show [@username] - Show all matches for @user_1
+/ping_delete [match] - Delete a match
 ```
 
 ## Clash of code

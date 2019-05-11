@@ -68,7 +68,7 @@ if __name__ == '__main__':
                  clash_enable,
                  clash_disable,
                  clash_results]
-    
+
     db_handler,\
     weather_handler,\
     me_handler,\

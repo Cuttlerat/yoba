@@ -32,18 +32,18 @@ def mute_off(config, bot, update):
                          text=message)
         return
 
-    if config.get_mute(): 
+    if config.get_mute():
         config.set_mute(False)
         message = "Global silence deactivated."
         log_print('Mute off', username)
     else:
         message = "Global silence is not activated."
-        
+
     bot.send_message(chat_id=update.message.chat_id,
                      text=message)
 
 def mute(config, bot, update):
-    
+
     chat_id=update.message.chat_id
     user_id=update.message.from_user.id
     if config.get_mute():

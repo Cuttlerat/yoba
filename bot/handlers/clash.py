@@ -51,7 +51,7 @@ Please send /clash_disable if you don't want to receive these notifications
     last_game["message_id"] = sent.message_id
 
     with open("/tmp/clash_{}".format(update.message.chat_id), "w") as file:
-        file.write(json.dumps(last_game)) 
+        file.write(json.dumps(last_game))
 
 
     log_print('Clash of Code "{}"'.format(clash_id))
@@ -120,7 +120,7 @@ def clash_disable(config, bot, update):
             if username in all_excludes:
                 msg = "You've already disabled notifications"
             else:
-                exclude = ClashExclude( 
+                exclude = ClashExclude(
                         username=username,
                         chat_id=chat_id)
                 ses.add(exclude)
@@ -234,7 +234,7 @@ def clash_results(config, bot, update, args):
 
                         leaderboard.insert(player["rank"], cache)
 
-                    message += tabulate(sorted(leaderboard), 
+                    message += tabulate(sorted(leaderboard),
                                         headers,
                                         tablefmt='psql')
                 message += "\n"
