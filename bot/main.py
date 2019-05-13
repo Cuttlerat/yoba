@@ -42,8 +42,7 @@ def handler(action, input_config):
 
     return new_action
 
-
-if __name__ == '__main__':
+def main():
     config = Config()
     register(config)
 
@@ -51,6 +50,9 @@ if __name__ == '__main__':
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         level=logging.INFO
     )
+
+    tglogger = logging.getLogger("telegram.bot")
+    tglogger.setLevel(logging.ERROR)
 
     pinger = Pinger()
 
@@ -127,3 +129,6 @@ if __name__ == '__main__':
             updater.start_polling()
     except sqlite3.ProgrammingError:
         pass
+
+if __name__ == '__main__':
+    main()
