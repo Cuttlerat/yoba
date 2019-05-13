@@ -220,19 +220,20 @@ def clash_results(config, bot, update, args):
                     clash_mode=clash_mode,
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if clash_mode != "Unknown":
-                    headers=["", "Username", "Score", "Time"]
+                    headers=["", "Username", "Language", "Score", "Time"]
                     if clash_mode == "Shortest":
                         headers.append("Characters")
                     for player in results["success"]["players"]:
                         cache = []
-                        cache.insert(0, player["rank"])
-                        cache.insert(1, player["codingamerNickname"])
-                        cache.insert(2, '{}%'.format(player["score"]))
-                        cache.insert(3, str(datetime.timedelta(milliseconds=player["duration"])).split('.', 2)[0])
+                        cache.insert(0, player["rank"] if "rank" in player else 0)
+                        cache.insert(1, player["codingamerNickname"] if "codingamerNickname" in player else "Unknown")
+                        cache.insert(2, player["languageId"] if "languageId" in player else "Unknown")
+                        cache.insert(3, '{}%'.format(player["score"] if "score" in player else "0"))
+                        cache.insert(4, str(datetime.timedelta(milliseconds=player["duration"] if "duration" in player else 0)).split('.', 2)[0])
                         if clash_mode == "Shortest":
-                            cache.insert(4, player["criterion"])
+                            cache.insert(5, player["criterion"] if "criterion" in player else 0)
 
-                        leaderboard.insert(player["rank"], cache)
+                        leaderboard.insert(player["rank"] if "rank" in player else 0, cache)
 
                     message += tabulate(sorted(leaderboard),
                                         headers,
