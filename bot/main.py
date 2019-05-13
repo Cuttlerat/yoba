@@ -92,7 +92,7 @@ if __name__ == '__main__':
         dispatcher = updater.dispatcher
 
         [dispatcher.add_handler(i) for i in [
-            CommandHandler('bug', bug),
+            CommandHandler(['bug', 'issue'], bug),
             CommandHandler('chatid', chat_id),
             CommandHandler(['start', 'info'], start),
             CommandHandler(['weather', 'w'], weather_handler, pass_args=True),
