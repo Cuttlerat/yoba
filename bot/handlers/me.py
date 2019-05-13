@@ -9,7 +9,7 @@ import random
 
 
 
-def me(config, bot, update, *args, **kwargs):
+def me(config, bot, update, args):
     import telegram
 
     username = update.message.from_user.username
@@ -21,13 +21,15 @@ def me(config, bot, update, *args, **kwargs):
             match = random.choice([x.match for x in user_matches if x.me == 1])
         else:
             match = username
+
+
         out_text=italize("{match} {message}".format(
             match=match.capitalize(),
-            message=update.message.text.split(' ', 1)[1]))
+            message=' '.join(args)))
         bot.send_message(chat_id=update.message.chat_id,
                          text=out_text,
                          parse_mode=telegram.ParseMode.MARKDOWN)
         bot.delete_message(chat_id=update.message.chat_id,
-                           message_id=update.message.message_id, *args, **kwargs)
+                           message_id=update.message.message_id)
         log_print('Me by {1}'.format(username, update.message.from_user.username))
 
