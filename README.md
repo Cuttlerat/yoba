@@ -5,7 +5,8 @@ Yet One Bot Assistant - just a funny telegeram bot.
 ## Commands
 
 ```
-/bug                       - Link to create an issue on github
+/issue                     - Link to create an issue on github
+/bug                       - The same as /issue
 /db <SQL query>            - Manage your database (Only for admins)
 /info                      - Information about this bot
 /ping_add [matches]        - Add casts for users. Admins can use it like this
