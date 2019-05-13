@@ -228,7 +228,7 @@ def clash_results(config, bot, update, args):
                         cache.insert(0, player["rank"] if "rank" in player else 0)
                         cache.insert(1, player["codingamerNickname"] if "codingamerNickname" in player else "Unknown")
                         cache.insert(2, player["languageId"] if "languageId" in player else "Unknown")
-                        cache.insert(3, '{}%'.format(player["score"] if "score" in player else ""))
+                        cache.insert(3, '{}%'.format(player["score"] if "score" in player else "0"))
                         cache.insert(4, str(datetime.timedelta(milliseconds=player["duration"] if "duration" in player else 0)).split('.', 2)[0])
                         if clash_mode == "Shortest":
                             cache.insert(5, player["criterion"] if "criterion" in player else 0)
