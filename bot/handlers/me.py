@@ -24,7 +24,7 @@ def me(config, bot, update, *args, **kwargs):
 
         out_text=italize("{match} {message}".format(
             match=match.capitalize(),
-            message=' '.join(args))
+            message=' '.join(args)))
         bot.send_message(chat_id=update.message.chat_id,
                          text=out_text,
                          parse_mode=telegram.ParseMode.MARKDOWN)
