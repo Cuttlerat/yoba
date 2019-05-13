@@ -21,9 +21,10 @@ def me(config, bot, update, *args, **kwargs):
             match = random.choice([x.match for x in user_matches if x.me == 1])
         else:
             match = username
+
         out_text=italize("{match} {message}".format(
             match=match.capitalize(),
-            message=update.message.text.split(' ', 1)[1]))
+            message=' '.join(args))
         bot.send_message(chat_id=update.message.chat_id,
                          text=out_text,
                          parse_mode=telegram.ParseMode.MARKDOWN)
