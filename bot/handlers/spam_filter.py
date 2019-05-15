@@ -1,7 +1,7 @@
 from logger import log_print
 from models.models import connector, Spam
 from sqlalchemy import and_
-from datetime import datetime
+from datetime import datetime, timedelta
 import redis
 
 def spam_check(config, bot, update, args):
@@ -37,7 +37,7 @@ def spam_set(config, bot, update, args):
     redis_db = config.redis
     new_req = args[0] if args[0] else 0
 
-    tomorrow = datetime.now() + datetime.timedelta(1)
+    tomorrow = datetime.now() + timedelta(1)
     midnight = datetime(year=tomorrow.year,
                         month=tomorrow.month,
                         day=tomorrow.day,
