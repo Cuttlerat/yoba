@@ -17,8 +17,15 @@ def spam_check(config, bot, update, args):
                     username=username,
                     chat_id=chat_id,
                     date=datetime.datetime.now().strftime("%Y-%m-%d"))
-                current = redis_db.get(redis_key)
-                print(current)
-                redis_db.set(redis_key, requests)
+                current_req = redis_db.get(redis_key)
+                if current_req:
+                    if current_req > 0:
+                        redis_db.decr(redis_key)
+                    else:
+                        print("Banned", username, current_req)
+                else:
+                    redis_db.set(redis_key, requests)
+
+                print(username, current_req)
             except redis.RedisError:
                 print("Fail")
