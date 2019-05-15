@@ -115,7 +115,6 @@ def main():
             CommandHandler('mute_off', mute_off_handler),
             CommandHandler('crypto', crypto),
             CommandHandler('clash', clash_handler),
-            CommandHandler('spam_test', spam),
             CommandHandler('clash_start', clash_start_handler),
             CommandHandler('clash_enable', clash_enable_handler),
             CommandHandler('clash_disable', clash_disable_handler),
