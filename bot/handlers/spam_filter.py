@@ -27,16 +27,23 @@ def spam_check(config, bot, update, args):
                     else:
                         print("Banned", username, current_req)
                 else:
-                    tomorrow = datetime.now() + timedelta(1)
-                    midnight = datetime(year=tomorrow.year,
-                                        month=tomorrow.month,
-                                        day=tomorrow.day,
-                                        hour=0,
-                                        minute=0,
-                                        second=0)
-                    redis_db.set(redis_key, requests)
-                    redis_db.expireat(redis_key, midnight)
+                    spam_set(config, bot, update, requests)
 
                 print(username, current_req)
             except redis.RedisError:
                 print("Fail")
+
+def spam_set(config, bot, update, args):
+    redis_db = config.redis
+    new_req = args[0] if args[0] else 0
+
+    tomorrow = datetime.now() + timedelta(1)
+    midnight = datetime(year=tomorrow.year,
+                        month=tomorrow.month,
+                        day=tomorrow.day,
+                        hour=0,
+                        minute=0,
+                        second=0)
+    redis_db.set(redis_key, new_req)
+    redis_db.expireat(redis_key, midnight)
+    print("Set to {}".format(new_req))

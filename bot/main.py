@@ -32,7 +32,7 @@ from handlers.muter import mute, mute_on, mute_off
 from handlers.pinger import Pinger
 from handlers.weather import weather, wset
 from handlers.me import me
-from handlers.spam_filter import spam_check
+from handlers.spam_filter import spam_check, spam_set
 from logger import log_print
 from models.models import create_table
 
@@ -71,7 +71,8 @@ def main():
                  clash_enable,
                  clash_disable,
                  clash_results,
-                 spam_check]
+                 spam_check,
+                 spam_set]
 
     db_handler,\
     weather_handler,\
@@ -86,7 +87,8 @@ def main():
     clash_enable_handler,\
     clash_disable_handler,\
     clash_results_handler,\
-    spam_filter_handler = (handler(act, config) for act in functions)
+    spam_filter_handler,\
+    spam_set_handler = (handler(act, config) for act in functions)
 
     log_print('Started', level="INFO", command="main")
 
@@ -120,6 +122,7 @@ def main():
             CommandHandler('clash_disable', clash_disable_handler),
             CommandHandler('clash_results', clash_results_handler, pass_args=True),
             CommandHandler('spam_test', spam_filter_handler, pass_args=True),
+            CommandHandler('spam_set', spam_set_handler, pass_args=True),
             MessageHandler(Filters.all, mute_handler)
         ]]
 
