@@ -10,4 +10,14 @@ def spam_check(config, bot, update, args):
         spamers = ses.query(Spam.username, Spam.requests).filter(Spam.chat_id == update.message.chat_id).distinct().all()
         for spamer in spamers:
             username, requests = spamer
-            print(username, requests)
+            redis_db = config.redis
+            try:
+                redis_key = "{username}_{chat_id}_{date}".format(
+                    username=username,
+                    chat_id=chat_id,
+                    date=datetime.datetime.now().strftime("%Y-%m-%d"))
+                current = redis_db.get(redis_key)
+                print(current)
+                redis_db.set(redis_key, requests)
+            except redis.RedisError:
+                print("Fail")
