@@ -39,6 +39,8 @@ class Config:
             self.__db_host) if self.__db_host is not None else None
         self.__engine = create_engine(self.__database) if self.__database is not None else None
 
+        self.__log_level = cfg['log']['level'] if 'log' in cfg and 'level' in cfg['log'] else "INFO"
+
     def telegram_token(self):
         if self.__tg_token is None:
             raise NotImplementedError("Telegram token in config-file is not declared")
@@ -111,3 +113,7 @@ class Config:
         if self.__engine is None:
             raise NotImplementedError("Path to database in config-file is not declared")
         return self.__engine
+
+    @property
+    def log_level(self):
+        return self.__log_level
