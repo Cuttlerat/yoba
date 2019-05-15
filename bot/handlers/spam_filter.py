@@ -19,7 +19,7 @@ def spam_check(config, bot, update, args):
                     date=datetime.datetime.now().strftime("%Y-%m-%d"))
                 current_req = int(redis_db.get(redis_key))
                 print(current_req)
-                if current_req:
+                if current_req not None:
                     if current_req > 0:
                         redis_db.decr(redis_key)
                         print("Decreased")
