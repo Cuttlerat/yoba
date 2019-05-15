@@ -4,7 +4,7 @@ from sqlalchemy import and_
 import datetime
 import redis
 
-def spam_check(config, update, bot):
+def spam_check(config, update, bot, args):
 
     with connector(config.engine()) as ses:
         spamers = ses.query(Spam.username, Spam.requests).filter(Spam.chat_id == update.message.chat_id).distinct().all()
