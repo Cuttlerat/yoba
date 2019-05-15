@@ -7,6 +7,8 @@ import datetime
 from tabulate import tabulate
 from PIL import Image, ImageDraw, ImageFont
 import io
+import redis
+import os
 
 def clash(config, bot, update):
     last_game={}
@@ -40,7 +42,7 @@ https://www.codingame.com/clashofcode/clash/{clash_id}
 Please send /clash_disable if you don't want to receive these notifications
         """.format(clash_id=clash_id, users=users)
         last_game["clash_id"] = clash_id
-        log_print("Created", 
+        log_print("Created",
                   chat_id=update.message.chat_id,
                   username=username,
                   clash_id=clash_id,
@@ -61,21 +63,86 @@ Please send /clash_disable if you don't want to receive these notifications
     last_game["username"] = username
     last_game["message_id"] = sent.message_id
 
-    with open("/tmp/clash_{}".format(update.message.chat_id), "w") as file:
-        file.write(json.dumps(last_game))
+    save_last_game(config, last_game, update.message.chat_id)
 
 
+def save_last_game(config, last_game, chat_id):
+    redis_db = config.redis
+    saved_to_redis = False
+    if redis_db:
+        try:
+            redis_db.set("clash_{}".format(chat_id), json.dumps(last_game))
+            log_print("Saved to redis",
+                      last_game=last_game,
+                      key="clash_{}".format(chat_id),
+                      level="DEBUG",
+                      func="save_last_game")
+            saved_to_redis = True
+        except redis.RedisError as e:
+            log_print("Could not save last_game to redis",
+                      error=str(e),
+                      level="WARN",
+                      command="clash")
 
+    if not saved_to_redis:
+        try:
+            with open("/tmp/clash_{}".format(chat_id), "w") as file:
+                file.write(json.dumps(last_game))
+        except IOError as io_e:
+            log_print("Could not save last_game to file",
+                      error=str(io_e),
+                      level="CRITICAL",
+                      func="save_last_game")
+            raise
+
+def get_last_game(config, username, chat_id):
+
+    redis_db = config.redis
+    got_from_redis = False
+    delete_file_after_read = False
+
+    if redis_db:
+        try:
+            last_game = json.loads(redis_db.get("clash_{}".format(chat_id)))
+            log_print("Read from redis",
+                      last_game=last_game,
+                      key="clash_{}".format(chat_id),
+                      level="DEBUG",
+                      func="get_last_game")
+            got_from_redis = True
+        except redis.RedisError as e:
+            log_print("Could not read last_game from redis",
+                      error=str(e),
+                      level="WARN",
+                      command="clash")
+
+    if not got_from_redis:
+        last_game = get_last_game_from_file(config, username, chat_id)
+    elif os.path.isfile("/tmp/clash_{}".format(chat_id)):
+        last_game = get_last_game_from_file(config, username, chat_id)
+        os.remove("/tmp/clash_{}".format(chat_id))
+        save_last_game(config, last_game, chat_id)
+
+    return last_game
+
+def get_last_game_from_file(config, username, chat_id):
+
+    last_game = {"clash_id":"", "message_id":"", "users": "", "username": username}
+    try:
+        with open("/tmp/clash_{}".format(chat_id), "r") as file:
+            last_game = json.loads(file.read())
+    except IOError as io_e:
+        log_print("Could not read last_game from file",
+                  error=str(io_e),
+                  level="WARN",
+                  func="get_last_game")
+    return last_game
 
 def clash_start(config, bot, update):
 
     username = update.message.from_user.username
 
-    try:
-        with open("/tmp/clash_{}".format(update.message.chat_id), "r") as file:
-            last_game = json.loads(file.read())
-    except IOError:
-        last_game = {"clash_id":"", "message_id":"", "username": username}
+    last_game = get_last_game(config, username, update.message.chat_id)
 
     if last_game["clash_id"]:
         if last_game["username"] == username:
@@ -215,17 +282,16 @@ def clash_results_to_byte_arr(message):
 
 def clash_results(config, bot, update, args):
 
+    username = update.message.from_user.username
     clash_ids = []
     results = {}
 
     if args:
         clash_ids = (list(set(args)))
     else:
-        try:
-            with open("/tmp/clash_{}".format(update.message.chat_id), "r") as file:
-                clash_ids = [json.loads(file.read())["clash_id"]]
-        except IOError:
-            pass
+        last_id = get_last_game(config, username, update.message.chat_id)["clash_id"]
+        if last_id:
+            clash_ids = [last_id]
 
     if not clash_ids:
         clash_results_usage(config, bot, update)
@@ -237,7 +303,7 @@ def clash_results(config, bot, update, args):
                           data='[{}]'.format(clash_id))
         if r.status_code == 200:
             results = json.loads(r.text)
-            if results["success"]:
+            if "success" in results and results["success"]:
                 leaderboard = []
                 clash_mode = results["success"]["mode"].capitalize() if "mode" in results["success"] else "Unknown"
                 message = '''
