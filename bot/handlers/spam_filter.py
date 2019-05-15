@@ -17,7 +17,7 @@ def spam_check(config, bot, update, args):
                     username=username,
                     chat_id=chat_id,
                     date=datetime.datetime.now().strftime("%Y-%m-%d"))
-                current_req = redis_db.get(redis_key)
+                current_req = int(redis_db.get(redis_key))
                 if current_req:
                     if current_req > 0:
                         redis_db.decr(redis_key)
