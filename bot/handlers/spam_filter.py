@@ -36,7 +36,8 @@ def spam_check(config, bot, update, args):
 
 def spam_set(config, bot, update, args):
     redis_db = config.redis
-    new_req = args[0] if args[0] else 0
+    redis_key, new_req = args
+
 
     tomorrow = datetime.now() + timedelta(1)
     midnight = datetime(year=tomorrow.year,
