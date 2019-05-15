@@ -50,6 +50,13 @@ class ClashExclude(Base):
     username = Column('username', Unicode(255), primary_key=True)
     chat_id = Column('chat_id', Unicode(255), primary_key=True)
 
+class Spam(Base):
+    __tablename__ = 'spam'
+
+    username = Column('username', Unicode(255), primary_key=True)
+    chat_id = Column('chat_id', Unicode(255), primary_key=True)
+    requests = Column('requests', Integer)
+
 
 class Answers(Base):
     __tablename__ = 'answers'
