@@ -17,22 +17,25 @@ def spam_check(config, bot, update, args):
                     username=username,
                     chat_id=chat_id,
                     date=datetime.now().strftime("%Y-%m-%d"))
-                print(redis_key)
+                log_print(redis_key, level="DEBUG", command="spam")
                 current_req = int(redis_db.get(redis_key))
 
-                print(current_req)
                 if current_req is not None:
                     if current_req > 0:
                         redis_db.decr(redis_key)
-                        print("Decreased")
+                        log_print("Decreased", level="DEBUG", command="spam")
                     else:
-                        print("Banned", username, current_req)
+                        log_print("Banned", level="DEBUG", command="spam")
                 else:
                     spam_set(config, bot, update, [redis_key, requests])
 
-                print(username, current_req)
+                log_print("{username}: {current_req}".format(
+                                username=username,
+                                current_req=current_req),
+                          level="DEBUG",
+                          command="spam")
             except redis.RedisError:
-                print("Fail")
+                print("Fail", level="DEBUG", command="spam")
 
 def spam_set(config, bot, update, args):
     redis_db = config.redis
@@ -48,4 +51,4 @@ def spam_set(config, bot, update, args):
                         second=0)
     redis_db.set(redis_key, new_req)
     redis_db.expireat(redis_key, midnight)
-    print("Set to {}".format(new_req))
+    log_print("Set to {}".format(new_req), level="DEBUG", command="spam")
