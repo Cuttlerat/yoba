@@ -29,7 +29,6 @@ def chat_id(bot, update):
                      text="`{0}`".format(current_chat_id),
                      reply_to_message_id=update.message.message_id,
                      parse_mode='markdown')
-    log_print('Chat id {0}'.format(current_chat_id), username)
 
 
 def prepare_message(update):
