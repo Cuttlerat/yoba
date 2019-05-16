@@ -13,24 +13,38 @@ import os
 def clash(config, bot, update):
     last_game={}
     username = update.message.from_user.username
+    last_game = get_last_game(config, username, update.message.chat_id)
+    clash_id = ""
 
-    r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
-        headers={"content-type":"application/json;charset=UTF-8",
-                 "cookie":"remcg={remcg};rememberMe={remember_me};cgSession={cg_session}".format(
-                     remcg=config.clash_remcg(),
-                     remember_me=config.clash_remember_me(),
-                     cg_session=config.clash_cg_session())},
-        data='[{}, {{"SHORT":true}}]'.format(config.clash_secret()))
+    if last_game["clash_id"]:
+        r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/findClashReportInfoByHandle',
+                          headers={"content-type":"application/json;charset=UTF-8"},
+                          data='[{}]'.format(last_game["clash_id"]))
+        if r.status_code == 200:
+            results = json.loads(r.text)
+            if "mode" in results["success"]:
+                # If mode exists - last game has been started and need to create a new one
+                r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
+                    headers={"content-type":"application/json;charset=UTF-8",
+                             "cookie":"remcg={remcg};rememberMe={remember_me};cgSession={cg_session}".format(
+                                 remcg=config.clash_remcg(),
+                                 remember_me=config.clash_remember_me(),
+                                 cg_session=config.clash_cg_session())},
+                    data='[{}, {{"SHORT":true}}]'.format(config.clash_secret()))
+                if r.status_code == 200:
+                    clash_id = json.loads(r.text)["success"]["publicHandle"]
+            else:
+                bot.delete_message(chat_id=update.message.chat_id,
+                                   message_id=last_game["message_id"])
+                clash_id = last_game["clash_id"]
 
-    if r.status_code == 200:
-
+    if clash_id:
         with connector(config.engine()) as ses:
             all_matches = ses.query(Pingers.username).filter(Pingers.chat_id == update.message.chat_id).order_by(Pingers.username).distinct().all()
             exclude = ses.query(ClashExclude.username).filter(ClashExclude.chat_id == update.message.chat_id).all()
             users = [ x for x in all_matches if x not in exclude ]
             users = [ x for x in users for x in x ]
             out_text = ""
-        clash_id = json.loads(r.text)["success"]["publicHandle"]
         users=" ".join(["@{}".format(user) for user in users])
         message = """
 Clash of Code!
