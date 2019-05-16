@@ -7,10 +7,16 @@ import redis
 def spam_check(config, bot, update, args):
 
     chat_id = update.message.chat_id
+    username = update.message.from_user.username
+    arg_username = args[0] if args else username
+
     with connector(config.engine()) as ses:
-        spamers = ses.query(Spam.username, Spam.requests).filter(Spam.chat_id == update.message.chat_id).distinct().all()
-        for spamer in spamers:
-            username, requests = spamer
+        spamers = ses.query(Spam.username, Spam.requests).filter(and_(
+            Spam.chat_id == chat_id,
+            Spam.username == arg_username).distinct().all()
+
+        if username in [x[0] for x in spamers]:
+            requests = [x[1] for x in spamers where username == x[0]][0]
             redis_db = config.redis
             try:
                 redis_key = "{username}_{chat_id}_{date}".format(
