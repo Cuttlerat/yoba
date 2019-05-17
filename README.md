@@ -45,10 +45,12 @@ Add your telegram username, tokens, and database path into `./bot/config/config.
 tokens:
   tg_token: YOUR_TOKEN       # Register your bot here: https://t.me/BotFather
   weather_token: YOUR_TOKEN  # You can get a weather token here: http://openweathermap.org/
-  clash_remcg: COOKIE        # You can take it from https://codingame.com cookies
-  clash_remember_me: COOKIE  # You can take it from https://codingame.com cookies
-  clash_cg_session: COOKIE   # You can take it from https://codingame.com cookies
-  clash_secret: SECRET       # You can take it from https://codingame.com requests
+clash:
+  login: YOUR_codingame.com_LOGIN
+  password: YOUR_codingame.com_PASSWORD
+redis:
+  host: redis
+  port: 6379
 telegram:
   mode: Polling # or Webhook
   webhook_port: 30222
