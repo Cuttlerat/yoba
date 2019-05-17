@@ -38,7 +38,7 @@ def clash_get_cookies(config):
                                              minute=0,
                                              second=0)
                 redis_db.set("clash_cookies", json.dumps(cookies))
-                redis_db.expireat(redis_key, midnight)
+                redis_db.expireat("clash_cookies", midnight)
             except redis.RedisError as e:
                 log_print("Could not save Clash cookies in redis",
                           error=str(e),
