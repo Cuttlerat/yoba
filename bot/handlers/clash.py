@@ -59,7 +59,7 @@ def clash(config, bot, update):
                           data='[{}]'.format(last_game["clash_id"]))
         if r.status_code == 200:
             results = json.loads(r.text)
-            if not (results["success"]["started"] and results["success"]["finished"]):
+            if results["success"]["started"] and results["success"]["finished"]:
                 r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
                     headers={"content-type":"application/json;charset=UTF-8",
                              "cookie":"rememberMe={remember_me};cgSession={cg_session}".format(
