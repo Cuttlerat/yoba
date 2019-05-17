@@ -65,7 +65,7 @@ def clash(config, bot, update):
                              "cookie":"rememberMe={remember_me};cgSession={cg_session}".format(
                                  remember_me=cookies["rememberMe"],
                                  cg_session=cookies["cgSession"])},
-                    data='[{user_id}, {{"SHORT":true}}]'.format(user_id=config["user_id"]))
+                    data='[{user_id}, {{"SHORT":true}}]'.format(user_id=cookies["user_id"]))
                 if r.status_code == 200:
                     clash_id = json.loads(r.text)["success"]["publicHandle"]
             else:
