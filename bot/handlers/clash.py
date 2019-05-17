@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 import redis
 import os
+import telegram
 
 def clash(config, bot, update):
     last_game={}
@@ -34,8 +35,11 @@ def clash(config, bot, update):
                 if r.status_code == 200:
                     clash_id = json.loads(r.text)["success"]["publicHandle"]
             else:
-                bot.delete_message(chat_id=update.message.chat_id,
-                                   message_id=last_game["message_id"])
+                try:
+                    bot.delete_message(chat_id=update.message.chat_id,
+                                       message_id=last_game["message_id"])
+                except telegram.error.BadRequest:
+                    pass
                 clash_id = last_game["clash_id"]
 
     if clash_id:
