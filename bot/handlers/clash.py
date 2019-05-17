@@ -326,10 +326,12 @@ def clash_results(config, bot, update, args):
                 Game id: {clash_id}
                 Game mode: {clash_mode}
                 Status: {clash_status}
+                Creation time: {clash_creation_time}
 
                 '''.format(
                     clash_id=clash_id,
                     clash_mode=clash_mode,
+                    clash_creation_time=results["success"]["creationTime"],
                     clash_status="Finished" if results["success"]["finished"] else "In progress")
                 if clash_mode != "Unknown":
                     headers=["", "Username", "Language", "Score", "Time"]
