@@ -11,27 +11,69 @@ import redis
 import os
 import telegram
 
+class NotLoggedException(Exception):
+    pass
+
+def clash_get_cookies(config):
+    cookies = {}
+    redis_db = config.redis
+    if redis_db and redis_db.exists("clash_cookies"):
+        cookies = json.loads(redis_db.get("clash_cookies"))
+    else:
+        r = requests.post('https://www.codingame.com/services/CodingamerRemoteService/loginSiteV2',
+                          headers={"content-type":"application/json;charset=UTF-8",
+                                   "user-agent": ""},
+                          data='[{user}, {password}, true]'.format(
+                              user=config.clash_login,
+                              password=config.clash_password))
+        if r.status_code == 200:
+            cookies = {**r.cookies.get_dict(),
+                    "user_id": json.loads(r.text)["success"]["user"]["id"]}
+            try:
+                tomorrow = datetime.datetime.now() + datetime.timedelta(1)
+                midnight = datetime.datetime(year=tomorrow.year,
+                                             month=tomorrow.month,
+                                             day=tomorrow.day,
+                                             hour=0,
+                                             minute=0,
+                                             second=0)
+                redis_db.set("clash_cookies", json.dumps(cookies))
+                redis_db.expireat("clash_cookies", midnight)
+            except redis.RedisError as e:
+                log_print("Could not save Clash cookies in redis",
+                          error=str(e),
+                          level="WARN",
+                          command="clash")
+
+    if "user_id" and "rememberMe" and "cgSession" in cookies:
+        return cookies
+    else:
+        log_print("Could not get cookies from codingame.com",
+                  level="ERROR",
+                  command="clash")
+        raise NotLoggedException(r)
+
 def clash(config, bot, update):
     last_game={}
     username = update.message.from_user.username
     last_game = get_last_game(config, username, update.message.chat_id)
     clash_id = ""
+    cookies = clash_get_cookies(config)
 
     if last_game["clash_id"]:
+
         r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/findClashReportInfoByHandle',
                           headers={"content-type":"application/json;charset=UTF-8"},
                           data='[{}]'.format(last_game["clash_id"]))
         if r.status_code == 200:
             results = json.loads(r.text)
-            if "mode" in results["success"]:
-                # If mode exists - last game has been started and need to create a new one
+            if results["success"]["started"] and results["success"]["finished"]:
                 r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
                     headers={"content-type":"application/json;charset=UTF-8",
-                             "cookie":"remcg={remcg};rememberMe={remember_me};cgSession={cg_session}".format(
-                                 remcg=config.clash_remcg(),
-                                 remember_me=config.clash_remember_me(),
-                                 cg_session=config.clash_cg_session())},
-                    data='[{}, {{"SHORT":true}}]'.format(config.clash_secret()))
+                             "cookie":"rememberMe={remember_me};cgSession={cg_session}".format(
+                                 remember_me=cookies["rememberMe"],
+                                 cg_session=cookies["cgSession"])},
+                    data='[{user_id}, {{"SHORT":true}}]'.format(user_id=cookies["user_id"]))
                 if r.status_code == 200:
                     clash_id = json.loads(r.text)["success"]["publicHandle"]
             else:
@@ -161,16 +203,16 @@ def clash_start(config, bot, update):
     username = update.message.from_user.username
 
     last_game = get_last_game(config, username, update.message.chat_id)
+    cookies = clash_get_cookies(config)
 
     if last_game["clash_id"]:
         if last_game["username"] == username:
             r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/startClashByHandle',
                 headers={"content-type":"application/json;charset=UTF-8",
-                         "cookie":"remcg={remcg};rememberMe={remember_me};cgSession={cg_session}".format(
-                             remcg=config.clash_remcg(),
-                             remember_me=config.clash_remember_me(),
-                             cg_session=config.clash_cg_session())},
-                data='[{clash_secret}, "{clash_id}"]'.format(clash_secret=config.clash_secret(),
+                         "cookie":"rememberMe={remember_me};cgSession={cg_session}".format(
+                             remember_me=cookies["rememberMe"],
+                             cg_session=cookies["cgSession"])},
+                data='[{user_id}, "{clash_id}"]'.format(user_id=cookies["user_id"],
                     clash_id=last_game["clash_id"]))
 
             if r.status_code == 200:
