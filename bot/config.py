@@ -17,8 +17,8 @@ class Config:
 
         self.__tg_token = cfg['tokens']['tg_token'] if 'tg_token' in cfg['tokens'] else None
         self.__weather_token = cfg['tokens']['weather_token'] if 'weather_token' in cfg['tokens'] else None
-        self.__clash_login = cfg['tokens']['clash_login'] if 'clash_login' in cfg['tokens'] else None
-        self.__clash_password = cfg['tokens']['clash_password'] if 'clash_password' in cfg['tokens'] else None
+        self.__clash_login = cfg['clash']['login'] if 'login' in cfg['clash'] else None
+        self.__clash_password = cfg['clash']['password'] if 'password' in cfg['clash'] else None
         self.__clash_remcg = cfg['tokens']['clash_remcg'] if 'clash_remcg' in cfg['tokens'] else None
         self.__clash_remember_me = cfg['tokens']['clash_remember_me'] if 'clash_remember_me' in cfg['tokens'] else None
         self.__clash_secret = cfg['tokens']['clash_secret'] if 'clash_secret' in cfg['tokens'] else None
