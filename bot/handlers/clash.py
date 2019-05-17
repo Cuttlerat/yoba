@@ -19,7 +19,6 @@ def clash_get_cookies(config):
     redis_db = config.redis
     if redis_db and redis_db.exists("clash_cookies"):
         cookies = json.loads(redis_db.get("clash_cookies"))
-        print("Redis")
     else:
         r = requests.post('https://www.codingame.com/services/CodingamerRemoteService/loginSiteV2',
                           headers={"content-type":"application/json;charset=UTF-8",
@@ -29,10 +28,8 @@ def clash_get_cookies(config):
                               password=config.clash_password))
         if r.status_code == 200:
             cookies = r.cookies.get_dict()
-            print("API")
             try:
                 redis_db.set("clash_cookies", json.dumps(cookies))
-                print("Saved to redis")
             except redis.RedisError as e:
                 log_print("Could not save Clash cookies in redis",
                           error=str(e),
@@ -61,7 +58,7 @@ def clash(config, bot, update):
                           data='[{}]'.format(last_game["clash_id"]))
         if r.status_code == 200:
             results = json.loads(r.text)
-            if "mode" in results["success"]:
+            if "mode" in results["success"] and "finished" not in results["success"]:
                 # If mode exists - last game has been started and need to create a new one
                 r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
                     headers={"content-type":"application/json;charset=UTF-8",
