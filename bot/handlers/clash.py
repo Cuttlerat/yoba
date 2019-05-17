@@ -232,7 +232,6 @@ def clash_disable(config, bot, update):
     log_print("Disabled",
               chat_id=update.message.chat_id,
               username=username,
-              clash_id=clash_id,
               level="INFO",
               command="clash_disable")
 
@@ -260,7 +259,6 @@ def clash_enable(config, bot, update):
     log_print("Enabled",
               chat_id=update.message.chat_id,
               username=username,
-              clash_id=clash_id,
               level="INFO",
               command="clash_disable")
 
