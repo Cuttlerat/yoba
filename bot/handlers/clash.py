@@ -27,7 +27,8 @@ def clash_get_cookies(config):
                               user=config.clash_login,
                               password=config.clash_password))
         if r.status_code == 200:
-            cookies = r.cookies.get_dict()
+            cookies = {**r.cookies.get_dict(),
+                    "user_id": json.loads(r.text)["success"]["user"]["id"]}
             try:
                 redis_db.set("clash_cookies", json.dumps(cookies))
             except redis.RedisError as e:
@@ -36,7 +37,7 @@ def clash_get_cookies(config):
                           level="WARN",
                           command="clash")
 
-    if "rememberMe" and "cgSession" in cookies:
+    if "user_id" and "rememberMe" and "cgSession" in cookies:
         return cookies
     else:
         log_print("Could not get cookies from codingame.com",
@@ -58,14 +59,13 @@ def clash(config, bot, update):
                           data='[{}]'.format(last_game["clash_id"]))
         if r.status_code == 200:
             results = json.loads(r.text)
-            if "mode" in results["success"] and "finished" not in results["success"]:
-                # If mode exists - last game has been started and need to create a new one
+            if not (results["success"]["started"] and results["success"]["finished"]):
                 r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
                     headers={"content-type":"application/json;charset=UTF-8",
                              "cookie":"rememberMe={remember_me};cgSession={cg_session}".format(
                                  remember_me=cookies["rememberMe"],
                                  cg_session=cookies["cgSession"])},
-                    data='[{}, {{"SHORT":true}}]'.format(config.clash_secret()))
+                    data='[{user_id}, {{"SHORT":true}}]'.format(user_id=config["user_id"]))
                 if r.status_code == 200:
                     clash_id = json.loads(r.text)["success"]["publicHandle"]
             else:
@@ -204,7 +204,7 @@ def clash_start(config, bot, update):
                          "cookie":"rememberMe={remember_me};cgSession={cg_session}".format(
                              remember_me=cookies["rememberMe"],
                              cg_session=cookies["cgSession"])},
-                data='[{clash_secret}, "{clash_id}"]'.format(clash_secret=config.clash_secret(),
+                data='[{user_id}, "{clash_id}"]'.format(user_id=cookies["user_id"],
                     clash_id=last_game["clash_id"]))
 
             if r.status_code == 200:
