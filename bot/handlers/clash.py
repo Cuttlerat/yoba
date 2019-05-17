@@ -17,25 +17,25 @@ class NotLoggedException(Exception):
 def clash_get_cookies(config):
     cookies = {}
     redis_db = config.redis
-    try:
-        if redis_db and redis_db.exists("clash_cookies"):
-            cookies = json.loads(redis_db.get("clash_cookies"))
-        else:
-            r = requests.post('https://www.codingame.com/services/CodingamerRemoteService/loginSiteV2',
-                              headers={"content-type":"application/json;charset=UTF-8",
-                                       "user-agent": ""},
-                              data='[{user}, {password}, true]'.format(
-                                  user=config.clash_login,
-                                  password=config.clash_password))
-            if r.status_code == 200:
-                cookies = r.cookies.get_dict()
-                try:
-                    redis_db.set("clash_cookies", json.dumps(cookies))
-                except redis.RedisError as e:
-                    log_print("Could not save Clash cookies in redis",
-                              error=str(e),
-                              level="WARN",
-                              command="clash")
+    if redis_db and redis_db.exists("clash_cookies"):
+        cookies = json.loads(redis_db.get("clash_cookies"))
+    else:
+        r = requests.post('https://www.codingame.com/services/CodingamerRemoteService/loginSiteV2',
+                          headers={"content-type":"application/json;charset=UTF-8",
+                                   "user-agent": ""},
+                          data='[{user}, {password}, true]'.format(
+                              user=config.clash_login,
+                              password=config.clash_password))
+        if r.status_code == 200:
+            cookies = r.cookies.get_dict()
+            try:
+                redis_db.set("clash_cookies", json.dumps(cookies))
+            except redis.RedisError as e:
+                log_print("Could not save Clash cookies in redis",
+                          error=str(e),
+                          level="WARN",
+                          command="clash")
+
     if cookies:
         return cookies
     else:
