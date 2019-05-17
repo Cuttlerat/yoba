@@ -30,7 +30,15 @@ def clash_get_cookies(config):
             cookies = {**r.cookies.get_dict(),
                     "user_id": json.loads(r.text)["success"]["user"]["id"]}
             try:
+                tomorrow = datetime.datetime.now() + datetime.timedelta(1)
+                midnight = datetime.datetime(year=tomorrow.year,
+                                             month=tomorrow.month,
+                                             day=tomorrow.day,
+                                             hour=0,
+                                             minute=0,
+                                             second=0)
                 redis_db.set("clash_cookies", json.dumps(cookies))
+                redis_db.expireat(redis_key, midnight)
             except redis.RedisError as e:
                 log_print("Could not save Clash cookies in redis",
                           error=str(e),
