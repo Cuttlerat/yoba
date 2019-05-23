@@ -58,6 +58,7 @@ def weather(config, bot, update, args):
     lat = location.get_lat()
     lon = location.get_lon()
     uvi = owm.uvindex_around_coords(lat, lon).get_value()
+    wind = now_weather.get_wind()
 
     weathers = {}
 
@@ -106,12 +107,15 @@ def weather(config, bot, update, args):
         *Evening:* {13} {14} {15}
 
         *UV Index:* {16}
+        *Wind:* {17} {18} m/s
         """.format(city,
                    now_temp,
                    now_emoji,
                    now_status,
                    *[weathers[i] for i in weathers],
-                   uvi))
+                   uvi,
+                   degrees_to_cardinal(wind["deg"]),
+                   wind["speed"]))
     except IndexError:
         error_message = "Something wrong with API:\n\n{}".format(weathers)
         bot.send_message(chat_id=update.message.chat_id, text=error_message)
@@ -192,5 +196,10 @@ def get_emoji(weather_status):
         'Haze': u'\U0001F324',
         'notsure': u'\U0001F648'
     }
-
     return "".join([emojis[i] for i in emojis if weather_status == i])
+
+def degrees_to_cardinal(d):
+    dirs = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+            "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
+    ix = int((d + 11.25)/22.5)
+    return dirs[ix % 16]
