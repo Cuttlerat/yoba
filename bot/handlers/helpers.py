@@ -33,8 +33,8 @@ def chat_id(bot, update):
 
 
 def prepare_message(update):
-    raw_message = update.message.text.lower()
-    pre_output = raw_message.replace('ё', 'е')
+    raw_message = update.message.text
+    pre_output = raw_message.lower().replace('ё', 'е')
     output = " ".join(["".join([letter for letter in word if letter.isalnum()])
                        for word in pre_output.split()])
     return output
