@@ -37,4 +37,4 @@ def prepare_message(update):
     pre_output = input.replace('ё', 'е')
     output = " ".join(["".join([letter for letter in word if letter.isalnum()])
                        for word in pre_output.split()])
-    return .replace(',', '').replace('.', '')
+    return output
