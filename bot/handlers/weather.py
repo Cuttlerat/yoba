@@ -58,7 +58,7 @@ def weather(config, bot, update, args):
     lat = location.get_lat()
     lon = location.get_lon()
     uvi = owm.uvindex_around_coords(lat, lon).get_value()
-    wind = observation.get_wind()
+    wind = now_weather.get_wind()
 
     weathers = {}
 
