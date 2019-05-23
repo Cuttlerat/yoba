@@ -107,7 +107,7 @@ def weather(config, bot, update, args):
         *Evening:* {13} {14} {15}
 
         *UV Index:* {16}
-        *Wind:* {17} {18}m/s
+        *Wind:* {17} {18} m/s
         """.format(city,
                    now_temp,
                    now_emoji,
