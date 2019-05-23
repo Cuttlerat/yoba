@@ -28,7 +28,7 @@ def me(config, bot, update, args):
             message=' '.join(args)))
         bot.send_message(chat_id=update.message.chat_id,
                          text=out_text,
-                         parse_mode=telegram.ParseMode.MARKDOWN)
+                         parse_mode=telegram.ParseMode.HTML)
         bot.delete_message(chat_id=update.message.chat_id,
                            message_id=update.message.message_id)
         log_print("Me",
