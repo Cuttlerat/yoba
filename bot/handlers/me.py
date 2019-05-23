@@ -6,6 +6,7 @@ from logger import log_print
 from models.models import connector, Pingers
 from utils import italize
 import random
+from html import escape
 
 
 
@@ -25,7 +26,7 @@ def me(config, bot, update, args):
 
         out_text=italize("{match} {message}".format(
             match=match.capitalize(),
-            message=' '.join(args)))
+            message=escape(' '.join(args))))
         bot.send_message(chat_id=update.message.chat_id,
                          text=out_text,
                          parse_mode=telegram.ParseMode.HTML)
