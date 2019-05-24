@@ -101,6 +101,8 @@ https://www.codingame.com/clashofcode/clash/{clash_id}
 
 Please send /clash_disable if you don't want to receive these notifications
         """.format(clash_id=clash_id, users=users)
+        if "clash_id" in last_game and last_game["clash_id"] != clash_id:
+            last_game["username"] = username
         last_game["clash_id"] = clash_id
         log_print("Created",
                   chat_id=update.message.chat_id,
@@ -120,8 +122,6 @@ Please send /clash_disable if you don't want to receive these notifications
     sent = bot.send_message(chat_id=update.message.chat_id,
                      text=message)
     last_game["users"] = users
-    if "clash_id" in last_game and last_game["clash_id"] != clash_id:
-        last_game["username"] = username
     last_game["message_id"] = sent.message_id
 
     save_last_game(config, last_game, update.message.chat_id)
