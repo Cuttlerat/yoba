@@ -199,7 +199,7 @@ def get_emoji(weather_status):
     return "".join([emojis[i] for i in emojis if weather_status == i])
 
 def degrees_to_cardinal(d):
-    dirs = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-            "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
-    ix = int((d + 11.25)/22.5)
-    return dirs[ix % 16]
+    dirs = [u'\U0002B06', u'\U0002197', u'\U00027A1', u'\U0002198',
+            u'\U0002B07', u'\U0002199', u'\U0002B05', u'\U0002196']
+    ix = int((d + 22.5)/43)
+    return dirs[ix % 8]
