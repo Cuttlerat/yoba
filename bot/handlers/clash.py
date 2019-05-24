@@ -101,6 +101,8 @@ https://www.codingame.com/clashofcode/clash/{clash_id}
 
 Please send /clash_disable if you don't want to receive these notifications
         """.format(clash_id=clash_id, users=users)
+        if "clash_id" in last_game and last_game["clash_id"] != clash_id:
+            last_game["username"] = username
         last_game["clash_id"] = clash_id
         log_print("Created",
                   chat_id=update.message.chat_id,
@@ -120,7 +122,6 @@ Please send /clash_disable if you don't want to receive these notifications
     sent = bot.send_message(chat_id=update.message.chat_id,
                      text=message)
     last_game["users"] = users
-    last_game["username"] = username
     last_game["message_id"] = sent.message_id
 
     save_last_game(config, last_game, update.message.chat_id)
@@ -215,7 +216,7 @@ def clash_start(config, bot, update):
                 data='[{user_id}, "{clash_id}"]'.format(user_id=cookies["user_id"],
                     clash_id=last_game["clash_id"]))
 
-            if r.status_code == 200:
+            if r.status_code == 200 and "error" not in json.loads(r.text):
                 message="The game is about to start, hurry up!"
                 if last_game["users"]:
                     message = '{users}\n\n{msg}'.format(
@@ -224,7 +225,7 @@ def clash_start(config, bot, update):
                 log_print("Started",
                           chat_id=update.message.chat_id,
                           username=username,
-                          clash_id=clash_id,
+                          clash_id=last_game["clash_id"],
                           level="INFO",
                           command="clash_start")
             else:
@@ -233,7 +234,7 @@ def clash_start(config, bot, update):
                 log_print("Failed on start",
                           chat_id=update.message.chat_id,
                           username=username,
-                          clash_id=clash_id,
+                          clash_id=last_game["clash_id"],
                           level="ERROR",
                           command="clash_start")
         else:
@@ -246,12 +247,10 @@ def clash_start(config, bot, update):
     if last_game["message_id"]:
         bot.send_message(chat_id=update.message.chat_id,
                          reply_to_message_id=last_game["message_id"],
-                         text=message,
-                         parse_mode="markdown")
+                         text=message)
     else:
         bot.send_message(chat_id=update.message.chat_id,
-                         text=message,
-                         parse_mode="markdown")
+                         text=message)
 
 
 def clash_disable(config, bot, update):
