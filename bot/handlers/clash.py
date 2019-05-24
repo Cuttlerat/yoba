@@ -217,6 +217,7 @@ def clash_start(config, bot, update):
                     clash_id=last_game["clash_id"]))
 
             if r.status_code == 200:
+                print(r.text)
                 message="The game is about to start, hurry up!"
                 if last_game["users"]:
                     message = '{users}\n\n{msg}'.format(
@@ -247,12 +248,10 @@ def clash_start(config, bot, update):
     if last_game["message_id"]:
         bot.send_message(chat_id=update.message.chat_id,
                          reply_to_message_id=last_game["message_id"],
-                         text=message,
-                         parse_mode="markdown")
+                         text=message)
     else:
         bot.send_message(chat_id=update.message.chat_id,
-                         text=message,
-                         parse_mode="markdown")
+                         text=message)
 
 
 def clash_disable(config, bot, update):
