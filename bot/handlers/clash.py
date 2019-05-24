@@ -225,7 +225,7 @@ def clash_start(config, bot, update):
                 log_print("Started",
                           chat_id=update.message.chat_id,
                           username=username,
-                          clash_id=clash_id,
+                          clash_id=last_game["clash_id"],
                           level="INFO",
                           command="clash_start")
             else:
@@ -234,7 +234,7 @@ def clash_start(config, bot, update):
                 log_print("Failed on start",
                           chat_id=update.message.chat_id,
                           username=username,
-                          clash_id=clash_id,
+                          clash_id=last_game["clash_id"],
                           level="ERROR",
                           command="clash_start")
         else:
