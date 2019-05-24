@@ -216,8 +216,7 @@ def clash_start(config, bot, update):
                 data='[{user_id}, "{clash_id}"]'.format(user_id=cookies["user_id"],
                     clash_id=last_game["clash_id"]))
 
-            if r.status_code == 200:
-                print(r.text)
+            if r.status_code == 200 and "error" not in json.loads(r.text):
                 message="The game is about to start, hurry up!"
                 if last_game["users"]:
                     message = '{users}\n\n{msg}'.format(
