@@ -2,6 +2,7 @@ language: python
 
 dist: trusty
 
+
 jobs:
   include:
     - stage: build docker image
