@@ -73,7 +73,7 @@ workflows:
           filters:
             branches:
               only: master
-      - push_branch:
+      - push:
           requires:
             - hold
             - build
