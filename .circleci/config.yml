@@ -21,7 +21,7 @@ jobs:
           command: |
             docker image ls
             docker build \
-                --cache-from=cuttlerat/yoba \
+                --cache-from="cuttlerat/yoba:${CIRCLE_BRANCH}" \
                 -t "cuttlerat/yoba:${CIRCLE_BRANCH}" \
                 -f "./dockerfile/yoba.Dockerfile" .
       - run:
