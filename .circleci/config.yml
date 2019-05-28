@@ -44,12 +44,12 @@ jobs:
     steps:
       - attach_workspace:
           at: /caches
+      - setup_remote_docker
       - run:
           name: Load Docker image
           command: |
             set +o pipefail
             docker load -i /caches/yoba.tar | true
-      - setup_remote_docker
       - deploy:
           name: Push application Docker image
           command: |
