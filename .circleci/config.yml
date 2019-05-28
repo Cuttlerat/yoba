@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -52,6 +52,9 @@ workflows:
   build-and-push:
     jobs:
       - build
+      - hold:
+          type: approval
       - push:
           requires:
+            - hold
             - build
