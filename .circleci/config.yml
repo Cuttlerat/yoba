@@ -1,0 +1,62 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: docker:18.06.3-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/yoba.tar
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/yoba.tar | true
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build \
+                --cache-from="cuttlerat/yoba:${CIRCLE_BRANCH}" \
+                -t "cuttlerat/yoba:${CIRCLE_BRANCH}" \
+                -f "./dockerfile/yoba.Dockerfile" .
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/yoba.tar "cuttlerat/yoba:${CIRCLE_BRANCH}"
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/yoba.tar
+  push:
+    docker:
+      - image: docker:18.06.3-ce-git
+    steps:
+      - deploy:
+          name: Push application Docker image
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker tag "cuttlerat/yoba:master" "cuttlerat/yoba:latest"
+            docker push "cuttlerat/yoba"
+
+workflows:
+  version: 2
+  build-and-push:
+    jobs:
+      - build
+      - hold:
+          type: approval
+          filters:
+            branches:
+              only: master
+      - push:
+          requires:
+            - hold
+            - build
+          filters:
+            branches:
+              only: master

@@ -2,6 +2,8 @@
 
 Yet One Bot Assistant - just a funny telegeram bot.
 
+[![CircleCI](https://circleci.com/gh/Cuttlerat/yoba/tree/master.svg?style=svg)](https://circleci.com/gh/Cuttlerat/yoba/tree/master)
+
 ## Commands
 
 ```
