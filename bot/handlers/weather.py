@@ -60,8 +60,8 @@ def weather(config, bot, update, args):
     uvi = owm.uvindex_around_coords(lat, lon).get_value()
     wind = now_weather.get_wind()
 
-    wind_speed = wind.get("speed") if wind.get("speed") else 0
-    wind_direction = degrees_to_cardinal(wind.get("deg")) if wind.get("deg") else ""
+    wind_speed = wind.get("speed", 0)
+    wind_direction = degrees_to_cardinal(wind.get("deg"))
 
     weathers = {}
 
@@ -202,7 +202,10 @@ def get_emoji(weather_status):
     return "".join([emojis[i] for i in emojis if weather_status == i])
 
 def degrees_to_cardinal(d):
-    dirs = [u'\U00002B06', u'\U00002197', u'\U000027A1', u'\U00002198',
-            u'\U00002B07', u'\U00002199', u'\U00002B05', u'\U00002196']
-    ix = int((d + 22.5)/43)
-    return dirs[ix % 8]
+    if d.isnum():
+        dirs = [u'\U00002B06', u'\U00002197', u'\U000027A1', u'\U00002198',
+                u'\U00002B07', u'\U00002199', u'\U00002B05', u'\U00002196']
+        ix = int((d + 22.5)/43)
+        return dirs[ix % 8]
+    else:
+        return ""
