@@ -36,6 +36,7 @@ jobs:
     docker:
       - image: docker:18.06.3-ce-git
     steps:
+      - setup_remote_docker
       - deploy:
           name: Push application Docker image
           command: |
