@@ -19,6 +19,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
+            docker image ls
             docker build \
                 --cache-from=cuttlerat/yoba \
                 -t "cuttlerat/yoba:${CIRCLE_BRANCH}" \
