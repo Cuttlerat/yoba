@@ -33,11 +33,25 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/yoba.tar
+  push:
+    docker:
+      - image: docker:18.06.3-ce-git
+    branches:
+      only:
+        - master
+    steps:
       - deploy:
           name: Push application Docker image
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-              docker tag "cuttlerat/yoba:master" "cuttlerat/yoba:latest"
-              docker push "cuttlerat/yoba"
-            fi
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker tag "cuttlerat/yoba:master" "cuttlerat/yoba:latest"
+            docker push "cuttlerat/yoba"
+
+workflows:
+  version: 2
+  build-and-push:
+    jobs:
+      - build
+      - push:
+          requires:
+            - build
