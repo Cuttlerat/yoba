@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   build:
+    executor: docker-publisher
     docker:
       - image: docker:18.06.3-ce-git
     steps:
@@ -32,17 +33,29 @@ jobs:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/yoba.tar
+      - persist_to_workspace:
+          root: /caches
+          paths:
+            - ./yoba.tar
   push:
+    executor: docker-publisher
     docker:
       - image: docker:18.06.3-ce-git
     steps:
+      - attach_workspace:
+          at: /caches
+      - run:
+          name: Load Docker image
+          command: |
+            set +o pipefail
+            docker load -i /caches/yoba.tar | true
       - setup_remote_docker
       - deploy:
           name: Push application Docker image
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker tag "cuttlerat/yoba:master" "cuttlerat/yoba:latest"
-            docker push "cuttlerat/yoba"
+            docker push "cuttlerat/yoba:latest"
 
 workflows:
   version: 2
