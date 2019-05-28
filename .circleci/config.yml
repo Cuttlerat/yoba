@@ -1,9 +1,11 @@
 version: 2.1
+executors:
+  docker-publisher:
+    docker:
+      - image: docker:18.06.3-ce-git
 jobs:
   build:
     executor: docker-publisher
-    docker:
-      - image: docker:18.06.3-ce-git
     steps:
       - checkout
       - setup_remote_docker
@@ -39,8 +41,6 @@ jobs:
             - ./yoba.tar
   push:
     executor: docker-publisher
-    docker:
-      - image: docker:18.06.3-ce-git
     steps:
       - attach_workspace:
           at: /caches
