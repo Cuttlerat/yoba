@@ -60,7 +60,7 @@ def weather(config, bot, update, args):
     uvi = owm.uvindex_around_coords(lat, lon).get_value()
     wind = now_weather.get_wind()
 
-    wind_speed = wind.get("speed")
+    wind_speed = wind.get("speed") if wind.get("speed") else 0
     wind_direction = degrees_to_cardinal(wind.get("deg")) if wind.get("deg") else ""
 
     weathers = {}
