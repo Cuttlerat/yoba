@@ -36,8 +36,8 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
-            if [ "${CIRCLE_BRANCH}" == "issue-115" ]; then
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-              #docker tag "cuttlerat/yoba:master" "cuttlerat/yoba:latest"
+              docker tag "cuttlerat/yoba:master" "cuttlerat/yoba:latest"
               docker push "cuttlerat/yoba"
             fi
