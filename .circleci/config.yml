@@ -36,9 +36,6 @@ jobs:
   push:
     docker:
       - image: docker:18.06.3-ce-git
-    branches:
-      only:
-        - master
     steps:
       - deploy:
           name: Push application Docker image
@@ -54,7 +51,13 @@ workflows:
       - build
       - hold:
           type: approval
+          filters:
+            branches:
+              only: master
       - push:
           requires:
             - hold
             - build
+          filters:
+            branches:
+              only: master
