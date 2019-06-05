@@ -98,7 +98,7 @@ def main():
             CommandHandler('clash_enable', clash_enable_handler),
             CommandHandler('clash_disable', clash_disable_handler),
             CommandHandler('clash_results', clash_results_handler, pass_args=True),
-            MessageHandler(Filters.all, mute_handler)
+            MessageHandler(Filters.all, parser_handler)
         ]]
 
         if config.telegram_mode().lower() == 'webhook':
