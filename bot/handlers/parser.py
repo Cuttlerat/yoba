@@ -6,7 +6,6 @@ from time import time
 
 from telegram.error import BadRequest
 from handlers.helpers import prepare_message
-from handlers.weather import weather
 from logger import log_print
 from models.models import connector, Answers, PingPhrases, Pingers, PingExcludes
 

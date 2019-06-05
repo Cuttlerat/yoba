@@ -21,12 +21,6 @@ Yet One Bot Assistant - just a funny telegeram bot.
 /ping_drop <Username>      - Delete all matches for user (only for admins)
 /me [message]              - Delete source message and replace it with this one
                            + <Random cast for user which was added by /ping_add_me> [message]
-/w <City>                  - Short form of /w
-/weather <City>            - Weather in a city for now, today and tommorow
-/wset <City>               - Set the default city for /weather
-/crypto                    - Crypto-currency exchange rate
-/mute_on                   - Turn on an auto-ban (readonly) for everyone for 5 minutes (except admins)
-/mute_off                  - Turn off an auto-ban
 /clash                     - Create a CoC competition (https://condingame.com)
 /clash_start               - Start a CoC competition
 /clash_enable              - Enable CoC notifications
@@ -46,7 +40,6 @@ Add your telegram username, tokens, and database path into `./bot/config/config.
 ```yaml
 tokens:
   tg_token: YOUR_TOKEN       # Register your bot here: https://t.me/BotFather
-  weather_token: YOUR_TOKEN  # You can get a weather token here: http://openweathermap.org/
 clash:
   login: YOUR_codingame.com_LOGIN
   password: YOUR_codingame.com_PASSWORD

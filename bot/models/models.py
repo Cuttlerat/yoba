@@ -29,12 +29,6 @@ Base = declarative_base()
 meta = Base.metadata
 
 
-class Locations(Base):
-    __tablename__ = 'locations'
-
-    username = Column('username', Unicode(255), primary_key=True)
-    city = Column('city', Unicode(255))
-
 class Pingers(Base):
     __tablename__ = 'pingers'
 
@@ -110,7 +104,5 @@ def fill_db_with_mock_data(config):
             Pingers(username="test_add", chat_id=-1, match="ten"),
             Pingers(username="for_delete", chat_id=-1, match="one"),
             Pingers(username="for_delete", chat_id=-1, match="two"),
-            Pingers(username="for_delete", chat_id=-1, match="three"),
-            Locations(username="default_city", city="Syktyvkar"),
-            Locations(username="test_one", city="London")
+            Pingers(username="for_delete", chat_id=-1, match="three")
         ])

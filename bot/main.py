@@ -23,14 +23,11 @@ from telegram.ext import (
 )
 
 from config import Config
-from handlers.crypto import crypto
 from handlers.clash import clash, clash_start, clash_disable, clash_enable, clash_results
 from handlers.db import database_handler
 from handlers.helpers import start, bug, chat_id
 from handlers.parser import parser
-from handlers.muter import mute, mute_on, mute_off
 from handlers.pinger import Pinger
-from handlers.weather import weather, wset
 from handlers.me import me
 from logger import log_print
 from models.models import create_table
@@ -58,13 +55,8 @@ def main():
 
 
     functions = [database_handler,
-                 weather,
                  me,
-                 wset,
                  parser,
-                 mute,
-                 mute_on,
-                 mute_off,
                  clash,
                  clash_start,
                  clash_enable,
@@ -72,13 +64,8 @@ def main():
                  clash_results]
 
     db_handler,\
-    weather_handler,\
     me_handler,\
-    wset_handler,\
     parser_handler,\
-    mute_handler,\
-    mute_on_handler,\
-    mute_off_handler,\
     clash_handler,\
     clash_start_handler,\
     clash_enable_handler,\
@@ -97,8 +84,6 @@ def main():
             CommandHandler(['bug', 'issue'], bug),
             CommandHandler('chatid', chat_id),
             CommandHandler(['start', 'info'], start),
-            CommandHandler(['weather', 'w'], weather_handler, pass_args=True),
-            CommandHandler('wset', wset_handler, pass_args=True),
             CommandHandler('me', me_handler, pass_args=True),
             CommandHandler('db', db_handler, pass_args=True),
             CommandHandler('ping_add_me', pinger.add_me, pass_args=True),
@@ -108,15 +93,12 @@ def main():
             CommandHandler('ping_delete', pinger.delete, pass_args=True),
             CommandHandler('ping_drop', pinger.drop, pass_args=True),
             CommandHandler('ping_add', pinger.add, pass_args=True),
-            CommandHandler('mute_on', mute_on_handler),
-            CommandHandler('mute_off', mute_off_handler),
-            CommandHandler('crypto', crypto),
             CommandHandler('clash', clash_handler),
             CommandHandler('clash_start', clash_start_handler),
             CommandHandler('clash_enable', clash_enable_handler),
             CommandHandler('clash_disable', clash_disable_handler),
             CommandHandler('clash_results', clash_results_handler, pass_args=True),
-            MessageHandler(Filters.all, mute_handler)
+            MessageHandler(Filters.all, parser_handler)
         ]]
 
         if config.telegram_mode().lower() == 'webhook':

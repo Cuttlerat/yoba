@@ -16,7 +16,6 @@ class Config:
             raise FileNotFoundError("There is no config file")
 
         self.__tg_token = cfg['tokens']['tg_token'] if 'tg_token' in cfg['tokens'] else None
-        self.__weather_token = cfg['tokens']['weather_token'] if 'weather_token' in cfg['tokens'] else None
         self.__clash_login = cfg['clash']['login'] if 'login' in cfg['clash'] else None
         self.__clash_password = cfg['clash']['password'] if 'password' in cfg['clash'] else None
 
@@ -32,7 +31,6 @@ class Config:
         self.__tg_listen_ip = cfg['telegram']['listen_ip'] if 'listen_ip' in cfg['telegram'] else None
 
         self.__tg_admins = cfg['admins'] if 'admins' in cfg else []
-        self.__tg_get_mute = False
 
         self.__database = 'sqlite:///{}?check_same_thread=False'.format(
             self.__db_host) if self.__db_host is not None else None
@@ -57,11 +55,6 @@ class Config:
         if self.__tg_token is None:
             raise NotImplementedError("Telegram token in config-file is not declared")
         return self.__tg_token
-
-    def weather_token(self):
-        if self.__weather_token is None:
-            raise NotImplementedError("Weather token in config-file is not declared")
-        return self.__weather_token
 
     def telegram_mode(self):
         if self.__tg_mode is None:
@@ -90,12 +83,6 @@ class Config:
 
     def admins(self):
         return self.__tg_admins
-
-    def get_mute(self):
-        return self.__tg_get_mute
-
-    def set_mute(self, new_val):
-        self.__tg_get_mute = new_val
 
     def database(self):
         if self.__database is None:
