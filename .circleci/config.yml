@@ -62,21 +62,9 @@ workflows:
   build-and-push:
     jobs:
       - build
-      - hold:
-          type: approval
-          filters:
-            branches:
-              ignore: master
       - push:
           requires:
             - build
           filters:
             branches:
               only: master
-      - push:
-          requires:
-            - hold
-            - build
-          filters:
-            branches:
-              ignore: master
