@@ -175,9 +175,9 @@ def get_last_game(config, username, chat_id):
     if redis_db:
         try:
             last_game = redis_db.get("clash_{}".format(chat_id))
-            got_from_redis = True
             if last_game:
                 last_game = json.loads(last_game)
+                got_from_redis = True
             else:
                 got_from_redis = False
             log_print("Read from redis",
