@@ -58,6 +58,7 @@ def clash(config, bot, update):
     username = update.message.from_user.username
     last_game = get_last_game(config, username, update.message.chat_id)
     clash_id = ""
+    users = ""
     cookies = clash_get_cookies(config)
 
     if last_game["clash_id"]:
@@ -83,6 +84,15 @@ def clash(config, bot, update):
                 except telegram.error.BadRequest:
                     pass
                 clash_id = last_game["clash_id"]
+    else:
+        r = requests.post('https://www.codingame.com/services/ClashOfCodeRemoteService/createPrivateClash',
+                          headers={"content-type":"application/json;charset=UTF-8",
+                                   "cookie":"rememberMe={remember_me};cgSession={cg_session}".format(
+                                       remember_me=cookies["rememberMe"],
+                                       cg_session=cookies["cgSession"])},
+                          data='[{user_id}, {{"SHORT":true}}]'.format(user_id=cookies["user_id"]))
+        if r.status_code == 200:
+            clash_id = json.loads(r.text)["success"]["publicHandle"]
 
     if clash_id:
         with connector(config.engine()) as ses:
@@ -164,13 +174,17 @@ def get_last_game(config, username, chat_id):
 
     if redis_db:
         try:
-            last_game = json.loads(redis_db.get("clash_{}".format(chat_id)))
+            last_game = redis_db.get("clash_{}".format(chat_id))
+            if last_game:
+                last_game = json.loads(last_game)
+                got_from_redis = True
+            else:
+                got_from_redis = False
             log_print("Read from redis",
                       last_game=last_game,
                       key="clash_{}".format(chat_id),
                       level="DEBUG",
                       func="get_last_game")
-            got_from_redis = True
         except redis.RedisError as e:
             log_print("Could not read last_game from redis",
                       error=str(e),
@@ -178,11 +192,15 @@ def get_last_game(config, username, chat_id):
                       command="clash")
 
     if not got_from_redis:
-        last_game = get_last_game_from_file(config, username, chat_id)
-    elif os.path.isfile("/tmp/clash_{}".format(chat_id)):
-        last_game = get_last_game_from_file(config, username, chat_id)
-        os.remove("/tmp/clash_{}".format(chat_id))
-        save_last_game(config, last_game, chat_id)
+        if os.path.isfile("/tmp/clash_{}".format(chat_id)):
+            last_game = get_last_game_from_file(config, username, chat_id)
+            os.remove("/tmp/clash_{}".format(chat_id))
+            save_last_game(config, last_game, chat_id)
+        else:
+            last_game = {"clash_id":"",
+                         "message_id":"",
+                         "users": "",
+                         "username": username}
 
     return last_game
 
