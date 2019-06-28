@@ -12,13 +12,13 @@ from utils import send_typing_action
 
 
 async def answer_parser(config, bot, update):
-    send_typing_action(bot, update)
     in_text = prepare_message(update)
 
     with connector(config.engine()) as ses:
         out_text = ses.query(Answers.answer).filter(
             literal(in_text).contains(Answers.match))
     for message in ["".join(i) for i in out_text]:
+        send_typing_action(bot, update)
         bot.send_message(chat_id=update.message.chat_id, text=message)
         log_print("Answer",
                   chat_id=update.message.chat_id,
@@ -28,7 +28,6 @@ async def answer_parser(config, bot, update):
 
 
 async def ping_parser(config, bot, update):
-    send_typing_action(bot, update)
     in_text = prepare_message(update)
 
     with connector(config.engine()) as ses:
@@ -74,6 +73,7 @@ async def ping_parser(config, bot, update):
                         usernames = [i for i in usernames for i in i]
 
             if usernames:
+                send_typing_action(bot, update)
                 if 'EVERYONE GET IN HERE' in usernames:
                     usernames.remove('EVERYONE GET IN HERE')
                 out_text = " ".join(["@" + i for i in usernames])

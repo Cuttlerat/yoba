@@ -10,7 +10,7 @@ import io
 import redis
 import os
 import telegram
-from utils import send_typing_action
+from utils import send_typing_action, send_uploading_photo_action
 
 class NotLoggedException(Exception):
     pass
@@ -363,7 +363,7 @@ def clash_results_to_byte_arr(message):
     return img_byte_arr
 
 def clash_results(config, bot, update, args):
-    send_typing_action(bot, update)
+    send_uploading_photo_action(bot, update)
 
     username = update.message.from_user.username
     clash_ids = []
