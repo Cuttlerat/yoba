@@ -4,7 +4,7 @@ from sqlalchemy import and_
 from config import Config
 from logger import log_print
 from models.models import connector, Pingers
-from utils import italize
+from utils import italize, send_typing_action
 import random
 from html import escape
 
@@ -12,6 +12,8 @@ from html import escape
 
 def me(config, bot, update, args):
     import telegram
+
+    send_typing_action(bot, update)
 
     username = update.message.from_user.username
     with connector(config.engine()) as ses:

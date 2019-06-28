@@ -6,9 +6,11 @@ from sqlalchemy.orm.exc import NoResultFound
 from telegram.error import BadRequest
 from logger import log_print
 from models.models import connector, Welcome
+from utils import send_typing_action
 
 
 def welcome(config, bot, update):
+    send_typing_action(bot, update)
 
     with connector(config.engine()) as ses:
         try:

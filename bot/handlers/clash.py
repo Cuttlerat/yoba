@@ -10,6 +10,7 @@ import io
 import redis
 import os
 import telegram
+from utils import send_typing_action, send_uploading_photo_action
 
 class NotLoggedException(Exception):
     pass
@@ -54,6 +55,8 @@ def clash_get_cookies(config):
         raise NotLoggedException(r)
 
 def clash(config, bot, update):
+    send_typing_action(bot, update)
+
     last_game={}
     username = update.message.from_user.username
     last_game = get_last_game(config, username, update.message.chat_id)
@@ -218,6 +221,7 @@ def get_last_game_from_file(config, username, chat_id):
     return last_game
 
 def clash_start(config, bot, update):
+    send_typing_action(bot, update)
 
     username = update.message.from_user.username
 
@@ -272,6 +276,8 @@ def clash_start(config, bot, update):
 
 
 def clash_disable(config, bot, update):
+    send_typing_action(bot, update)
+
     username = update.message.from_user.username
     chat_id = update.message.chat_id
     message_id = update.message.message_id
@@ -299,6 +305,7 @@ def clash_disable(config, bot, update):
               command="clash_disable")
 
 def clash_enable(config, bot, update):
+    send_typing_action(bot, update)
     username = update.message.from_user.username
     chat_id = update.message.chat_id
     message_id = update.message.message_id
@@ -356,6 +363,7 @@ def clash_results_to_byte_arr(message):
     return img_byte_arr
 
 def clash_results(config, bot, update, args):
+    send_uploading_photo_action(bot, update)
 
     username = update.message.from_user.username
     clash_ids = []

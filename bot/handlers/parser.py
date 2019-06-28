@@ -8,6 +8,7 @@ from telegram.error import BadRequest
 from handlers.helpers import prepare_message
 from logger import log_print
 from models.models import connector, Answers, PingPhrases, Pingers, PingExcludes
+from utils import send_typing_action
 
 
 async def answer_parser(config, bot, update):
@@ -17,6 +18,7 @@ async def answer_parser(config, bot, update):
         out_text = ses.query(Answers.answer).filter(
             literal(in_text).contains(Answers.match))
     for message in ["".join(i) for i in out_text]:
+        send_typing_action(bot, update)
         bot.send_message(chat_id=update.message.chat_id, text=message)
         log_print("Answer",
                   chat_id=update.message.chat_id,
@@ -71,6 +73,7 @@ async def ping_parser(config, bot, update):
                         usernames = [i for i in usernames for i in i]
 
             if usernames:
+                send_typing_action(bot, update)
                 if 'EVERYONE GET IN HERE' in usernames:
                     usernames.remove('EVERYONE GET IN HERE')
                 out_text = " ".join(["@" + i for i in usernames])
@@ -87,6 +90,7 @@ async def ping_parser(config, bot, update):
 
 
 def parser(config, bot, update):
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncio.gather(ping_parser(config, bot, update),
