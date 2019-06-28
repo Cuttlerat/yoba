@@ -1,6 +1,7 @@
 from logger import log_print
 
 
+@send_typing_action
 def start(bot, update):
     start_text = '''
     This is the Yet One Bot Assistant
@@ -11,6 +12,7 @@ def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=start_text)
 
 
+@send_typing_action
 def bug(bot, update):
     bug_text = '''
     *Found a bug?*
@@ -22,6 +24,7 @@ def bug(bot, update):
                      parse_mode='markdown')
 
 
+@send_typing_action
 def chat_id(bot, update):
     current_chat_id = update.message.chat_id
     username = update.message.from_user.username
@@ -32,6 +35,7 @@ def chat_id(bot, update):
     log_print('Chat id {0}'.format(current_chat_id), username)
 
 
+@send_typing_action
 def prepare_message(update):
     raw_message = update.message.text
     if raw_message:

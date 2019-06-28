@@ -10,6 +10,7 @@ from html import escape
 
 
 
+@send_typing_action
 def me(config, bot, update, args):
     import telegram
 
