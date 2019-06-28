@@ -40,7 +40,6 @@ def chat_id(bot, update):
 
 
 def prepare_message(update):
-    send_typing_action(bot, update)
 
     raw_message = update.message.text
     if raw_message:
