@@ -2,8 +2,9 @@ from logger import log_print
 from utils import send_typing_action
 
 
-@send_typing_action
 def start(bot, update):
+    send_typing_action(bot, update)
+
     start_text = '''
     This is the Yet One Bot Assistant
     You can see the code here https://github.com/Cuttlerat/yoba
@@ -13,8 +14,9 @@ def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=start_text)
 
 
-@send_typing_action
 def bug(bot, update):
+    send_typing_action(bot, update)
+
     bug_text = '''
     *Found a bug?*
     Please report it here: https://github.com/Cuttlerat/yoba/issues/new
@@ -25,8 +27,9 @@ def bug(bot, update):
                      parse_mode='markdown')
 
 
-@send_typing_action
 def chat_id(bot, update):
+    send_typing_action(bot, update)
+
     current_chat_id = update.message.chat_id
     username = update.message.from_user.username
     bot.send_message(chat_id=current_chat_id,
@@ -36,8 +39,9 @@ def chat_id(bot, update):
     log_print('Chat id {0}'.format(current_chat_id), username)
 
 
-@send_typing_action
 def prepare_message(update):
+    send_typing_action(bot, update)
+
     raw_message = update.message.text
     if raw_message:
         pre_output = raw_message.lower().replace('ё', 'е')

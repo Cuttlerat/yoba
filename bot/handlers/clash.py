@@ -54,8 +54,9 @@ def clash_get_cookies(config):
                   command="clash")
         raise NotLoggedException(r)
 
-@send_typing_action
 def clash(config, bot, update):
+    send_typing_action(bot, update)
+
     last_game={}
     username = update.message.from_user.username
     last_game = get_last_game(config, username, update.message.chat_id)
@@ -219,8 +220,8 @@ def get_last_game_from_file(config, username, chat_id):
                   func="get_last_game")
     return last_game
 
-@send_typing_action
 def clash_start(config, bot, update):
+    send_typing_action(bot, update)
 
     username = update.message.from_user.username
 
@@ -274,8 +275,9 @@ def clash_start(config, bot, update):
                          text=message)
 
 
-@send_typing_action
 def clash_disable(config, bot, update):
+    send_typing_action(bot, update)
+
     username = update.message.from_user.username
     chat_id = update.message.chat_id
     message_id = update.message.message_id
@@ -302,8 +304,8 @@ def clash_disable(config, bot, update):
               level="INFO",
               command="clash_disable")
 
-@send_typing_action
 def clash_enable(config, bot, update):
+    send_typing_action(bot, update)
     username = update.message.from_user.username
     chat_id = update.message.chat_id
     message_id = update.message.message_id
@@ -360,8 +362,8 @@ def clash_results_to_byte_arr(message):
     img_byte_arr.seek(0)
     return img_byte_arr
 
-@send_typing_action
 def clash_results(config, bot, update, args):
+    send_typing_action(bot, update)
 
     username = update.message.from_user.username
     clash_ids = []

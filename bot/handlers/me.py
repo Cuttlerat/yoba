@@ -10,9 +10,10 @@ from html import escape
 
 
 
-@send_typing_action
 def me(config, bot, update, args):
     import telegram
+
+    send_typing_action(bot, update)
 
     username = update.message.from_user.username
     with connector(config.engine()) as ses:

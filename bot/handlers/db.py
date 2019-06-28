@@ -5,8 +5,9 @@ from utils import send_typing_action
 from logger import log_print
 
 
-@send_typing_action
 def database_handler(config, bot, update, args):
+    send_typing_action(bot, update)
+
     if update.message.from_user.username not in config.admins():
         out_text = "You are not an administrator. The incident will be reported"
         command = "not an administrator"

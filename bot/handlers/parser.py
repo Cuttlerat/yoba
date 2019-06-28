@@ -87,8 +87,9 @@ async def ping_parser(config, bot, update):
             pass
 
 
-@send_typing_action
 def parser(config, bot, update):
+    send_typing_action(bot, update)
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(asyncio.gather(ping_parser(config, bot, update),
