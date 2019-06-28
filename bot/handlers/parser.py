@@ -8,6 +8,7 @@ from telegram.error import BadRequest
 from handlers.helpers import prepare_message
 from logger import log_print
 from models.models import connector, Answers, PingPhrases, Pingers, PingExcludes
+from utils import send_typing_action
 
 
 async def answer_parser(config, bot, update):
@@ -86,6 +87,7 @@ async def ping_parser(config, bot, update):
             pass
 
 
+@send_typing_action
 def parser(config, bot, update):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)

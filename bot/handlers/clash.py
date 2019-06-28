@@ -10,6 +10,7 @@ import io
 import redis
 import os
 import telegram
+from utils import send_typing_action
 
 class NotLoggedException(Exception):
     pass

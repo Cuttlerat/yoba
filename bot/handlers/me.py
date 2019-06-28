@@ -4,7 +4,7 @@ from sqlalchemy import and_
 from config import Config
 from logger import log_print
 from models.models import connector, Pingers
-from utils import italize
+from utils import italize, send_typing_action
 import random
 from html import escape
 
