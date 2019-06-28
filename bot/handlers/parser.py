@@ -12,6 +12,7 @@ from utils import send_typing_action
 
 
 async def answer_parser(config, bot, update):
+    send_typing_action(bot, update)
     in_text = prepare_message(update)
 
     with connector(config.engine()) as ses:
@@ -27,6 +28,7 @@ async def answer_parser(config, bot, update):
 
 
 async def ping_parser(config, bot, update):
+    send_typing_action(bot, update)
     in_text = prepare_message(update)
 
     with connector(config.engine()) as ses:
@@ -88,7 +90,6 @@ async def ping_parser(config, bot, update):
 
 
 def parser(config, bot, update):
-    send_typing_action(bot, update)
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
