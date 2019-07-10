@@ -40,7 +40,7 @@ class Pinger:
             bot.send_message(chat_id=update.message.chat_id,
                              text=out_text)
             log_print("Show pings",
-                      chat_id=update.message.chat_id, 
+                      chat_id=update.message.chat_id,
                       searched_username=username,
                       username=update.message.from_user.username,
                       level="INFO",
@@ -65,12 +65,12 @@ class Pinger:
         usernames = [name[1:] for name in args if name[0] == "@"]
         matches = [match.lower() for match in args if match[0] != "@"]
 
-        user = update.message.from_user.username
+        sender_username = update.message.from_user.username
         if not usernames:
-            usernames = [user]
+            usernames = [sender_username]
 
         if not matches:
-            if user not in self.config.admins():
+            if sender_username not in self.config.admins():
                 usage_text = "Usage:\n`/ping_delete [match]`"
             else:
                 usage_text = "Usage:\n`/ping_delete [@username] [match]`\n`/ping_delete [match]`"
@@ -79,8 +79,8 @@ class Pinger:
                              text=usage_text)
             return
 
-        if user not in self.config.admins() and (len(usernames) > 1 or len(
-                list(filter(lambda x: x != user, usernames))) != 0):
+        if sender_username not in self.config.admins() and (len(usernames) > 1 or len(
+                list(filter(lambda x: x != sender_username, usernames))) != 0):
             message = "Deleting pings of another users is only allowed for admins."
             bot.send_message(chat_id=update.message.chat_id,
                              text=message)
@@ -99,11 +99,11 @@ class Pinger:
                     else:
                         result.delete()
                         answer += "Match `{0}` for user `@{1}` deleted\n".format(match, username)
-                        log_print("Match deleted", 
+                        log_print("Match deleted",
                                   chat_id=update.message.chat_id,
-                                  ping_username=username, 
-                                  match=match, 
-                                  username=update.message.from_user.username, 
+                                  ping_username=username,
+                                  match=match,
+                                  username=update.message.from_user.username,
                                   level="INFO",
                                   command="ping_delete")
         bot.send_message(chat_id=update.message.chat_id,
@@ -147,12 +147,12 @@ class Pinger:
         usernames = [name[1:] for name in args if name[0] == "@"]
         matches = [match.lower().replace('ё', 'е') for match in args if match[0] != "@"]
 
-        username = update.message.from_user.username
+        sender_username = update.message.from_user.username
         if not usernames:
-            usernames = [user]
+            usernames = [sender_username]
 
         if not matches:
-            if username not in self.config.admins():
+            if sender_username not in self.config.admins():
                 usage_text = "Usage:\n`/ping_add[_me] [match]`"
             else:
                 usage_text = "Usage:\n`/ping_add[_me] [@username] [match]`\n`/ping_add [match]`"
@@ -161,24 +161,24 @@ class Pinger:
                              text=usage_text)
             return
 
-        if username not in self.config.admins() and (len(usernames) > 1 or len(
-                list(filter(lambda x: x != username, usernames))) != 0):
+        if sender_username not in self.config.admins() and (len(usernames) > 1 or len(
+                list(filter(lambda x: x != sender_username, usernames))) != 0):
             message = "Adding pings for another users is only allowed for admins."
             bot.send_message(chat_id=update.message.chat_id,
                              text=message)
             return
 
-        if username not in self.config.admins():
+        if sender_username not in self.config.admins():
             with connector(self.config.engine()) as ses:
                 count = ses.query(Pingers).filter(and_(
                     Pingers.chat_id == update.message.chat_id,
-                    Pingers.username == username)).count()
+                    Pingers.username == sender_username)).count()
             if count + len(matches) > 10:
                 bot.send_message(chat_id=update.message.chat_id,
                                  text="You can add only 10 matches")
-                log_print("Pinger limit exhausted",  
+                log_print("Pinger limit exhausted",
                           chat_id=update.message.chat_id,
-                          username=username,
+                          username=sender_username,
                           level="INFO",
                           command="ping_add")
                 return
@@ -199,11 +199,11 @@ class Pinger:
                             me=me)
                         ses.add(ping)
                         answer += "Match `{0}` for user `@{1}` has been added\n".format(match, username)
-                        log_print("Match added",  
+                        log_print("Match added",
                                   chat_id=update.message.chat_id,
-                                  ping_username=username, 
+                                  ping_username=username,
                                   match=match,
-                                  username=update.message.from_user.username,
+                                  username=sender_username,
                                   level="INFO",
                                   command="ping_add")
                     else:
